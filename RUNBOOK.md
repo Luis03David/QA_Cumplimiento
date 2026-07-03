@@ -137,6 +137,31 @@ git push -u origin main
 
 ## Release con Git
 
+El repo incluye un wrapper en raiz:
+
+```bash
+./release.sh --dry-run
+```
+
+Comportamiento:
+
+- Si no pasas version, calcula el siguiente patch semver desde el ultimo tag `vX.Y.Z`.
+- Si no existe ningun tag semver, propone `v0.1.0`.
+- En modo real exige working tree limpio y branch `main` sincronizado con `origin/main`.
+- Con `--dry-run` no crea tags ni publica nada.
+
+Crear release versionado con el script:
+
+```bash
+./release.sh v0.1.0 --yes
+```
+
+Crear tag local sin publicarlo:
+
+```bash
+./release.sh v0.1.0 --no-push --yes
+```
+
 Crear tag anotado:
 
 ```bash
