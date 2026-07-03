@@ -6,10 +6,17 @@ cd "$ROOT"
 
 mkdir -p resultados
 
+if [[ -z "${PYTHON:-}" ]]; then
+  if [[ -x "$ROOT/.venv/bin/python" ]]; then
+    PYTHON="$ROOT/.venv/bin/python"
+  else
+    PYTHON="python3"
+  fi
+fi
+
 overall=0
 
-python3 scripts/run_dependency_audit.py || overall=1
-python3 scripts/run_secret_scan.py || overall=1
+"$PYTHON" scripts/run_dependency_audit.py || overall=1
+"$PYTHON" scripts/run_secret_scan.py || overall=1
 
 exit "$overall"
-
