@@ -18,7 +18,7 @@ Este repositorio estructura el trabajo tecnico de QA y cumplimiento. No sustituy
 - Scripts locales de auditoria listos.
 - Dockerfile funcional.
 - GitHub Actions construye la imagen y ejecuta smoke test.
-- Publicacion de imagen preparada para Docker Hub mediante ejecucion manual, pero desactivada por defecto.
+- Publicacion de imagen preparada para Docker Hub por release tag `v*` y mediante ejecucion manual.
 
 ## Estructura
 
@@ -106,6 +106,13 @@ Para publicar desde GitHub Actions se requieren estos repository secrets:
 - `DOCKERHUB_USERNAME`
 - `DOCKERHUB_TOKEN`
 
+Cuando se publica un tag Git `vX.Y.Z`, el workflow sube automaticamente:
+
+```bash
+luis03david/qa_cumplimiento:vX.Y.Z
+luis03david/qa_cumplimiento:<commit-sha>
+```
+
 ## GitHub Actions
 
 Workflow principal:
@@ -115,9 +122,9 @@ Workflow principal:
 Jobs:
 
 - `build`: construye la imagen y ejecuta smoke test.
-- `publish`: solo corre manualmente si `workflow_dispatch` recibe `push_image=true`.
+- `publish`: corre automaticamente con tags `v*` y manualmente si `workflow_dispatch` recibe `push_image=true`.
 
-El flujo automatico de push y pull request solo construye y prueba. La publicacion a Docker Hub queda manual.
+El flujo automatico de push y pull request a `main` solo construye y prueba. La publicacion a Docker Hub ocurre con tags de release `v*` o ejecucion manual.
 
 ## Roadmap Tecnico
 

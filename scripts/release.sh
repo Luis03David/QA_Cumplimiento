@@ -165,6 +165,7 @@ if [[ "$DRY_RUN" == true ]]; then
   if [[ "$PUSH" == true ]]; then
     echo "git push $REMOTE $BRANCH"
     echo "git push $REMOTE $VERSION"
+    echo "# GitHub Actions publicara luis03david/qa_cumplimiento:$VERSION al recibir el tag"
   fi
   if [[ "$CREATE_GITHUB_RELEASE" == true ]]; then
     echo "gh release create $VERSION --title \"$VERSION\" --notes \"Release $VERSION\""
@@ -182,6 +183,7 @@ git tag -a "$VERSION" -m "Release $VERSION"
 if [[ "$PUSH" == true ]]; then
   git push "$REMOTE" "$BRANCH"
   git push "$REMOTE" "$VERSION"
+  info "GitHub Actions publicara Docker image: luis03david/qa_cumplimiento:$VERSION"
 fi
 
 if [[ "$CREATE_GITHUB_RELEASE" == true ]]; then
@@ -192,4 +194,3 @@ if [[ "$CREATE_GITHUB_RELEASE" == true ]]; then
 fi
 
 info "release listo: $VERSION"
-

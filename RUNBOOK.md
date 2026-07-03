@@ -167,11 +167,20 @@ Crear release versionado con el script:
 ./release.sh v0.1.0 --yes
 ```
 
+Esto crea y publica el tag Git `v0.1.0`. Al llegar ese tag a GitHub, Actions publica automaticamente:
+
+```bash
+luis03david/qa_cumplimiento:v0.1.0
+luis03david/qa_cumplimiento:<commit-sha>
+```
+
 Crear tag local sin publicarlo:
 
 ```bash
 ./release.sh v0.1.0 --no-push --yes
 ```
+
+Con `--no-push` no se dispara GitHub Actions y no se publica imagen Docker.
 
 Crear tag anotado:
 
@@ -231,6 +240,7 @@ gh release list --repo Luis03David/QA_Cumplimiento
 El workflow automatico se ejecuta en:
 
 - Push a `main`.
+- Push de tags `v*`.
 - Pull request contra `main`.
 
 Ejecutar manualmente desde GitHub:
@@ -241,7 +251,7 @@ Ejecutar manualmente desde GitHub:
 4. Usar `Run workflow`.
 5. Mantener `push_image=false` si solo se quiere construir y probar.
 
-Publicar a Docker Hub manualmente:
+Publicar a Docker Hub manualmente sin crear release Git:
 
 1. Usar `Run workflow`.
 2. Configurar `push_image=true`.
