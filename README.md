@@ -18,7 +18,7 @@ Este repositorio estructura el trabajo tecnico de QA y cumplimiento. No sustituy
 - Scripts locales de auditoria listos.
 - Dockerfile funcional.
 - GitHub Actions construye la imagen y ejecuta smoke test.
-- Publicacion de imagen preparada para GHCR mediante ejecucion manual, pero desactivada por defecto.
+- Publicacion de imagen preparada para Docker Hub mediante ejecucion manual, pero desactivada por defecto.
 
 ## Estructura
 
@@ -95,6 +95,17 @@ docker run --rm qa-cumplimiento:local
 
 El workflow `.github/workflows/docker-image.yml` construye la imagen en cada push o pull request contra `main`.
 
+Imagen remota objetivo:
+
+```bash
+luis03david/qa_cumplimiento:<tag>
+```
+
+Para publicar desde GitHub Actions se requieren estos repository secrets:
+
+- `DOCKERHUB_USERNAME`
+- `DOCKERHUB_TOKEN`
+
 ## GitHub Actions
 
 Workflow principal:
@@ -106,7 +117,7 @@ Jobs:
 - `build`: construye la imagen y ejecuta smoke test.
 - `publish`: solo corre manualmente si `workflow_dispatch` recibe `push_image=true`.
 
-Mientras no exista un registry definitivo, el flujo automatico no publica imagenes.
+El flujo automatico de push y pull request solo construye y prueba. La publicacion a Docker Hub queda manual.
 
 ## Roadmap Tecnico
 

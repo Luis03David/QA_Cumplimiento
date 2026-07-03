@@ -165,3 +165,7 @@ Estado real de ejecucion:
 - Imagen Docker validada localmente:
   - Tag local: `qa-cumplimiento:local`.
   - Smoke test: `docker run --rm qa-cumplimiento:local`.
+- Publicacion Docker preparada:
+  - Registry objetivo: Docker Hub.
+  - Imagen: `luis03david/qa_cumplimiento:<tag>`.
+  - Secrets requeridos en GitHub Actions: `DOCKERHUB_USERNAME`, `DOCKERHUB_TOKEN`.

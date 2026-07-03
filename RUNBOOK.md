@@ -8,6 +8,7 @@ Este runbook documenta las corridas habituales del proyecto: preparacion local, 
 - Python 3.12 o compatible.
 - Docker.
 - Acceso al remoto `https://github.com/Luis03David/QA_Cumplimiento.git`.
+- Acceso al repositorio Docker Hub `luis03david/qa_cumplimiento`.
 - Opcional: GitHub CLI (`gh`) para crear releases desde terminal.
 
 ## Preparar Entorno Local
@@ -101,6 +102,16 @@ Inspeccionar imagen:
 ```bash
 docker image inspect qa-cumplimiento:local --format '{{.Id}} {{.Size}}'
 ```
+
+Publicar manualmente en Docker Hub desde local:
+
+```bash
+docker login
+docker tag qa-cumplimiento:local luis03david/qa_cumplimiento:tagname
+docker push luis03david/qa_cumplimiento:tagname
+```
+
+Recomendacion: usar un access token de Docker Hub en `docker login`, no la password de la cuenta.
 
 ## Git Basico
 
@@ -230,11 +241,23 @@ Ejecutar manualmente desde GitHub:
 4. Usar `Run workflow`.
 5. Mantener `push_image=false` si solo se quiere construir y probar.
 
-Publicar a GHCR manualmente:
+Publicar a Docker Hub manualmente:
 
 1. Usar `Run workflow`.
 2. Configurar `push_image=true`.
-3. Confirmar `image_name`, por defecto `ghcr.io/luis03david/qa_cumplimiento`.
+3. Confirmar `image_name`, por defecto `luis03david/qa_cumplimiento`.
+4. Definir `image_tag`, por ejemplo `v0.1.0`, `latest` o `qa-base`.
+
+Repository secrets requeridos en GitHub:
+
+- `DOCKERHUB_USERNAME`: usuario de Docker Hub, por ejemplo `luis03david`.
+- `DOCKERHUB_TOKEN`: access token de Docker Hub con permiso de lectura/escritura sobre el repo de imagen.
+
+Ruta en GitHub:
+
+```text
+Settings -> Secrets and variables -> Actions -> New repository secret
+```
 
 ## Recuperacion Rapida
 
