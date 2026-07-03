@@ -14,7 +14,7 @@ Este repositorio estructura el trabajo tecnico de QA y cumplimiento. No sustituy
 ## Estado Actual
 
 - Fase 0 implementada.
-- Repositorio Git configurado contra `https://github.com/Luis03David/QA_cumplimineto.git`.
+- Repositorio Git configurado contra `https://github.com/Luis03David/QA_Cumplimiento.git`.
 - Scripts locales de auditoria listos.
 - Dockerfile funcional.
 - GitHub Actions construye la imagen y ejecuta smoke test.
@@ -117,4 +117,3 @@ Mientras no exista un registry definitivo, el flujo automatico no publica imagen
 5. Fase 5: dashboard de cumplimiento.
 
 El detalle completo vive en `plan.md`.
-

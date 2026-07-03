@@ -161,7 +161,7 @@ Estado real de ejecucion:
   - Estado: `pass`.
   - Nota: se uso scanner regex fallback porque `gitleaks` y `trufflehog` no estan instalados.
 - Git remoto configurado:
-  - `origin`: `https://github.com/Luis03David/QA_cumplimineto.git`.
+  - `origin`: `https://github.com/Luis03David/QA_Cumplimiento.git`.
 - Imagen Docker validada localmente:
   - Tag local: `qa-cumplimiento:local`.
   - Smoke test: `docker run --rm qa-cumplimiento:local`.

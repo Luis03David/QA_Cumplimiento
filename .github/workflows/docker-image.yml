@@ -18,9 +18,9 @@ on:
           - "false"
           - "true"
       image_name:
-        description: "Image name, for example ghcr.io/Luis03David/QA_cumplimineto"
+        description: "Image name, for example ghcr.io/luis03david/qa_cumplimiento"
         required: false
-        default: "ghcr.io/Luis03David/QA_cumplimineto"
+        default: "ghcr.io/luis03david/qa_cumplimiento"
 
 permissions:
   contents: read
@@ -76,4 +76,3 @@ jobs:
           tags: |
             ${{ inputs.image_name }}:${{ github.sha }}
             ${{ inputs.image_name }}:latest
-

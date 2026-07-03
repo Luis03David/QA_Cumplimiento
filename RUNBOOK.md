@@ -7,7 +7,7 @@ Este runbook documenta las corridas habituales del proyecto: preparacion local, 
 - Git.
 - Python 3.12 o compatible.
 - Docker.
-- Acceso al remoto `https://github.com/Luis03David/QA_cumplimineto.git`.
+- Acceso al remoto `https://github.com/Luis03David/QA_Cumplimiento.git`.
 - Opcional: GitHub CLI (`gh`) para crear releases desde terminal.
 
 ## Preparar Entorno Local
@@ -204,7 +204,7 @@ Crear release despues de publicar el tag:
 
 ```bash
 gh release create v0.1.0 \
-  --repo Luis03David/QA_cumplimineto \
+  --repo Luis03David/QA_Cumplimiento \
   --title "v0.1.0" \
   --notes "Primera base QA & Cumplimiento: Fase 0, Docker y GitHub Actions."
 ```
@@ -212,7 +212,7 @@ gh release create v0.1.0 \
 Listar releases:
 
 ```bash
-gh release list --repo Luis03David/QA_cumplimineto
+gh release list --repo Luis03David/QA_Cumplimiento
 ```
 
 ## GitHub Actions
@@ -234,7 +234,7 @@ Publicar a GHCR manualmente:
 
 1. Usar `Run workflow`.
 2. Configurar `push_image=true`.
-3. Confirmar `image_name`, por defecto `ghcr.io/Luis03David/QA_cumplimineto`.
+3. Confirmar `image_name`, por defecto `ghcr.io/luis03david/qa_cumplimiento`.
 
 ## Recuperacion Rapida
 
