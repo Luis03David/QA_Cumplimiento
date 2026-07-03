@@ -151,12 +151,16 @@ git push -u origin main
 El repo incluye un wrapper en raiz:
 
 ```bash
-./release.sh --dry-run
+./git-release.sh --dry-run
 ```
 
 Comportamiento:
 
-- Si no pasas version, calcula el siguiente patch semver desde el ultimo tag `vX.Y.Z`.
+- Si no pasas version, calcula el siguiente semver desde el ultimo tag `vX.Y.Z`.
+- Por defecto detecta el tipo de cambio desde commits convencionales:
+  - `feat:` sube minor.
+  - `fix:` y cambios normales suben patch.
+  - `feat!:` o `BREAKING CHANGE` suben major.
 - Si no existe ningun tag semver, propone `v0.1.0`.
 - En modo real exige working tree limpio y branch `main` sincronizado con `origin/main`.
 - Con `--dry-run` no crea tags ni publica nada.
@@ -164,20 +168,34 @@ Comportamiento:
 Crear release versionado con el script:
 
 ```bash
-./release.sh v0.1.0 --yes
+./git-release.sh --yes
 ```
 
-Esto crea y publica el tag Git `v0.1.0`. Al llegar ese tag a GitHub, Actions publica automaticamente:
+Forzar tipo de incremento:
 
 ```bash
-luis03david/qa_cumplimiento:v0.1.0
+./git-release.sh --patch --yes
+./git-release.sh --minor --yes
+./git-release.sh --major --yes
+```
+
+Forzar una version exacta:
+
+```bash
+./git-release.sh v0.2.0 --yes
+```
+
+Esto crea y publica el tag Git calculado o indicado. Al llegar ese tag a GitHub, Actions publica automaticamente:
+
+```bash
+luis03david/qa_cumplimiento:vX.Y.Z
 luis03david/qa_cumplimiento:<commit-sha>
 ```
 
 Crear tag local sin publicarlo:
 
 ```bash
-./release.sh v0.1.0 --no-push --yes
+./git-release.sh v0.2.0 --no-push --yes
 ```
 
 Con `--no-push` no se dispara GitHub Actions y no se publica imagen Docker.

@@ -169,4 +169,5 @@ Estado real de ejecucion:
   - Registry objetivo: Docker Hub.
   - Imagen: `luis03david/qa_cumplimiento:<tag>`.
   - Secrets requeridos en GitHub Actions: `DOCKERHUB_USERNAME`, `DOCKERHUB_TOKEN`.
-  - Trigger automatico: push de tag Git `v*` creado por `./release.sh`.
+  - Trigger automatico: push de tag Git `v*` creado por `./git-release.sh`.
+  - Versionado automatico: semver desde commits convencionales o flags `--patch`, `--minor`, `--major`.

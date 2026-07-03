@@ -113,6 +113,14 @@ luis03david/qa_cumplimiento:vX.Y.Z
 luis03david/qa_cumplimiento:<commit-sha>
 ```
 
+El wrapper recomendado para crear releases es:
+
+```bash
+./git-release.sh --yes
+```
+
+Sin version explicita, calcula el siguiente semver desde commits convencionales: `feat:` sube minor, cambios normales suben patch y `BREAKING CHANGE` o `!` suben major.
+
 ## GitHub Actions
 
 Workflow principal:

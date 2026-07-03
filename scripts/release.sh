@@ -7,6 +7,7 @@ cd "$ROOT_DIR"
 REMOTE="origin"
 BRANCH="main"
 VERSION=""
+BUMP="auto"
 DRY_RUN=false
 PUSH=true
 CREATE_GITHUB_RELEASE=false
@@ -15,24 +16,32 @@ YES=false
 usage() {
   cat <<'EOF'
 Uso:
-  ./release.sh [version] [opciones]
+  ./git-release.sh [version] [opciones]
 
 Ejemplos:
-  ./release.sh --dry-run
-  ./release.sh v0.1.0 --dry-run
-  ./release.sh v0.1.0 --yes
-  ./release.sh --github-release --yes
+  ./git-release.sh --dry-run
+  ./git-release.sh --yes
+  ./git-release.sh --minor --yes
+  ./git-release.sh v0.2.0 --dry-run
+  ./git-release.sh v0.2.0 --yes
 
 Opciones:
   --dry-run             Muestra lo que haria sin crear tag ni publicar.
   --no-push             Crea el tag local, pero no lo publica al remoto.
+  --patch               Incrementa patch: v0.1.0 -> v0.1.1.
+  --minor               Incrementa minor: v0.1.0 -> v0.2.0.
+  --major               Incrementa major: v0.1.0 -> v1.0.0.
   --github-release      Crea release en GitHub con gh despues de publicar el tag.
   --remote NAME         Remoto Git. Default: origin.
   --branch NAME         Branch esperado. Default: main.
   --yes                 No pedir confirmacion interactiva.
   -h, --help            Muestra esta ayuda.
 
-Si no se indica version, calcula el siguiente patch semver desde el ultimo tag vX.Y.Z.
+Si no se indica version, calcula el siguiente semver desde el ultimo tag vX.Y.Z.
+Por defecto usa --auto:
+  - major si hay commits con BREAKING CHANGE o tipo con !, por ejemplo feat!: ...
+  - minor si hay commits feat...
+  - patch para fix, docs, chore, ci, test, refactor u otros cambios.
 Si no existe ningun tag semver, usa v0.1.0.
 EOF
 }
@@ -54,6 +63,18 @@ while [[ $# -gt 0 ]]; do
       ;;
     --no-push)
       PUSH=false
+      shift
+      ;;
+    --patch)
+      BUMP="patch"
+      shift
+      ;;
+    --minor)
+      BUMP="minor"
+      shift
+      ;;
+    --major)
+      BUMP="major"
       shift
       ;;
     --github-release)
@@ -105,8 +126,9 @@ latest_semver_tag() {
   git tag --list 'v[0-9]*.[0-9]*.[0-9]*' --sort=-v:refname | head -n 1
 }
 
-next_patch_version() {
+next_version() {
   local latest="$1"
+  local bump="$2"
   if [[ -z "$latest" ]]; then
     echo "v0.1.0"
     return
@@ -115,12 +137,60 @@ next_patch_version() {
   local raw="${latest#v}"
   local major minor patch
   IFS='.' read -r major minor patch <<<"$raw"
-  echo "v${major}.${minor}.$((patch + 1))"
+
+  case "$bump" in
+    major)
+      echo "v$((major + 1)).0.0"
+      ;;
+    minor)
+      echo "v${major}.$((minor + 1)).0"
+      ;;
+    patch)
+      echo "v${major}.${minor}.$((patch + 1))"
+      ;;
+    *)
+      die "tipo de version invalido: $bump"
+      ;;
+  esac
+}
+
+commit_range_for_bump() {
+  local latest="$1"
+  if [[ -n "$latest" ]]; then
+    echo "${latest}..HEAD"
+  else
+    echo "HEAD"
+  fi
+}
+
+detect_bump() {
+  local latest="$1"
+  local range
+  range=$(commit_range_for_bump "$latest")
+
+  local subjects bodies
+  subjects=$(git log --format=%s "$range")
+  bodies=$(git log --format=%b "$range")
+
+  if grep -Eq '(^|!:)BREAKING CHANGE|^[a-zA-Z]+(\([^)]+\))?!:' <<<"$subjects"$'\n'"$bodies"; then
+    echo "major"
+    return
+  fi
+
+  if grep -Eq '^feat(\([^)]+\))?:' <<<"$subjects"; then
+    echo "minor"
+    return
+  fi
+
+  echo "patch"
 }
 
 LATEST_TAG=$(latest_semver_tag)
 if [[ -z "$VERSION" ]]; then
-  VERSION=$(next_patch_version "$LATEST_TAG")
+  if [[ "$BUMP" == "auto" ]]; then
+    BUMP=$(detect_bump "$LATEST_TAG")
+  fi
+  VERSION=$(next_version "$LATEST_TAG" "$BUMP")
 fi
 
 [[ "$VERSION" =~ ^v[0-9]+\.[0-9]+\.[0-9]+$ ]] || die "version invalida: $VERSION. Usa formato vX.Y.Z"
@@ -153,6 +223,7 @@ if git rev-parse --verify "$REMOTE/$BRANCH" >/dev/null 2>&1; then
 fi
 
 info "ultimo tag semver: ${LATEST_TAG:-ninguno}"
+info "tipo de incremento: $BUMP"
 info "version a crear: $VERSION"
 info "commit objetivo: $(git rev-parse --short HEAD)"
 info "remoto: $REMOTE"
