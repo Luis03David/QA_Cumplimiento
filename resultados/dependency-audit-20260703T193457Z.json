@@ -1,0 +1,24 @@
+{
+  "schema_version": "1.0",
+  "run_id": "dependency-audit-20260703T193457Z",
+  "tool": "dependency-audit",
+  "category": "dependency",
+  "status": "pass",
+  "started_at": "2026-07-03T19:34:57Z",
+  "finished_at": "2026-07-03T19:35:22Z",
+  "summary": "Escaneo de dependencias completado sin hallazgos bloqueantes.",
+  "checks": [
+    {
+      "name": "pip-audit:requirements.txt",
+      "status": "pass",
+      "message": "pip-audit finalizo sin vulnerabilidades conocidas.",
+      "details": {
+        "exit_code": 0,
+        "requirements": "requirements.txt"
+      }
+    }
+  ],
+  "artifacts": [
+    "resultados/dependency-audit-20260703T193457Z-requirements.raw.json"
+  ]
+}
