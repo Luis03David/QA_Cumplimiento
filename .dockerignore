@@ -1,5 +1,9 @@
 .git
 .github
+.auth
+.env
+.env.*
+!.env.example
 .venv
 venv
 env
@@ -12,4 +16,3 @@ playwright-report
 test-results
 *.log
 *.tmp
-

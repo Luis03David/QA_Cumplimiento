@@ -50,6 +50,32 @@ Entregables:
 
 Criterio de listo: CP-01 y CP-03 pasan de forma reproducible localmente y guardan evidencia.
 
+Estado real parcial:
+
+- Configuracion de Playwright creada.
+- Variables locales guardadas en `.env`:
+  - `AITOPS_BASE_URL`
+  - `AITOPS_EMAIL` para OTP de Cloudflare Access.
+  - `AITOPS_USER_EMAIL` y `AITOPS_USER_PASSWORD` para login de la app.
+  - `ENABLE_DESTRUCTIVE_TESTS=false`.
+- Script de autenticacion creado:
+  - `npm run e2e:auth`
+  - Guarda estado local en `.auth/aitops.json`.
+- Runner de evidencia E2E creado:
+  - `scripts/run_e2e.js`
+  - `scripts/run_phase1.sh`
+- CP-01 registrado en el reporte como `skipped` / faltante:
+  - El mecanismo de borrado/cancelacion de datos personales todavia no esta implementado en este nivel.
+- CP-03 registrado en el reporte como `skipped` / faltante:
+  - El mecanismo DSAR/ARCO de acceso/exportacion de datos personales todavia no esta implementado en este nivel.
+- Pruebas disponibles agregadas y ejecutadas con estado `pass`:
+  - Autenticacion y carga de home para usuario CDD.
+  - Control de acceso en rutas administrativas restringidas.
+  - Dashboard de tokens operativo sin acciones destructivas.
+  - Configuracion de Knowledge Base cargando correctamente.
+- Evidencia E2E generada:
+  - `resultados/e2e-playwright-20260703T212554Z.json`.
+
 ## Fase 2 - Suite completa + SAST
 
 Objetivo: cubrir todos los casos CP-01 a CP-10 y sumar analisis estatico.

@@ -14,6 +14,7 @@ Este repositorio estructura el trabajo tecnico de QA y cumplimiento. No sustituy
 ## Estado Actual
 
 - Fase 0 implementada.
+- Fase 1 iniciada con Playwright: CP-01 y CP-03 quedan reportados como faltantes; se prueban flujos disponibles no destructivos.
 - Repositorio Git configurado contra `https://github.com/Luis03David/QA_Cumplimiento.git`.
 - Scripts locales de auditoria listos.
 - Dockerfile funcional.
@@ -47,12 +48,28 @@ Crear entorno local:
 python3 -m venv .venv
 . .venv/bin/activate
 pip install -r requirements.txt
+npm ci
+npm run e2e:install
 ```
 
 Ejecutar Fase 0:
 
 ```bash
 scripts/run_phase0.sh
+```
+
+Autenticar Cloudflare Access para E2E:
+
+```bash
+npm run e2e:auth
+```
+
+El script manda el OTP a `AITOPS_EMAIL`, lo pide por consola y guarda la sesion en `.auth/aitops.json`.
+
+Ejecutar Fase 1:
+
+```bash
+scripts/run_phase1.sh
 ```
 
 Construir y probar Docker:
@@ -81,6 +98,7 @@ Estados permitidos:
 scripts/run_dependency_audit.py
 scripts/run_secret_scan.py
 scripts/run_phase0.sh
+scripts/run_phase1.sh
 ```
 
 `run_phase0.sh` ejecuta los checks base de dependencias y secretos.

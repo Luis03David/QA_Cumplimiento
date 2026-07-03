@@ -1,0 +1,33 @@
+{
+  "name": "cum",
+  "version": "1.0.0",
+  "description": "Repositorio base para construir una funcion de Quality Engineering orientada a evidencia de cumplimiento. El proyecto arranca desde Fase 0: estructura minima, escaneo de dependencias, escaneo de secretos, contrato de resultados y una imagen Docker ejecutable.",
+  "private": true,
+  "main": "index.js",
+  "directories": {
+    "doc": "docs",
+    "test": "tests"
+  },
+  "scripts": {
+    "e2e": "playwright test",
+    "e2e:auth": "node scripts/cloudflare_access_login.js",
+    "e2e:install": "playwright install chromium",
+    "e2e:report": "node scripts/run_e2e.js",
+    "test": "npm run e2e:report"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Luis03David/QA_Cumplimiento.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Luis03David/QA_Cumplimiento/issues"
+  },
+  "homepage": "https://github.com/Luis03David/QA_Cumplimiento#readme",
+  "devDependencies": {
+    "@playwright/test": "^1.61.1",
+    "dotenv": "^17.4.2"
+  }
+}

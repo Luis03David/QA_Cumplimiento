@@ -10,6 +10,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 RESULTS = ROOT / "resultados"
 EXCLUDED_DIRS = {".git", "resultados", "node_modules", ".venv", "venv", "__pycache__"}
+EXCLUDED_FILENAMES = {".env"}
 BINARY_EXTENSIONS = {".xlsx", ".png", ".jpg", ".jpeg", ".gif", ".pdf", ".zip", ".gz", ".tar", ".7z"}
 
 PATTERNS = [
@@ -48,6 +49,8 @@ def write_result(result):
 def iter_scan_files():
     for path in ROOT.rglob("*"):
         if not path.is_file():
+            continue
+        if path.name in EXCLUDED_FILENAMES:
             continue
         relative_parts = set(path.relative_to(ROOT).parts[:-1])
         if relative_parts & EXCLUDED_DIRS:

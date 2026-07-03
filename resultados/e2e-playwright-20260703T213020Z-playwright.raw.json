@@ -1,0 +1,339 @@
+{
+  "config": {
+    "argv": [
+      "/home/user02/.nvm/versions/node/v22.23.1/bin/node",
+      "/cum/node_modules/.bin/playwright",
+      "test",
+      "--reporter=json"
+    ],
+    "configFile": "/cum/playwright.config.js",
+    "rootDir": "/cum/tests/e2e",
+    "failOnFlakyTests": false,
+    "forbidOnly": false,
+    "fullyParallel": false,
+    "globalSetup": null,
+    "globalTeardown": null,
+    "globalTimeout": 0,
+    "grep": {},
+    "grepInvert": null,
+    "maxFailures": 0,
+    "metadata": {
+      "actualWorkers": 1
+    },
+    "preserveOutput": "always",
+    "projects": [
+      {
+        "outputDir": "/cum/test-results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 1
+        },
+        "id": "chromium",
+        "name": "chromium",
+        "testDir": "/cum/tests/e2e",
+        "testIgnore": [],
+        "testMatch": [
+          "**/*.@(spec|test).?(c|m)[jt]s?(x)"
+        ],
+        "timeout": 90000
+      }
+    ],
+    "quiet": false,
+    "reporter": [
+      [
+        "json"
+      ]
+    ],
+    "reportSlowTests": {
+      "max": 5,
+      "threshold": 300000
+    },
+    "shard": null,
+    "tags": [],
+    "updateSnapshots": "missing",
+    "updateSourceMethod": "patch",
+    "version": "1.61.1",
+    "workers": 1,
+    "webServer": null
+  },
+  "suites": [
+    {
+      "title": "cp01-data-deletion.spec.js",
+      "file": "cp01-data-deletion.spec.js",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "CP-01 borrado/cancelacion de datos: flujo visible y no destructivo por defecto",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [
+                {
+                  "type": "skip",
+                  "description": "Faltante: el mecanismo de borrado/cancelacion de datos personales todavia no esta implementado en este nivel.",
+                  "location": {
+                    "file": "/cum/tests/e2e/cp01-data-deletion.spec.js",
+                    "line": 4,
+                    "column": 8
+                  }
+                }
+              ],
+              "expectedStatus": "skipped",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "skipped",
+                  "duration": 649,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-07-03T21:30:23.639Z",
+                  "annotations": [
+                    {
+                      "type": "skip",
+                      "description": "Faltante: el mecanismo de borrado/cancelacion de datos personales todavia no esta implementado en este nivel.",
+                      "location": {
+                        "file": "/cum/tests/e2e/cp01-data-deletion.spec.js",
+                        "line": 4,
+                        "column": 8
+                      }
+                    }
+                  ],
+                  "attachments": []
+                }
+              ],
+              "status": "skipped"
+            }
+          ],
+          "id": "bffb5521e38e335baf49-e6463813ec519f18010c",
+          "file": "cp01-data-deletion.spec.js",
+          "line": 3,
+          "column": 1
+        }
+      ]
+    },
+    {
+      "title": "cp03-dsar-access.spec.js",
+      "file": "cp03-dsar-access.spec.js",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "CP-03 DSAR/access: flujo de acceso o exportacion visible",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [
+                {
+                  "type": "skip",
+                  "description": "Faltante: el mecanismo DSAR/ARCO de acceso/exportacion de datos personales todavia no esta implementado en este nivel.",
+                  "location": {
+                    "file": "/cum/tests/e2e/cp03-dsar-access.spec.js",
+                    "line": 4,
+                    "column": 8
+                  }
+                }
+              ],
+              "expectedStatus": "skipped",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "skipped",
+                  "duration": 689,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-07-03T21:30:24.564Z",
+                  "annotations": [
+                    {
+                      "type": "skip",
+                      "description": "Faltante: el mecanismo DSAR/ARCO de acceso/exportacion de datos personales todavia no esta implementado en este nivel.",
+                      "location": {
+                        "file": "/cum/tests/e2e/cp03-dsar-access.spec.js",
+                        "line": 4,
+                        "column": 8
+                      }
+                    }
+                  ],
+                  "attachments": []
+                }
+              ],
+              "status": "skipped"
+            }
+          ],
+          "id": "cf14ad8c39e4d862ed13-cdfca5673e8d6a519980",
+          "file": "cp03-dsar-access.spec.js",
+          "line": 3,
+          "column": 1
+        }
+      ]
+    },
+    {
+      "title": "platform-smoke.spec.js",
+      "file": "platform-smoke.spec.js",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "SMOKE-01 autenticacion y home cargan para el usuario CDD",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 4062,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-07-03T21:30:25.299Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "8081537201c66697d4ea-8a5dd1b4818577597ec1",
+          "file": "platform-smoke.spec.js",
+          "line": 4,
+          "column": 1
+        },
+        {
+          "title": "SMOKE-02 rutas administrativas restringidas muestran control de acceso",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 5686,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-07-03T21:30:29.395Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "8081537201c66697d4ea-482b01a82d876c63bde3",
+          "file": "platform-smoke.spec.js",
+          "line": 12,
+          "column": 1
+        },
+        {
+          "title": "SMOKE-03 dashboard de tokens operativo carga sin acciones destructivas",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 6137,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-07-03T21:30:35.128Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "8081537201c66697d4ea-0ed7b6e7461dca6c013e",
+          "file": "platform-smoke.spec.js",
+          "line": 20,
+          "column": 1
+        },
+        {
+          "title": "SMOKE-04 configuracion de knowledge base carga",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 5364,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-07-03T21:30:41.293Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "8081537201c66697d4ea-e9742187fe58335bd2ea",
+          "file": "platform-smoke.spec.js",
+          "line": 29,
+          "column": 1
+        }
+      ]
+    }
+  ],
+  "errors": [],
+  "stats": {
+    "startTime": "2026-07-03T21:30:22.526Z",
+    "duration": 24262.804,
+    "expected": 4,
+    "skipped": 2,
+    "unexpected": 0,
+    "flaky": 0
+  }
+}

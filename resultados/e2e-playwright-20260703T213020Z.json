@@ -1,0 +1,126 @@
+{
+  "schema_version": "1.0",
+  "run_id": "e2e-playwright-20260703T213020Z",
+  "tool": "playwright",
+  "category": "e2e",
+  "status": "pass",
+  "started_at": "2026-07-03T21:30:20Z",
+  "finished_at": "2026-07-03T21:30:46Z",
+  "summary": "Pruebas E2E completadas sin fallas bloqueantes.",
+  "checks": [
+    {
+      "name": "CP-01 borrado/cancelacion de datos: flujo visible y no destructivo por defecto",
+      "status": "skipped",
+      "message": "Faltante: el mecanismo de borrado/cancelacion de datos personales todavia no esta implementado en este nivel.",
+      "details": {
+        "file": "cp01-data-deletion.spec.js",
+        "tests": [
+          {
+            "status": "skipped",
+            "annotations": [
+              {
+                "type": "skip",
+                "description": "Faltante: el mecanismo de borrado/cancelacion de datos personales todavia no esta implementado en este nivel.",
+                "location": {
+                  "file": "/cum/tests/e2e/cp01-data-deletion.spec.js",
+                  "line": 4,
+                  "column": 8
+                }
+              }
+            ]
+          }
+        ],
+        "errors": []
+      }
+    },
+    {
+      "name": "CP-03 DSAR/access: flujo de acceso o exportacion visible",
+      "status": "skipped",
+      "message": "Faltante: el mecanismo DSAR/ARCO de acceso/exportacion de datos personales todavia no esta implementado en este nivel.",
+      "details": {
+        "file": "cp03-dsar-access.spec.js",
+        "tests": [
+          {
+            "status": "skipped",
+            "annotations": [
+              {
+                "type": "skip",
+                "description": "Faltante: el mecanismo DSAR/ARCO de acceso/exportacion de datos personales todavia no esta implementado en este nivel.",
+                "location": {
+                  "file": "/cum/tests/e2e/cp03-dsar-access.spec.js",
+                  "line": 4,
+                  "column": 8
+                }
+              }
+            ]
+          }
+        ],
+        "errors": []
+      }
+    },
+    {
+      "name": "SMOKE-01 autenticacion y home cargan para el usuario CDD",
+      "status": "pass",
+      "message": "Spec completado correctamente.",
+      "details": {
+        "file": "platform-smoke.spec.js",
+        "tests": [
+          {
+            "status": "expected",
+            "annotations": []
+          }
+        ],
+        "errors": []
+      }
+    },
+    {
+      "name": "SMOKE-02 rutas administrativas restringidas muestran control de acceso",
+      "status": "pass",
+      "message": "Spec completado correctamente.",
+      "details": {
+        "file": "platform-smoke.spec.js",
+        "tests": [
+          {
+            "status": "expected",
+            "annotations": []
+          }
+        ],
+        "errors": []
+      }
+    },
+    {
+      "name": "SMOKE-03 dashboard de tokens operativo carga sin acciones destructivas",
+      "status": "pass",
+      "message": "Spec completado correctamente.",
+      "details": {
+        "file": "platform-smoke.spec.js",
+        "tests": [
+          {
+            "status": "expected",
+            "annotations": []
+          }
+        ],
+        "errors": []
+      }
+    },
+    {
+      "name": "SMOKE-04 configuracion de knowledge base carga",
+      "status": "pass",
+      "message": "Spec completado correctamente.",
+      "details": {
+        "file": "platform-smoke.spec.js",
+        "tests": [
+          {
+            "status": "expected",
+            "annotations": []
+          }
+        ],
+        "errors": []
+      }
+    }
+  ],
+  "artifacts": [
+    "resultados/e2e-playwright-20260703T213020Z-playwright.raw.json",
+    "test-results"
+  ]
+}

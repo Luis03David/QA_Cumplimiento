@@ -17,6 +17,7 @@ env/
 .env
 .env.*
 !.env.example
+.auth/
 
 # OS / editor
 .DS_Store
@@ -33,4 +34,3 @@ test-results/
 *.log
 *.tmp
 *.bak
-
