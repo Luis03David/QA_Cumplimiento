@@ -72,6 +72,14 @@ Ejecutar Fase 1:
 scripts/run_phase1.sh
 ```
 
+Abrir dashboard local:
+
+```bash
+npm run dev
+```
+
+La interfaz Next lee evidencia real desde `resultados/` y la matriz en `docs/traceability.md`.
+
 Construir y probar Docker:
 
 ```bash

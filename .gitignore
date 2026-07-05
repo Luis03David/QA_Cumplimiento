@@ -27,6 +27,8 @@ Thumbs.db
 
 # Node / Playwright future work
 node_modules/
+.next/
+out/
 playwright-report/
 test-results/
 

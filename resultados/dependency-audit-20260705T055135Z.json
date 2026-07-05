@@ -1,0 +1,36 @@
+{
+  "schema_version": "1.0",
+  "run_id": "dependency-audit-20260705T055135Z",
+  "tool": "dependency-audit",
+  "category": "dependency",
+  "status": "pass",
+  "started_at": "2026-07-05T05:51:35Z",
+  "finished_at": "2026-07-05T05:52:01Z",
+  "summary": "Escaneo de dependencias completado sin hallazgos bloqueantes.",
+  "checks": [
+    {
+      "name": "npm-audit",
+      "status": "pass",
+      "message": "npm audit finalizo sin vulnerabilidades bloqueantes.",
+      "details": {
+        "exit_code": 0,
+        "lockfiles": [
+          "package-lock.json"
+        ]
+      }
+    },
+    {
+      "name": "pip-audit:requirements.txt",
+      "status": "pass",
+      "message": "pip-audit finalizo sin vulnerabilidades conocidas.",
+      "details": {
+        "exit_code": 0,
+        "requirements": "requirements.txt"
+      }
+    }
+  ],
+  "artifacts": [
+    "resultados/dependency-audit-20260705T055135Z-npm-audit.raw.json",
+    "resultados/dependency-audit-20260705T055135Z-requirements.raw.json"
+  ]
+}
