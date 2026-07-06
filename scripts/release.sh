@@ -44,6 +44,7 @@ Antes del release, si hay cambios locales, hace auto-commit con:
   git add -A
   git commit -m "prep: release"
 En --dry-run solo muestra esos comandos.
+Si no hay commits nuevos desde el ultimo tag semver, avisa y no crea release.
 
 Por defecto usa --auto:
   - major si hay commits con BREAKING CHANGE o tipo con !, por ejemplo feat!: ...
@@ -192,20 +193,6 @@ detect_bump() {
   echo "patch"
 }
 
-LATEST_TAG=$(latest_semver_tag)
-if [[ -z "$VERSION" ]]; then
-  if [[ "$BUMP" == "auto" ]]; then
-    BUMP=$(detect_bump "$LATEST_TAG")
-  fi
-  VERSION=$(next_version "$LATEST_TAG" "$BUMP")
-fi
-
-[[ "$VERSION" =~ ^v[0-9]+\.[0-9]+\.[0-9]+$ ]] || die "version invalida: $VERSION. Usa formato vX.Y.Z"
-
-if git rev-parse -q --verify "refs/tags/$VERSION" >/dev/null; then
-  die "el tag $VERSION ya existe"
-fi
-
 current_branch=$(git branch --show-current)
 [[ "$current_branch" == "$BRANCH" ]] || die "branch actual '$current_branch'; se esperaba '$BRANCH'"
 
@@ -233,6 +220,26 @@ if [[ "$HAS_PENDING_CHANGES" == true ]]; then
     git add -A
     git commit -m "$AUTO_COMMIT_MESSAGE"
   fi
+fi
+
+LATEST_TAG=$(latest_semver_tag)
+if [[ -n "$LATEST_TAG" ]] && [[ "$(git rev-list --count "${LATEST_TAG}..HEAD")" -eq 0 ]]; then
+  info "no hay commits nuevos desde $LATEST_TAG"
+  info "los ultimos cambios ya fueron comiteados; no se creara release"
+  exit 0
+fi
+
+if [[ -z "$VERSION" ]]; then
+  if [[ "$BUMP" == "auto" ]]; then
+    BUMP=$(detect_bump "$LATEST_TAG")
+  fi
+  VERSION=$(next_version "$LATEST_TAG" "$BUMP")
+fi
+
+[[ "$VERSION" =~ ^v[0-9]+\.[0-9]+\.[0-9]+$ ]] || die "version invalida: $VERSION. Usa formato vX.Y.Z"
+
+if git rev-parse -q --verify "refs/tags/$VERSION" >/dev/null; then
+  die "el tag $VERSION ya existe"
 fi
 
 info "ultimo tag semver: ${LATEST_TAG:-ninguno}"
