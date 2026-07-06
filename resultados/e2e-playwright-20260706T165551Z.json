@@ -1,0 +1,134 @@
+{
+  "schema_version": "1.0",
+  "run_id": "e2e-playwright-20260706T165551Z",
+  "tool": "playwright",
+  "category": "e2e",
+  "status": "fail",
+  "started_at": "2026-07-06T16:55:51Z",
+  "finished_at": "2026-07-06T16:56:22Z",
+  "summary": "Pruebas E2E encontraron fallas o precondiciones no cumplidas.",
+  "checks": [
+    {
+      "name": "CP-01 borrado/cancelacion de datos: flujo visible y no destructivo por defecto",
+      "status": "skipped",
+      "message": "Faltante: el mecanismo de borrado/cancelacion de datos personales todavia no esta implementado en este nivel.",
+      "details": {
+        "file": "cp01-data-deletion.spec.js",
+        "tests": [
+          {
+            "status": "skipped",
+            "annotations": [
+              {
+                "type": "skip",
+                "description": "Faltante: el mecanismo de borrado/cancelacion de datos personales todavia no esta implementado en este nivel.",
+                "location": {
+                  "file": "/cum/tests/e2e/cp01-data-deletion.spec.js",
+                  "line": 4,
+                  "column": 8
+                }
+              }
+            ]
+          }
+        ],
+        "errors": []
+      }
+    },
+    {
+      "name": "CP-03 DSAR/access: flujo de acceso o exportacion visible",
+      "status": "skipped",
+      "message": "Faltante: el mecanismo DSAR/ARCO de acceso/exportacion de datos personales todavia no esta implementado en este nivel.",
+      "details": {
+        "file": "cp03-dsar-access.spec.js",
+        "tests": [
+          {
+            "status": "skipped",
+            "annotations": [
+              {
+                "type": "skip",
+                "description": "Faltante: el mecanismo DSAR/ARCO de acceso/exportacion de datos personales todavia no esta implementado en este nivel.",
+                "location": {
+                  "file": "/cum/tests/e2e/cp03-dsar-access.spec.js",
+                  "line": 4,
+                  "column": 8
+                }
+              }
+            ]
+          }
+        ],
+        "errors": []
+      }
+    },
+    {
+      "name": "SMOKE-01 autenticacion y home cargan para el usuario CDD",
+      "status": "fail",
+      "message": "Spec fallo o una precondicion no se cumplio.",
+      "details": {
+        "file": "platform-smoke.spec.js",
+        "tests": [
+          {
+            "status": "unexpected",
+            "annotations": []
+          }
+        ],
+        "errors": [
+          "Error: Cloudflare Access requiere OTP. Ejecuta npm run e2e:auth y captura el codigo, o define AITOPS_ACCESS_CODE para esta corrida.\n\n   at helpers/aitops.js:38\n\n  36 |   if (await codeInput.isVisible({ timeout: 10_000 }).catch(() => false)) {\n  37 |     if (!config.accessCode) {\n> 38 |       throw new Error('Cloudflare Access requiere OTP. Ejecuta npm run e2e:auth y captura el codigo, o define AITOPS_ACCESS_CODE para esta corrida.');\n     |             ^\n  39 |     }\n  40 |     await codeInput.fill(config.accessCode);\n  41 |     await page.getByRole('button', { name: /verify|verificar|continuar|continue/i }).click();\n    at completeCloudflareAccessIfPossible (/cum/tests/e2e/helpers/aitops.js:38:13)\n    at openApplication (/cum/tests/e2e/helpers/aitops.js:15:3)\n    at /cum/tests/e2e/platform-smoke.spec.js:5:3"
+        ]
+      }
+    },
+    {
+      "name": "SMOKE-02 rutas administrativas restringidas muestran control de acceso",
+      "status": "fail",
+      "message": "Spec fallo o una precondicion no se cumplio.",
+      "details": {
+        "file": "platform-smoke.spec.js",
+        "tests": [
+          {
+            "status": "unexpected",
+            "annotations": []
+          }
+        ],
+        "errors": [
+          "Error: Cloudflare Access requiere OTP. Ejecuta npm run e2e:auth y captura el codigo, o define AITOPS_ACCESS_CODE para esta corrida.\n\n   at helpers/aitops.js:38\n\n  36 |   if (await codeInput.isVisible({ timeout: 10_000 }).catch(() => false)) {\n  37 |     if (!config.accessCode) {\n> 38 |       throw new Error('Cloudflare Access requiere OTP. Ejecuta npm run e2e:auth y captura el codigo, o define AITOPS_ACCESS_CODE para esta corrida.');\n     |             ^\n  39 |     }\n  40 |     await codeInput.fill(config.accessCode);\n  41 |     await page.getByRole('button', { name: /verify|verificar|continuar|continue/i }).click();\n    at completeCloudflareAccessIfPossible (/cum/tests/e2e/helpers/aitops.js:38:13)\n    at openApplication (/cum/tests/e2e/helpers/aitops.js:15:3)\n    at /cum/tests/e2e/platform-smoke.spec.js:13:3"
+        ]
+      }
+    },
+    {
+      "name": "SMOKE-03 dashboard de tokens operativo carga sin acciones destructivas",
+      "status": "fail",
+      "message": "Spec fallo o una precondicion no se cumplio.",
+      "details": {
+        "file": "platform-smoke.spec.js",
+        "tests": [
+          {
+            "status": "unexpected",
+            "annotations": []
+          }
+        ],
+        "errors": [
+          "Error: Cloudflare Access requiere OTP. Ejecuta npm run e2e:auth y captura el codigo, o define AITOPS_ACCESS_CODE para esta corrida.\n\n   at helpers/aitops.js:38\n\n  36 |   if (await codeInput.isVisible({ timeout: 10_000 }).catch(() => false)) {\n  37 |     if (!config.accessCode) {\n> 38 |       throw new Error('Cloudflare Access requiere OTP. Ejecuta npm run e2e:auth y captura el codigo, o define AITOPS_ACCESS_CODE para esta corrida.');\n     |             ^\n  39 |     }\n  40 |     await codeInput.fill(config.accessCode);\n  41 |     await page.getByRole('button', { name: /verify|verificar|continuar|continue/i }).click();\n    at completeCloudflareAccessIfPossible (/cum/tests/e2e/helpers/aitops.js:38:13)\n    at openApplication (/cum/tests/e2e/helpers/aitops.js:15:3)\n    at /cum/tests/e2e/platform-smoke.spec.js:21:3"
+        ]
+      }
+    },
+    {
+      "name": "SMOKE-04 configuracion de knowledge base carga",
+      "status": "fail",
+      "message": "Spec fallo o una precondicion no se cumplio.",
+      "details": {
+        "file": "platform-smoke.spec.js",
+        "tests": [
+          {
+            "status": "unexpected",
+            "annotations": []
+          }
+        ],
+        "errors": [
+          "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).not.\u001b[22mtoContainText\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m failed\n\nLocator: locator('body')\nExpected pattern: not \u001b[32m/send login code|enter your code/i\u001b[39m\nReceived string: \u001b[31m\"\u001b[39m\n\u001b[31m    \u001b[39m\n\u001b[31m      \u001b[39m\n\u001b[31m        \u001b[39m\n\u001b[31m      \u001b[39m\n\u001b[31m      \u001b[39m\n\u001b[31m        \u001b[39m\n\u001b[31m          \u001b[39m\n\u001b[31m            \u001b[39m\n\u001b[31m              \u001b[39m\n\u001b[31m            \u001b[39m\n\u001b[31m            mcaitops.cloudflareaccess.com\u001b[39m\n\u001b[31m          \u001b[39m\n\u001b[31m          \u001b[39m\n\u001b[31m            \u001b[7mEnter your code\u001b[27m\u001b[39m\n\u001b[31m            A code has been emailed to you. It expires in 10 minutes.\u001b[39m\n\u001b[31m          \u001b[39m\n\u001b[31m\u001b[39m\n\u001b[31m          \u001b[39m\n\u001b[31m            Check your email — including spam — for the verification\u001b[39m\n\u001b[31m              code.\u001b[39m\n\u001b[31m          \u001b[39m\n\u001b[31m\u001b[39m\n\u001b[31m          \u001b[39m\n\u001b[31m            \u001b[39m\n\u001b[31m              \u001b[39m\n\u001b[31m                Code\u001b[39m\n\u001b[31m                \u001b[39m\n\u001b[31m                \u001b[39m"
+        ]
+      }
+    }
+  ],
+  "artifacts": [
+    "resultados/e2e-playwright-20260706T165551Z-playwright.raw.json",
+    "test-results"
+  ]
+}

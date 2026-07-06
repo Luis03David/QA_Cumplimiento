@@ -1,0 +1,519 @@
+{
+  "config": {
+    "argv": [
+      "/home/user02/.nvm/versions/node/v22.23.1/bin/node",
+      "/cum/node_modules/.bin/playwright",
+      "test",
+      "--reporter=json"
+    ],
+    "configFile": "/cum/playwright.config.js",
+    "rootDir": "/cum/tests/e2e",
+    "failOnFlakyTests": false,
+    "forbidOnly": false,
+    "fullyParallel": false,
+    "globalSetup": null,
+    "globalTeardown": null,
+    "globalTimeout": 0,
+    "grep": {},
+    "grepInvert": null,
+    "maxFailures": 0,
+    "metadata": {
+      "actualWorkers": 1
+    },
+    "preserveOutput": "always",
+    "projects": [
+      {
+        "outputDir": "/cum/test-results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 1
+        },
+        "id": "chromium",
+        "name": "chromium",
+        "testDir": "/cum/tests/e2e",
+        "testIgnore": [],
+        "testMatch": [
+          "**/*.@(spec|test).?(c|m)[jt]s?(x)"
+        ],
+        "timeout": 90000
+      }
+    ],
+    "quiet": false,
+    "reporter": [
+      [
+        "json"
+      ]
+    ],
+    "reportSlowTests": {
+      "max": 5,
+      "threshold": 300000
+    },
+    "shard": null,
+    "tags": [],
+    "updateSnapshots": "missing",
+    "updateSourceMethod": "patch",
+    "version": "1.61.1",
+    "workers": 1,
+    "webServer": null
+  },
+  "suites": [
+    {
+      "title": "cp01-data-deletion.spec.js",
+      "file": "cp01-data-deletion.spec.js",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "CP-01 borrado/cancelacion de datos: flujo visible y no destructivo por defecto",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [
+                {
+                  "type": "skip",
+                  "description": "Faltante: el mecanismo de borrado/cancelacion de datos personales todavia no esta implementado en este nivel.",
+                  "location": {
+                    "file": "/cum/tests/e2e/cp01-data-deletion.spec.js",
+                    "line": 4,
+                    "column": 8
+                  }
+                }
+              ],
+              "expectedStatus": "skipped",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "skipped",
+                  "duration": 633,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-07-06T16:55:54.888Z",
+                  "annotations": [
+                    {
+                      "type": "skip",
+                      "description": "Faltante: el mecanismo de borrado/cancelacion de datos personales todavia no esta implementado en este nivel.",
+                      "location": {
+                        "file": "/cum/tests/e2e/cp01-data-deletion.spec.js",
+                        "line": 4,
+                        "column": 8
+                      }
+                    }
+                  ],
+                  "attachments": []
+                }
+              ],
+              "status": "skipped"
+            }
+          ],
+          "id": "bffb5521e38e335baf49-e6463813ec519f18010c",
+          "file": "cp01-data-deletion.spec.js",
+          "line": 3,
+          "column": 1
+        }
+      ]
+    },
+    {
+      "title": "cp03-dsar-access.spec.js",
+      "file": "cp03-dsar-access.spec.js",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "CP-03 DSAR/access: flujo de acceso o exportacion visible",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [
+                {
+                  "type": "skip",
+                  "description": "Faltante: el mecanismo DSAR/ARCO de acceso/exportacion de datos personales todavia no esta implementado en este nivel.",
+                  "location": {
+                    "file": "/cum/tests/e2e/cp03-dsar-access.spec.js",
+                    "line": 4,
+                    "column": 8
+                  }
+                }
+              ],
+              "expectedStatus": "skipped",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "skipped",
+                  "duration": 685,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-07-06T16:55:55.793Z",
+                  "annotations": [
+                    {
+                      "type": "skip",
+                      "description": "Faltante: el mecanismo DSAR/ARCO de acceso/exportacion de datos personales todavia no esta implementado en este nivel.",
+                      "location": {
+                        "file": "/cum/tests/e2e/cp03-dsar-access.spec.js",
+                        "line": 4,
+                        "column": 8
+                      }
+                    }
+                  ],
+                  "attachments": []
+                }
+              ],
+              "status": "skipped"
+            }
+          ],
+          "id": "cf14ad8c39e4d862ed13-cdfca5673e8d6a519980",
+          "file": "cp03-dsar-access.spec.js",
+          "line": 3,
+          "column": 1
+        }
+      ]
+    },
+    {
+      "title": "platform-smoke.spec.js",
+      "file": "platform-smoke.spec.js",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "SMOKE-01 autenticacion y home cargan para el usuario CDD",
+          "ok": false,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "failed",
+                  "duration": 3093,
+                  "error": {
+                    "message": "Error: Cloudflare Access requiere OTP. Ejecuta npm run e2e:auth y captura el codigo, o define AITOPS_ACCESS_CODE para esta corrida.",
+                    "stack": "Error: Cloudflare Access requiere OTP. Ejecuta npm run e2e:auth y captura el codigo, o define AITOPS_ACCESS_CODE para esta corrida.\n    at completeCloudflareAccessIfPossible (/cum/tests/e2e/helpers/aitops.js:38:13)\n    at openApplication (/cum/tests/e2e/helpers/aitops.js:15:3)\n    at /cum/tests/e2e/platform-smoke.spec.js:5:3",
+                    "location": {
+                      "file": "/cum/tests/e2e/helpers/aitops.js",
+                      "column": 13,
+                      "line": 38
+                    },
+                    "snippet": "   at helpers/aitops.js:38\n\n  36 |   if (await codeInput.isVisible({ timeout: 10_000 }).catch(() => false)) {\n  37 |     if (!config.accessCode) {\n> 38 |       throw new Error('Cloudflare Access requiere OTP. Ejecuta npm run e2e:auth y captura el codigo, o define AITOPS_ACCESS_CODE para esta corrida.');\n     |             ^\n  39 |     }\n  40 |     await codeInput.fill(config.accessCode);\n  41 |     await page.getByRole('button', { name: /verify|verificar|continuar|continue/i }).click();"
+                  },
+                  "errors": [
+                    {
+                      "location": {
+                        "file": "/cum/tests/e2e/helpers/aitops.js",
+                        "column": 13,
+                        "line": 38
+                      },
+                      "message": "Error: Cloudflare Access requiere OTP. Ejecuta npm run e2e:auth y captura el codigo, o define AITOPS_ACCESS_CODE para esta corrida.\n\n   at helpers/aitops.js:38\n\n  36 |   if (await codeInput.isVisible({ timeout: 10_000 }).catch(() => false)) {\n  37 |     if (!config.accessCode) {\n> 38 |       throw new Error('Cloudflare Access requiere OTP. Ejecuta npm run e2e:auth y captura el codigo, o define AITOPS_ACCESS_CODE para esta corrida.');\n     |             ^\n  39 |     }\n  40 |     await codeInput.fill(config.accessCode);\n  41 |     await page.getByRole('button', { name: /verify|verificar|continuar|continue/i }).click();\n    at completeCloudflareAccessIfPossible (/cum/tests/e2e/helpers/aitops.js:38:13)\n    at openApplication (/cum/tests/e2e/helpers/aitops.js:15:3)\n    at /cum/tests/e2e/platform-smoke.spec.js:5:3"
+                    }
+                  ],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-07-06T16:55:56.523Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "screenshot",
+                      "contentType": "image/png",
+                      "path": "/cum/test-results/platform-smoke-SMOKE-01-au-dadef--cargan-para-el-usuario-CDD-chromium/test-failed-1.png"
+                    },
+                    {
+                      "name": "video",
+                      "contentType": "video/webm",
+                      "path": "/cum/test-results/platform-smoke-SMOKE-01-au-dadef--cargan-para-el-usuario-CDD-chromium/video.webm"
+                    },
+                    {
+                      "name": "error-context",
+                      "contentType": "text/markdown",
+                      "path": "/cum/test-results/platform-smoke-SMOKE-01-au-dadef--cargan-para-el-usuario-CDD-chromium/error-context.md"
+                    },
+                    {
+                      "name": "trace",
+                      "contentType": "application/zip",
+                      "path": "/cum/test-results/platform-smoke-SMOKE-01-au-dadef--cargan-para-el-usuario-CDD-chromium/trace.zip"
+                    }
+                  ],
+                  "errorLocation": {
+                    "file": "/cum/tests/e2e/helpers/aitops.js",
+                    "column": 13,
+                    "line": 38
+                  }
+                }
+              ],
+              "status": "unexpected"
+            }
+          ],
+          "id": "8081537201c66697d4ea-8a5dd1b4818577597ec1",
+          "file": "platform-smoke.spec.js",
+          "line": 4,
+          "column": 1
+        },
+        {
+          "title": "SMOKE-02 rutas administrativas restringidas muestran control de acceso",
+          "ok": false,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "failed",
+                  "duration": 1650,
+                  "error": {
+                    "message": "Error: Cloudflare Access requiere OTP. Ejecuta npm run e2e:auth y captura el codigo, o define AITOPS_ACCESS_CODE para esta corrida.",
+                    "stack": "Error: Cloudflare Access requiere OTP. Ejecuta npm run e2e:auth y captura el codigo, o define AITOPS_ACCESS_CODE para esta corrida.\n    at completeCloudflareAccessIfPossible (/cum/tests/e2e/helpers/aitops.js:38:13)\n    at openApplication (/cum/tests/e2e/helpers/aitops.js:15:3)\n    at /cum/tests/e2e/platform-smoke.spec.js:13:3",
+                    "location": {
+                      "file": "/cum/tests/e2e/helpers/aitops.js",
+                      "column": 13,
+                      "line": 38
+                    },
+                    "snippet": "   at helpers/aitops.js:38\n\n  36 |   if (await codeInput.isVisible({ timeout: 10_000 }).catch(() => false)) {\n  37 |     if (!config.accessCode) {\n> 38 |       throw new Error('Cloudflare Access requiere OTP. Ejecuta npm run e2e:auth y captura el codigo, o define AITOPS_ACCESS_CODE para esta corrida.');\n     |             ^\n  39 |     }\n  40 |     await codeInput.fill(config.accessCode);\n  41 |     await page.getByRole('button', { name: /verify|verificar|continuar|continue/i }).click();"
+                  },
+                  "errors": [
+                    {
+                      "location": {
+                        "file": "/cum/tests/e2e/helpers/aitops.js",
+                        "column": 13,
+                        "line": 38
+                      },
+                      "message": "Error: Cloudflare Access requiere OTP. Ejecuta npm run e2e:auth y captura el codigo, o define AITOPS_ACCESS_CODE para esta corrida.\n\n   at helpers/aitops.js:38\n\n  36 |   if (await codeInput.isVisible({ timeout: 10_000 }).catch(() => false)) {\n  37 |     if (!config.accessCode) {\n> 38 |       throw new Error('Cloudflare Access requiere OTP. Ejecuta npm run e2e:auth y captura el codigo, o define AITOPS_ACCESS_CODE para esta corrida.');\n     |             ^\n  39 |     }\n  40 |     await codeInput.fill(config.accessCode);\n  41 |     await page.getByRole('button', { name: /verify|verificar|continuar|continue/i }).click();\n    at completeCloudflareAccessIfPossible (/cum/tests/e2e/helpers/aitops.js:38:13)\n    at openApplication (/cum/tests/e2e/helpers/aitops.js:15:3)\n    at /cum/tests/e2e/platform-smoke.spec.js:13:3"
+                    }
+                  ],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-07-06T16:56:00.859Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "screenshot",
+                      "contentType": "image/png",
+                      "path": "/cum/test-results/platform-smoke-SMOKE-02-ru-14160--muestran-control-de-acceso-chromium/test-failed-1.png"
+                    },
+                    {
+                      "name": "video",
+                      "contentType": "video/webm",
+                      "path": "/cum/test-results/platform-smoke-SMOKE-02-ru-14160--muestran-control-de-acceso-chromium/video.webm"
+                    },
+                    {
+                      "name": "error-context",
+                      "contentType": "text/markdown",
+                      "path": "/cum/test-results/platform-smoke-SMOKE-02-ru-14160--muestran-control-de-acceso-chromium/error-context.md"
+                    },
+                    {
+                      "name": "trace",
+                      "contentType": "application/zip",
+                      "path": "/cum/test-results/platform-smoke-SMOKE-02-ru-14160--muestran-control-de-acceso-chromium/trace.zip"
+                    }
+                  ],
+                  "errorLocation": {
+                    "file": "/cum/tests/e2e/helpers/aitops.js",
+                    "column": 13,
+                    "line": 38
+                  }
+                }
+              ],
+              "status": "unexpected"
+            }
+          ],
+          "id": "8081537201c66697d4ea-482b01a82d876c63bde3",
+          "file": "platform-smoke.spec.js",
+          "line": 12,
+          "column": 1
+        },
+        {
+          "title": "SMOKE-03 dashboard de tokens operativo carga sin acciones destructivas",
+          "ok": false,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 2,
+                  "parallelIndex": 0,
+                  "status": "failed",
+                  "duration": 1634,
+                  "error": {
+                    "message": "Error: Cloudflare Access requiere OTP. Ejecuta npm run e2e:auth y captura el codigo, o define AITOPS_ACCESS_CODE para esta corrida.",
+                    "stack": "Error: Cloudflare Access requiere OTP. Ejecuta npm run e2e:auth y captura el codigo, o define AITOPS_ACCESS_CODE para esta corrida.\n    at completeCloudflareAccessIfPossible (/cum/tests/e2e/helpers/aitops.js:38:13)\n    at openApplication (/cum/tests/e2e/helpers/aitops.js:15:3)\n    at /cum/tests/e2e/platform-smoke.spec.js:21:3",
+                    "location": {
+                      "file": "/cum/tests/e2e/helpers/aitops.js",
+                      "column": 13,
+                      "line": 38
+                    },
+                    "snippet": "   at helpers/aitops.js:38\n\n  36 |   if (await codeInput.isVisible({ timeout: 10_000 }).catch(() => false)) {\n  37 |     if (!config.accessCode) {\n> 38 |       throw new Error('Cloudflare Access requiere OTP. Ejecuta npm run e2e:auth y captura el codigo, o define AITOPS_ACCESS_CODE para esta corrida.');\n     |             ^\n  39 |     }\n  40 |     await codeInput.fill(config.accessCode);\n  41 |     await page.getByRole('button', { name: /verify|verificar|continuar|continue/i }).click();"
+                  },
+                  "errors": [
+                    {
+                      "location": {
+                        "file": "/cum/tests/e2e/helpers/aitops.js",
+                        "column": 13,
+                        "line": 38
+                      },
+                      "message": "Error: Cloudflare Access requiere OTP. Ejecuta npm run e2e:auth y captura el codigo, o define AITOPS_ACCESS_CODE para esta corrida.\n\n   at helpers/aitops.js:38\n\n  36 |   if (await codeInput.isVisible({ timeout: 10_000 }).catch(() => false)) {\n  37 |     if (!config.accessCode) {\n> 38 |       throw new Error('Cloudflare Access requiere OTP. Ejecuta npm run e2e:auth y captura el codigo, o define AITOPS_ACCESS_CODE para esta corrida.');\n     |             ^\n  39 |     }\n  40 |     await codeInput.fill(config.accessCode);\n  41 |     await page.getByRole('button', { name: /verify|verificar|continuar|continue/i }).click();\n    at completeCloudflareAccessIfPossible (/cum/tests/e2e/helpers/aitops.js:38:13)\n    at openApplication (/cum/tests/e2e/helpers/aitops.js:15:3)\n    at /cum/tests/e2e/platform-smoke.spec.js:21:3"
+                    }
+                  ],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-07-06T16:56:03.974Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "screenshot",
+                      "contentType": "image/png",
+                      "path": "/cum/test-results/platform-smoke-SMOKE-03-da-3d01a-a-sin-acciones-destructivas-chromium/test-failed-1.png"
+                    },
+                    {
+                      "name": "video",
+                      "contentType": "video/webm",
+                      "path": "/cum/test-results/platform-smoke-SMOKE-03-da-3d01a-a-sin-acciones-destructivas-chromium/video.webm"
+                    },
+                    {
+                      "name": "error-context",
+                      "contentType": "text/markdown",
+                      "path": "/cum/test-results/platform-smoke-SMOKE-03-da-3d01a-a-sin-acciones-destructivas-chromium/error-context.md"
+                    },
+                    {
+                      "name": "trace",
+                      "contentType": "application/zip",
+                      "path": "/cum/test-results/platform-smoke-SMOKE-03-da-3d01a-a-sin-acciones-destructivas-chromium/trace.zip"
+                    }
+                  ],
+                  "errorLocation": {
+                    "file": "/cum/tests/e2e/helpers/aitops.js",
+                    "column": 13,
+                    "line": 38
+                  }
+                }
+              ],
+              "status": "unexpected"
+            }
+          ],
+          "id": "8081537201c66697d4ea-0ed7b6e7461dca6c013e",
+          "file": "platform-smoke.spec.js",
+          "line": 20,
+          "column": 1
+        },
+        {
+          "title": "SMOKE-04 configuracion de knowledge base carga",
+          "ok": false,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 3,
+                  "parallelIndex": 0,
+                  "status": "failed",
+                  "duration": 14938,
+                  "error": {
+                    "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).not.\u001b[22mtoContainText\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m failed\n\nLocator: locator('body')\nExpected pattern: not \u001b[32m/send login code|enter your code/i\u001b[39m\nReceived string: \u001b[31m\"\u001b[39m\n\u001b[31m    \u001b[39m\n\u001b[31m      \u001b[39m\n\u001b[31m        \u001b[39m\n\u001b[31m      \u001b[39m\n\u001b[31m      \u001b[39m\n\u001b[31m        \u001b[39m\n\u001b[31m          \u001b[39m\n\u001b[31m            \u001b[39m\n\u001b[31m              \u001b[39m\n\u001b[31m            \u001b[39m\n\u001b[31m            mcaitops.cloudflareaccess.com\u001b[39m\n\u001b[31m          \u001b[39m\n\u001b[31m          \u001b[39m\n\u001b[31m            \u001b[7mEnter your code\u001b[27m\u001b[39m\n\u001b[31m            A code has been emailed to you. It expires in 10 minutes.\u001b[39m\n\u001b[31m          \u001b[39m\n\u001b[31m\u001b[39m\n\u001b[31m          \u001b[39m\n\u001b[31m            Check your email — including spam — for the verification\u001b[39m\n\u001b[31m              code.\u001b[39m\n\u001b[31m          \u001b[39m\n\u001b[31m\u001b[39m\n\u001b[31m          \u001b[39m\n\u001b[31m            \u001b[39m\n\u001b[31m              \u001b[39m\n\u001b[31m                Code\u001b[39m\n\u001b[31m                \u001b[39m\n\u001b[31m                \u001b[39m\n\u001b[31m              \u001b[39m\n\u001b[31m              \u001b[39m\n\u001b[31m                \u001b[39m\n\u001b[31m                  Verify\u001b[39m\n\u001b[31m                \u001b[39m\n\u001b[31m              \u001b[39m\n\u001b[31m            \u001b[39m\n\u001b[31m            \u001b[39m\n\u001b[31m              Didn't get the code?\u001b[39m\n\u001b[31m              \u001b[39m\n\u001b[31m                Resend\u001b[39m\n\u001b[31m              \u001b[39m\n\u001b[31m            \u001b[39m\n\u001b[31m            \u001b[39m\n\u001b[31m              A new One Time PIN request has been generated.\u001b[39m\n\u001b[31m            \u001b[39m\n\u001b[31m          \u001b[39m\n\u001b[31m        \u001b[39m\n\u001b[31m      \u001b[39m\n\u001b[31m    \u001b[39m\n\u001b[31m    \u001b[39m\n\u001b[31m  \u001b[39m\n\u001b[31m\u001b[39m\n\u001b[31m\"\u001b[39m\nTimeout: 10000ms\n\nCall log:\n\u001b[2m  - Expect \"not toContainText\" with timeout 10000ms\u001b[22m\n\u001b[2m  - waiting for locator('body')\u001b[22m\n\u001b[2m    24 × locator resolved to <body>…</body>\u001b[22m\n\u001b[2m       - unexpected value \"\u001b[22m\n\u001b[2m    \u001b[22m\n\u001b[2m      \u001b[22m\n\u001b[2m        \u001b[22m\n\u001b[2m      \u001b[22m\n\u001b[2m      \u001b[22m\n\u001b[2m        \u001b[22m\n\u001b[2m          \u001b[22m\n\u001b[2m            \u001b[22m\n\u001b[2m              \u001b[22m\n\u001b[2m            \u001b[22m\n\u001b[2m            mcaitops.cloudflareaccess.com\u001b[22m\n\u001b[2m          \u001b[22m\n\u001b[2m          \u001b[22m\n\u001b[2m            Enter your code\u001b[22m\n\u001b[2m            A code has been emailed to you. It expires in 10 minutes.\u001b[22m\n\u001b[2m          \u001b[22m\n\u001b[2m\u001b[22m\n\u001b[2m          \u001b[22m\n\u001b[2m            Check your email — including spam — for the verification\u001b[22m\n\u001b[2m              code.\u001b[22m\n\u001b[2m          \u001b[22m\n\u001b[2m\u001b[22m\n\u001b[2m          \u001b[22m\n\u001b[2m            \u001b[22m\n\u001b[2m              \u001b[22m\n\u001b[2m                Code\u001b[22m\n\u001b[2m                \u001b[22m\n\u001b[2m                \u001b[22m\n\u001b[2m              \u001b[22m\n\u001b[2m              \u001b[22m\n\u001b[2m                \u001b[22m\n\u001b[2m                  Verify\u001b[22m\n\u001b[2m                \u001b[22m\n\u001b[2m              \u001b[22m\n\u001b[2m            \u001b[22m\n\u001b[2m            \u001b[22m\n\u001b[2m              Didn't get the code?\u001b[22m\n\u001b[2m              \u001b[22m\n\u001b[2m                Resend\u001b[22m\n\u001b[2m              \u001b[22m\n\u001b[2m            \u001b[22m\n\u001b[2m            \u001b[22m\n\u001b[2m              A new One Time PIN request has been generated.\u001b[22m\n\u001b[2m            \u001b[22m\n\u001b[2m          \u001b[22m\n\u001b[2m        \u001b[22m\n\u001b[2m      \u001b[22m\n\u001b[2m    \u001b[22m\n\u001b[2m    \u001b[22m\n\u001b[2m  \u001b[22m\n\u001b[2m\u001b[22m\n\u001b[2m\"\u001b[22m\n",
+                    "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).not.\u001b[22mtoContainText\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m failed\n\nLocator: locator('body')\nExpected pattern: not \u001b[32m/send login code|enter your code/i\u001b[39m\nReceived string: \u001b[31m\"\u001b[39m\n\u001b[31m    \u001b[39m\n\u001b[31m      \u001b[39m\n\u001b[31m        \u001b[39m\n\u001b[31m      \u001b[39m\n\u001b[31m      \u001b[39m\n\u001b[31m        \u001b[39m\n\u001b[31m          \u001b[39m\n\u001b[31m            \u001b[39m\n\u001b[31m              \u001b[39m\n\u001b[31m            \u001b[39m\n\u001b[31m            mcaitops.cloudflareaccess.com\u001b[39m\n\u001b[31m          \u001b[39m\n\u001b[31m          \u001b[39m\n\u001b[31m            \u001b[7mEnter your code\u001b[27m\u001b[39m\n\u001b[31m            A code has been emailed to you. It expires in 10 minutes.\u001b[39m\n\u001b[31m          \u001b[39m\n\u001b[31m\u001b[39m\n\u001b[31m          \u001b[39m\n\u001b[31m            Check your email — including spam — for the verification\u001b[39m\n\u001b[31m              code.\u001b[39m\n\u001b[31m          \u001b[39m\n\u001b[31m\u001b[39m\n\u001b[31m          \u001b[39m\n\u001b[31m            \u001b[39m\n\u001b[31m              \u001b[39m\n\u001b[31m                Code\u001b[39m\n\u001b[31m                \u001b[39m\n\u001b[31m                \u001b[39m\n\u001b[31m              \u001b[39m\n\u001b[31m              \u001b[39m\n\u001b[31m                \u001b[39m\n\u001b[31m                  Verify\u001b[39m\n\u001b[31m                \u001b[39m\n\u001b[31m              \u001b[39m\n\u001b[31m            \u001b[39m\n\u001b[31m            \u001b[39m\n\u001b[31m              Didn't get the code?\u001b[39m\n\u001b[31m              \u001b[39m\n\u001b[31m                Resend\u001b[39m\n\u001b[31m              \u001b[39m\n\u001b[31m            \u001b[39m\n\u001b[31m            \u001b[39m\n\u001b[31m              A new One Time PIN request has been generated.\u001b[39m\n\u001b[31m            \u001b[39m\n\u001b[31m          \u001b[39m\n\u001b[31m        \u001b[39m\n\u001b[31m      \u001b[39m\n\u001b[31m    \u001b[39m\n\u001b[31m    \u001b[39m\n\u001b[31m  \u001b[39m\n\u001b[31m\u001b[39m\n\u001b[31m\"\u001b[39m\nTimeout: 10000ms\n\nCall log:\n\u001b[2m  - Expect \"not toContainText\" with timeout 10000ms\u001b[22m\n\u001b[2m  - waiting for locator('body')\u001b[22m\n\u001b[2m    24 × locator resolved to <body>…</body>\u001b[22m\n\u001b[2m       - unexpected value \"\u001b[22m\n\u001b[2m    \u001b[22m\n\u001b[2m      \u001b[22m\n\u001b[2m        \u001b[22m\n\u001b[2m      \u001b[22m\n\u001b[2m      \u001b[22m\n\u001b[2m        \u001b[22m\n\u001b[2m          \u001b[22m\n\u001b[2m            \u001b[22m\n\u001b[2m              \u001b[22m\n\u001b[2m            \u001b[22m\n\u001b[2m            mcaitops.cloudflareaccess.com\u001b[22m\n\u001b[2m          \u001b[22m\n\u001b[2m          \u001b[22m\n\u001b[2m            Enter your code\u001b[22m\n\u001b[2m            A code has been emailed to you. It expires in 10 minutes.\u001b[22m\n\u001b[2m          \u001b[22m\n\u001b[2m\u001b[22m\n\u001b[2m          \u001b[22m\n\u001b[2m            Check your email — including spam — for the verification\u001b[22m\n\u001b[2m              code.\u001b[22m\n\u001b[2m          \u001b[22m\n\u001b[2m\u001b[22m\n\u001b[2m          \u001b[22m\n\u001b[2m            \u001b[22m\n\u001b[2m              \u001b[22m\n\u001b[2m                Code\u001b[22m\n\u001b[2m                \u001b[22m\n\u001b[2m                \u001b[22m\n\u001b[2m              \u001b[22m\n\u001b[2m              \u001b[22m\n\u001b[2m                \u001b[22m\n\u001b[2m                  Verify\u001b[22m\n\u001b[2m                \u001b[22m\n\u001b[2m              \u001b[22m\n\u001b[2m            \u001b[22m\n\u001b[2m            \u001b[22m\n\u001b[2m              Didn't get the code?\u001b[22m\n\u001b[2m              \u001b[22m\n\u001b[2m                Resend\u001b[22m\n\u001b[2m              \u001b[22m\n\u001b[2m            \u001b[22m\n\u001b[2m            \u001b[22m\n\u001b[2m              A new One Time PIN request has been generated.\u001b[22m\n\u001b[2m            \u001b[22m\n\u001b[2m          \u001b[22m\n\u001b[2m        \u001b[22m\n\u001b[2m      \u001b[22m\n\u001b[2m    \u001b[22m\n\u001b[2m    \u001b[22m\n\u001b[2m  \u001b[22m\n\u001b[2m\u001b[22m\n\u001b[2m\"\u001b[22m\n\n    at openApplication (/cum/tests/e2e/helpers/aitops.js:17:42)\n    at /cum/tests/e2e/platform-smoke.spec.js:30:3",
+                    "location": {
+                      "file": "/cum/tests/e2e/helpers/aitops.js",
+                      "column": 42,
+                      "line": 17
+                    },
+                    "snippet": "   at helpers/aitops.js:17\n\n  15 |   await completeCloudflareAccessIfPossible(page);\n  16 |   await signInIfNeeded(page);\n> 17 |   await expect(page.locator('body')).not.toContainText(/send login code|enter your code/i);\n     |                                          ^\n  18 |   expect(page.url(), 'Cloudflare Access debe estar resuelto antes de probar la app').not.toContain('cloudflareaccess.com');\n  19 | }\n  20 |"
+                  },
+                  "errors": [
+                    {
+                      "location": {
+                        "file": "/cum/tests/e2e/helpers/aitops.js",
+                        "column": 42,
+                        "line": 17
+                      },
+                      "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).not.\u001b[22mtoContainText\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m failed\n\nLocator: locator('body')\nExpected pattern: not \u001b[32m/send login code|enter your code/i\u001b[39m\nReceived string: \u001b[31m\"\u001b[39m\n\u001b[31m    \u001b[39m\n\u001b[31m      \u001b[39m\n\u001b[31m        \u001b[39m\n\u001b[31m      \u001b[39m\n\u001b[31m      \u001b[39m\n\u001b[31m        \u001b[39m\n\u001b[31m          \u001b[39m\n\u001b[31m            \u001b[39m\n\u001b[31m              \u001b[39m\n\u001b[31m            \u001b[39m\n\u001b[31m            mcaitops.cloudflareaccess.com\u001b[39m\n\u001b[31m          \u001b[39m\n\u001b[31m          \u001b[39m\n\u001b[31m            \u001b[7mEnter your code\u001b[27m\u001b[39m\n\u001b[31m            A code has been emailed to you. It expires in 10 minutes.\u001b[39m\n\u001b[31m          \u001b[39m\n\u001b[31m\u001b[39m\n\u001b[31m          \u001b[39m\n\u001b[31m            Check your email — including spam — for the verification\u001b[39m\n\u001b[31m              code.\u001b[39m\n\u001b[31m          \u001b[39m\n\u001b[31m\u001b[39m\n\u001b[31m          \u001b[39m\n\u001b[31m            \u001b[39m\n\u001b[31m              \u001b[39m\n\u001b[31m                Code\u001b[39m\n\u001b[31m                \u001b[39m\n\u001b[31m                \u001b[39m\n\u001b[31m              \u001b[39m\n\u001b[31m              \u001b[39m\n\u001b[31m                \u001b[39m\n\u001b[31m                  Verify\u001b[39m\n\u001b[31m                \u001b[39m\n\u001b[31m              \u001b[39m\n\u001b[31m            \u001b[39m\n\u001b[31m            \u001b[39m\n\u001b[31m              Didn't get the code?\u001b[39m\n\u001b[31m              \u001b[39m\n\u001b[31m                Resend\u001b[39m\n\u001b[31m              \u001b[39m\n\u001b[31m            \u001b[39m\n\u001b[31m            \u001b[39m\n\u001b[31m              A new One Time PIN request has been generated.\u001b[39m\n\u001b[31m            \u001b[39m\n\u001b[31m          \u001b[39m\n\u001b[31m        \u001b[39m\n\u001b[31m      \u001b[39m\n\u001b[31m    \u001b[39m\n\u001b[31m    \u001b[39m\n\u001b[31m  \u001b[39m\n\u001b[31m\u001b[39m\n\u001b[31m\"\u001b[39m\nTimeout: 10000ms\n\nCall log:\n\u001b[2m  - Expect \"not toContainText\" with timeout 10000ms\u001b[22m\n\u001b[2m  - waiting for locator('body')\u001b[22m\n\u001b[2m    24 × locator resolved to <body>…</body>\u001b[22m\n\u001b[2m       - unexpected value \"\u001b[22m\n\u001b[2m    \u001b[22m\n\u001b[2m      \u001b[22m\n\u001b[2m        \u001b[22m\n\u001b[2m      \u001b[22m\n\u001b[2m      \u001b[22m\n\u001b[2m        \u001b[22m\n\u001b[2m          \u001b[22m\n\u001b[2m            \u001b[22m\n\u001b[2m              \u001b[22m\n\u001b[2m            \u001b[22m\n\u001b[2m            mcaitops.cloudflareaccess.com\u001b[22m\n\u001b[2m          \u001b[22m\n\u001b[2m          \u001b[22m\n\u001b[2m            Enter your code\u001b[22m\n\u001b[2m            A code has been emailed to you. It expires in 10 minutes.\u001b[22m\n\u001b[2m          \u001b[22m\n\u001b[2m\u001b[22m\n\u001b[2m          \u001b[22m\n\u001b[2m            Check your email — including spam — for the verification\u001b[22m\n\u001b[2m              code.\u001b[22m\n\u001b[2m          \u001b[22m\n\u001b[2m\u001b[22m\n\u001b[2m          \u001b[22m\n\u001b[2m            \u001b[22m\n\u001b[2m              \u001b[22m\n\u001b[2m                Code\u001b[22m\n\u001b[2m                \u001b[22m\n\u001b[2m                \u001b[22m\n\u001b[2m              \u001b[22m\n\u001b[2m              \u001b[22m\n\u001b[2m                \u001b[22m\n\u001b[2m                  Verify\u001b[22m\n\u001b[2m                \u001b[22m\n\u001b[2m              \u001b[22m\n\u001b[2m            \u001b[22m\n\u001b[2m            \u001b[22m\n\u001b[2m              Didn't get the code?\u001b[22m\n\u001b[2m              \u001b[22m\n\u001b[2m                Resend\u001b[22m\n\u001b[2m              \u001b[22m\n\u001b[2m            \u001b[22m\n\u001b[2m            \u001b[22m\n\u001b[2m              A new One Time PIN request has been generated.\u001b[22m\n\u001b[2m            \u001b[22m\n\u001b[2m          \u001b[22m\n\u001b[2m        \u001b[22m\n\u001b[2m      \u001b[22m\n\u001b[2m    \u001b[22m\n\u001b[2m    \u001b[22m\n\u001b[2m  \u001b[22m\n\u001b[2m\u001b[22m\n\u001b[2m\"\u001b[22m\n\n\n   at helpers/aitops.js:17\n\n  15 |   await completeCloudflareAccessIfPossible(page);\n  16 |   await signInIfNeeded(page);\n> 17 |   await expect(page.locator('body')).not.toContainText(/send login code|enter your code/i);\n     |                                          ^\n  18 |   expect(page.url(), 'Cloudflare Access debe estar resuelto antes de probar la app').not.toContain('cloudflareaccess.com');\n  19 | }\n  20 |\n    at openApplication (/cum/tests/e2e/helpers/aitops.js:17:42)\n    at /cum/tests/e2e/platform-smoke.spec.js:30:3"
+                    }
+                  ],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-07-06T16:56:07.112Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "screenshot",
+                      "contentType": "image/png",
+                      "path": "/cum/test-results/platform-smoke-SMOKE-04-co-ebe10-ion-de-knowledge-base-carga-chromium/test-failed-1.png"
+                    },
+                    {
+                      "name": "video",
+                      "contentType": "video/webm",
+                      "path": "/cum/test-results/platform-smoke-SMOKE-04-co-ebe10-ion-de-knowledge-base-carga-chromium/video.webm"
+                    },
+                    {
+                      "name": "error-context",
+                      "contentType": "text/markdown",
+                      "path": "/cum/test-results/platform-smoke-SMOKE-04-co-ebe10-ion-de-knowledge-base-carga-chromium/error-context.md"
+                    },
+                    {
+                      "name": "trace",
+                      "contentType": "application/zip",
+                      "path": "/cum/test-results/platform-smoke-SMOKE-04-co-ebe10-ion-de-knowledge-base-carga-chromium/trace.zip"
+                    }
+                  ],
+                  "errorLocation": {
+                    "file": "/cum/tests/e2e/helpers/aitops.js",
+                    "column": 42,
+                    "line": 17
+                  }
+                }
+              ],
+              "status": "unexpected"
+            }
+          ],
+          "id": "8081537201c66697d4ea-e9742187fe58335bd2ea",
+          "file": "platform-smoke.spec.js",
+          "line": 29,
+          "column": 1
+        }
+      ]
+    }
+  ],
+  "errors": [],
+  "stats": {
+    "startTime": "2026-07-06T16:55:53.736Z",
+    "duration": 28825.414,
+    "expected": 0,
+    "skipped": 2,
+    "unexpected": 4,
+    "flaky": 0
+  }
+}

@@ -1,0 +1,15 @@
+{
+  "id": "chat-consistency-20260706T194115Z",
+  "status": "finished",
+  "pid": 1913078,
+  "started_at": "2026-07-06T19:41:15Z",
+  "finished_at": "2026-07-06T19:47:06Z",
+  "repeats": 1,
+  "timeout_ms": 30000,
+  "prompt_path": "tests/chat_consistency_semantic_bank.json",
+  "log_path": "resultados/chat-consistency-20260706T194115Z.log",
+  "result_path": "resultados/chat-consistency-20260706T194115Z.json",
+  "raw_path": "resultados/chat-consistency-20260706T194115Z.raw.json",
+  "exit_code": 1,
+  "signal": null
+}

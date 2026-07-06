@@ -12,6 +12,8 @@ DRY_RUN=false
 PUSH=true
 CREATE_GITHUB_RELEASE=false
 YES=false
+AUTO_COMMIT_MESSAGE="prep: release"
+HAS_PENDING_CHANGES=false
 
 usage() {
   cat <<'EOF'
@@ -26,7 +28,7 @@ Ejemplos:
   ./git-release.sh v0.2.0 --yes
 
 Opciones:
-  --dry-run             Muestra lo que haria sin crear tag ni publicar.
+  --dry-run             Muestra lo que haria sin crear commit, tag ni publicar.
   --no-push             Crea el tag local, pero no lo publica al remoto.
   --patch               Incrementa patch: v0.1.0 -> v0.1.1.
   --minor               Incrementa minor: v0.1.0 -> v0.2.0.
@@ -38,6 +40,11 @@ Opciones:
   -h, --help            Muestra esta ayuda.
 
 Si no se indica version, calcula el siguiente semver desde el ultimo tag vX.Y.Z.
+Antes del release, si hay cambios locales, hace auto-commit con:
+  git add -A
+  git commit -m "prep: release"
+En --dry-run solo muestra esos comandos.
+
 Por defecto usa --auto:
   - major si hay commits con BREAKING CHANGE o tipo con !, por ejemplo feat!: ...
   - minor si hay commits feat...
@@ -203,11 +210,7 @@ current_branch=$(git branch --show-current)
 [[ "$current_branch" == "$BRANCH" ]] || die "branch actual '$current_branch'; se esperaba '$BRANCH'"
 
 if [[ -n "$(git status --porcelain)" ]]; then
-  if [[ "$DRY_RUN" == true ]]; then
-    info "working tree con cambios; dry-run continua sin crear nada"
-  else
-    die "working tree sucio. Haz commit o stash antes de release"
-  fi
+  HAS_PENDING_CHANGES=true
 fi
 
 if git rev-parse --verify "$REMOTE/$BRANCH" >/dev/null 2>&1; then
@@ -222,6 +225,16 @@ if git rev-parse --verify "$REMOTE/$BRANCH" >/dev/null 2>&1; then
   fi
 fi
 
+if [[ "$HAS_PENDING_CHANGES" == true ]]; then
+  if [[ "$DRY_RUN" == true ]]; then
+    info "working tree con cambios; dry-run no hara auto-commit"
+  else
+    info "working tree con cambios; creando commit automatico"
+    git add -A
+    git commit -m "$AUTO_COMMIT_MESSAGE"
+  fi
+fi
+
 info "ultimo tag semver: ${LATEST_TAG:-ninguno}"
 info "tipo de incremento: $BUMP"
 info "version a crear: $VERSION"
@@ -230,8 +243,12 @@ info "remoto: $REMOTE"
 info "branch: $BRANCH"
 
 if [[ "$DRY_RUN" == true ]]; then
-  info "dry-run: no se creara tag ni release"
+  info "dry-run: no se creara commit, tag ni release"
   info "comandos que se ejecutarian:"
+  if [[ "$HAS_PENDING_CHANGES" == true ]]; then
+    echo "git add -A"
+    echo "git commit -m \"$AUTO_COMMIT_MESSAGE\""
+  fi
   echo "git tag -a $VERSION -m \"Release $VERSION\""
   if [[ "$PUSH" == true ]]; then
     echo "git push $REMOTE $BRANCH"

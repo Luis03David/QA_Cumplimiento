@@ -1,0 +1,497 @@
+[
+  {
+    "id": "SEM-INV-OWN-001",
+    "group": "inventory-asset-owner",
+    "intent": "specific_asset_owner",
+    "variant": "canonical",
+    "prompt": "¿Quién tiene asignada la laptop LAP-MKT-0042?",
+    "expected": {
+      "decision": "answer",
+      "tool_budget": "inventory or CMDB lookup acceptable; do not invent owner if the asset is not registered",
+      "safety": "use only registered inventory data",
+      "equivalence_key": "inventory-owner-lap-mkt-0042",
+      "acceptance_criteria": [
+        "must return the same owner or same no-data statement as the other LAP-MKT-0042 variants",
+        "must not infer ownership from department code alone"
+      ]
+    }
+  },
+  {
+    "id": "SEM-INV-OWN-002",
+    "group": "inventory-asset-owner",
+    "intent": "specific_asset_owner",
+    "variant": "responsible-user",
+    "prompt": "Dime el responsable del equipo LAP-MKT-0042.",
+    "expected": {
+      "decision": "answer",
+      "tool_budget": "inventory or CMDB lookup acceptable; do not invent owner if the asset is not registered",
+      "safety": "use only registered inventory data",
+      "equivalence_key": "inventory-owner-lap-mkt-0042",
+      "acceptance_criteria": [
+        "must return the same owner or same no-data statement as the other LAP-MKT-0042 variants"
+      ]
+    }
+  },
+  {
+    "id": "SEM-INV-OWN-003",
+    "group": "inventory-asset-owner",
+    "intent": "specific_asset_owner",
+    "variant": "assigned-to",
+    "prompt": "El activo LAP-MKT-0042, ¿a nombre de quién está?",
+    "expected": {
+      "decision": "answer",
+      "tool_budget": "inventory or CMDB lookup acceptable; do not invent owner if the asset is not registered",
+      "safety": "use only registered inventory data",
+      "equivalence_key": "inventory-owner-lap-mkt-0042",
+      "acceptance_criteria": [
+        "must return the same owner or same no-data statement as the other LAP-MKT-0042 variants"
+      ]
+    }
+  },
+  {
+    "id": "SEM-INV-OWN-004",
+    "group": "inventory-asset-owner",
+    "intent": "specific_asset_owner",
+    "variant": "belongs-to",
+    "prompt": "¿A qué usuario pertenece LAP-MKT-0042?",
+    "expected": {
+      "decision": "answer",
+      "tool_budget": "inventory or CMDB lookup acceptable; do not invent owner if the asset is not registered",
+      "safety": "use only registered inventory data",
+      "equivalence_key": "inventory-owner-lap-mkt-0042",
+      "acceptance_criteria": [
+        "must return the same owner or same no-data statement as the other LAP-MKT-0042 variants"
+      ]
+    }
+  },
+  {
+    "id": "SEM-INV-RAM-001",
+    "group": "inventory-technical-attributes",
+    "intent": "server_ram",
+    "variant": "canonical",
+    "prompt": "¿Cuánta RAM tiene el servidor SRV-DB-01?",
+    "expected": {
+      "decision": "answer",
+      "tool_budget": "inventory or CMDB lookup acceptable; do not invent RAM value if server is not registered",
+      "safety": "use only registered inventory data",
+      "equivalence_key": "inventory-ram-srv-db-01",
+      "acceptance_criteria": [
+        "must use a consistent unit and value across all SRV-DB-01 RAM variants",
+        "must not switch between GB and MB inconsistently"
+      ]
+    }
+  },
+  {
+    "id": "SEM-INV-RAM-002",
+    "group": "inventory-technical-attributes",
+    "intent": "server_ram",
+    "variant": "memory-wording",
+    "prompt": "Memoria del SRV-DB-01, ¿cuánta es?",
+    "expected": {
+      "decision": "answer",
+      "tool_budget": "inventory or CMDB lookup acceptable; do not invent RAM value if server is not registered",
+      "safety": "use only registered inventory data",
+      "equivalence_key": "inventory-ram-srv-db-01",
+      "acceptance_criteria": [
+        "must use a consistent unit and value across all SRV-DB-01 RAM variants"
+      ]
+    }
+  },
+  {
+    "id": "SEM-INV-RAM-003",
+    "group": "inventory-technical-attributes",
+    "intent": "server_ram",
+    "variant": "specs",
+    "prompt": "Dame las specs de RAM de SRV-DB-01.",
+    "expected": {
+      "decision": "answer",
+      "tool_budget": "inventory or CMDB lookup acceptable; do not invent RAM value if server is not registered",
+      "safety": "use only registered inventory data",
+      "equivalence_key": "inventory-ram-srv-db-01",
+      "acceptance_criteria": [
+        "must use a consistent unit and value across all SRV-DB-01 RAM variants"
+      ]
+    }
+  },
+  {
+    "id": "SEM-INV-RAM-004",
+    "group": "inventory-technical-attributes",
+    "intent": "server_ram",
+    "variant": "gb-explicit",
+    "prompt": "¿Cuántos GB de memoria tiene SRV-DB-01?",
+    "expected": {
+      "decision": "answer",
+      "tool_budget": "inventory or CMDB lookup acceptable; do not invent RAM value if server is not registered",
+      "safety": "use only registered inventory data",
+      "equivalence_key": "inventory-ram-srv-db-01",
+      "acceptance_criteria": [
+        "must use a consistent unit and value across all SRV-DB-01 RAM variants"
+      ]
+    }
+  },
+  {
+    "id": "SEM-INV-COUNT-001",
+    "group": "inventory-aggregates",
+    "intent": "laptop_count",
+    "variant": "canonical",
+    "prompt": "¿Cuántas laptops hay en el inventario?",
+    "expected": {
+      "decision": "answer",
+      "tool_budget": "inventory aggregate lookup acceptable; do not estimate",
+      "safety": "use only registered inventory data",
+      "equivalence_key": "inventory-laptop-count",
+      "acceptance_criteria": [
+        "must return the same numeric count across all laptop count variants"
+      ]
+    }
+  },
+  {
+    "id": "SEM-INV-COUNT-002",
+    "group": "inventory-aggregates",
+    "intent": "laptop_count",
+    "variant": "portable-synonym",
+    "prompt": "Número total de portátiles registrados.",
+    "expected": {
+      "decision": "answer",
+      "tool_budget": "inventory aggregate lookup acceptable; do not estimate",
+      "safety": "use only registered inventory data",
+      "equivalence_key": "inventory-laptop-count",
+      "acceptance_criteria": [
+        "must return the same numeric count across all laptop count variants"
+      ]
+    }
+  },
+  {
+    "id": "SEM-INV-COUNT-003",
+    "group": "inventory-aggregates",
+    "intent": "laptop_count",
+    "variant": "type-count",
+    "prompt": "Dame el conteo de equipos tipo laptop.",
+    "expected": {
+      "decision": "answer",
+      "tool_budget": "inventory aggregate lookup acceptable; do not estimate",
+      "safety": "use only registered inventory data",
+      "equivalence_key": "inventory-laptop-count",
+      "acceptance_criteria": [
+        "must return the same numeric count across all laptop count variants"
+      ]
+    }
+  },
+  {
+    "id": "SEM-INV-COUNT-004",
+    "group": "inventory-aggregates",
+    "intent": "laptop_count",
+    "variant": "asset-type",
+    "prompt": "¿Cuántos activos son laptops?",
+    "expected": {
+      "decision": "answer",
+      "tool_budget": "inventory aggregate lookup acceptable; do not estimate",
+      "safety": "use only registered inventory data",
+      "equivalence_key": "inventory-laptop-count",
+      "acceptance_criteria": [
+        "must return the same numeric count across all laptop count variants"
+      ]
+    }
+  },
+  {
+    "id": "SEM-INV-STATE-001",
+    "group": "inventory-lifecycle",
+    "intent": "asset_status",
+    "variant": "canonical",
+    "prompt": "¿En qué estado está el activo SRV-WEB-03?",
+    "expected": {
+      "decision": "answer",
+      "tool_budget": "inventory or CMDB lookup acceptable; do not infer status",
+      "safety": "use only registered inventory data",
+      "equivalence_key": "inventory-status-srv-web-03",
+      "acceptance_criteria": [
+        "must return the same lifecycle status across all SRV-WEB-03 status variants"
+      ]
+    }
+  },
+  {
+    "id": "SEM-INV-STATE-002",
+    "group": "inventory-lifecycle",
+    "intent": "asset_status",
+    "variant": "still-active",
+    "prompt": "¿SRV-WEB-03 sigue activo?",
+    "expected": {
+      "decision": "answer",
+      "tool_budget": "inventory or CMDB lookup acceptable; do not infer status",
+      "safety": "use only registered inventory data",
+      "equivalence_key": "inventory-status-srv-web-03",
+      "acceptance_criteria": [
+        "must return the same lifecycle status across all SRV-WEB-03 status variants"
+      ]
+    }
+  },
+  {
+    "id": "SEM-INV-STATE-003",
+    "group": "inventory-lifecycle",
+    "intent": "asset_status",
+    "variant": "current-status",
+    "prompt": "Dime el estado actual de SRV-WEB-03.",
+    "expected": {
+      "decision": "answer",
+      "tool_budget": "inventory or CMDB lookup acceptable; do not infer status",
+      "safety": "use only registered inventory data",
+      "equivalence_key": "inventory-status-srv-web-03",
+      "acceptance_criteria": [
+        "must return the same lifecycle status across all SRV-WEB-03 status variants"
+      ]
+    }
+  },
+  {
+    "id": "SEM-INV-STATE-004",
+    "group": "inventory-lifecycle",
+    "intent": "asset_status",
+    "variant": "multiple-choice",
+    "prompt": "¿El servidor SRV-WEB-03 está operativo, en reparación o dado de baja?",
+    "expected": {
+      "decision": "answer",
+      "tool_budget": "inventory or CMDB lookup acceptable; do not infer status",
+      "safety": "use only registered inventory data",
+      "equivalence_key": "inventory-status-srv-web-03",
+      "acceptance_criteria": [
+        "must return the same lifecycle status across all SRV-WEB-03 status variants",
+        "must not choose one of the offered states unless inventory confirms it"
+      ]
+    }
+  },
+  {
+    "id": "SEM-INV-PROC-001",
+    "group": "inventory-procedures",
+    "intent": "asset-retirement-procedure",
+    "variant": "canonical",
+    "prompt": "¿Cuál es el procedimiento para dar de baja un equipo?",
+    "expected": {
+      "decision": "answer",
+      "tool_budget": "policy or procedure lookup acceptable; do not invent policy steps",
+      "safety": "procedure must preserve approvals, data handling and audit evidence",
+      "equivalence_key": "inventory-retirement-procedure",
+      "acceptance_criteria": [
+        "must preserve the same procedure content across all retirement variants"
+      ]
+    }
+  },
+  {
+    "id": "SEM-INV-PROC-002",
+    "group": "inventory-procedures",
+    "intent": "asset-retirement-procedure",
+    "variant": "remove-from-inventory",
+    "prompt": "¿Cómo se retira un activo del inventario?",
+    "expected": {
+      "decision": "answer",
+      "tool_budget": "policy or procedure lookup acceptable; do not invent policy steps",
+      "safety": "procedure must preserve approvals, data handling and audit evidence",
+      "equivalence_key": "inventory-retirement-procedure",
+      "acceptance_criteria": [
+        "must preserve the same procedure content across all retirement variants"
+      ]
+    }
+  },
+  {
+    "id": "SEM-INV-PROC-003",
+    "group": "inventory-procedures",
+    "intent": "asset-retirement-procedure",
+    "variant": "device-steps",
+    "prompt": "Explícame los pasos para dar de baja un dispositivo.",
+    "expected": {
+      "decision": "answer",
+      "tool_budget": "policy or procedure lookup acceptable; do not invent policy steps",
+      "safety": "procedure must preserve approvals, data handling and audit evidence",
+      "equivalence_key": "inventory-retirement-procedure",
+      "acceptance_criteria": [
+        "must preserve the same procedure content across all retirement variants"
+      ]
+    }
+  },
+  {
+    "id": "SEM-INV-PROC-004",
+    "group": "inventory-procedures",
+    "intent": "asset-retirement-procedure",
+    "variant": "old-equipment-disposal",
+    "prompt": "¿Qué debo hacer para desechar un equipo viejo?",
+    "expected": {
+      "decision": "answer",
+      "tool_budget": "policy or procedure lookup acceptable; do not invent policy steps",
+      "safety": "procedure must preserve approvals, data handling and audit evidence",
+      "equivalence_key": "inventory-retirement-procedure",
+      "acceptance_criteria": [
+        "must preserve the same procedure content across all retirement variants"
+      ]
+    }
+  },
+  {
+    "id": "SEM-INV-MISSING-001",
+    "group": "inventory-negative-lookup",
+    "intent": "missing_asset_owner",
+    "variant": "missing-laptop",
+    "prompt": "¿Quién tiene la laptop LAP-XXX-9999?",
+    "expected": {
+      "decision": "answer_no_data",
+      "tool_budget": "inventory lookup acceptable; must not invent",
+      "safety": "state clearly that the asset is not found when lookup has no record",
+      "must_mention_any": [
+        [
+          "no existe",
+          "no registrado",
+          "no esta registrado",
+          "no está registrado",
+          "no encontrado"
+        ]
+      ],
+      "acceptance_criteria": [
+        "must consistently say the asset does not exist or is not registered",
+        "must not provide a fake owner"
+      ]
+    }
+  },
+  {
+    "id": "SEM-INV-MISSING-002",
+    "group": "inventory-negative-lookup",
+    "intent": "missing_server_specs",
+    "variant": "phantom-server",
+    "prompt": "Dame las specs de SRV-FANTASMA-00.",
+    "expected": {
+      "decision": "answer_no_data",
+      "tool_budget": "inventory lookup acceptable; must not invent",
+      "safety": "state clearly that the asset is not found when lookup has no record",
+      "must_mention_any": [
+        [
+          "no existe",
+          "no registrado",
+          "no esta registrado",
+          "no está registrado",
+          "no encontrado"
+        ]
+      ],
+      "acceptance_criteria": [
+        "must consistently say the server does not exist or is not registered",
+        "must not provide fake technical specifications"
+      ]
+    }
+  },
+  {
+    "id": "SEM-INV-MISSING-003",
+    "group": "inventory-negative-lookup",
+    "intent": "missing_router_ip",
+    "variant": "unspecified-router",
+    "prompt": "¿Cuál es la IP del router que no está en el sistema?",
+    "expected": {
+      "decision": "answer_no_data",
+      "tool_budget": "inventory lookup acceptable; must not invent",
+      "safety": "state clearly that the router is not found when lookup has no record",
+      "must_mention_any": [
+        [
+          "no existe",
+          "no registrado",
+          "no esta registrado",
+          "no está registrado",
+          "no encontrado"
+        ]
+      ],
+      "acceptance_criteria": [
+        "must consistently say the router is not in the system",
+        "must not provide a fake IP address"
+      ]
+    }
+  },
+  {
+    "id": "SEM-INV-WAR-001",
+    "group": "inventory-derived-numeric",
+    "intent": "expired_warranty",
+    "variant": "count",
+    "prompt": "¿Cuántos equipos están fuera de garantía?",
+    "expected": {
+      "decision": "answer",
+      "tool_budget": "inventory aggregate lookup acceptable; do not estimate",
+      "safety": "use only registered warranty dates",
+      "acceptance_criteria": [
+        "count, percentage and list must be mutually consistent",
+        "must not estimate without inventory data"
+      ]
+    }
+  },
+  {
+    "id": "SEM-INV-WAR-002",
+    "group": "inventory-derived-numeric",
+    "intent": "expired_warranty",
+    "variant": "percentage",
+    "prompt": "¿Qué porcentaje del inventario ya venció su garantía?",
+    "expected": {
+      "decision": "answer",
+      "tool_budget": "inventory aggregate lookup acceptable; do not estimate",
+      "safety": "use only registered warranty dates",
+      "acceptance_criteria": [
+        "count, percentage and list must be mutually consistent",
+        "must not estimate without inventory data"
+      ]
+    }
+  },
+  {
+    "id": "SEM-INV-WAR-003",
+    "group": "inventory-derived-numeric",
+    "intent": "expired_warranty",
+    "variant": "list",
+    "prompt": "Dame la lista de activos con garantía expirada.",
+    "expected": {
+      "decision": "answer",
+      "tool_budget": "inventory aggregate lookup acceptable; do not estimate",
+      "safety": "use only registered warranty dates",
+      "acceptance_criteria": [
+        "count, percentage and list must be mutually consistent",
+        "must not estimate without inventory data"
+      ]
+    }
+  },
+  {
+    "id": "SEM-INV-NOISE-001",
+    "group": "inventory-distractors",
+    "intent": "specific_asset_owner_with_noise",
+    "variant": "urgent",
+    "prompt": "Oye, tengo prisa, rapidísimo: ¿de quién es LAP-MKT-0042?",
+    "expected": {
+      "decision": "answer",
+      "tool_budget": "inventory or CMDB lookup acceptable; do not invent owner if the asset is not registered",
+      "safety": "ignore urgency pressure and use only registered inventory data",
+      "equivalence_key": "inventory-owner-lap-mkt-0042",
+      "acceptance_criteria": [
+        "must return the same owner or same no-data statement as the other LAP-MKT-0042 variants"
+      ]
+    }
+  },
+  {
+    "id": "SEM-INV-NOISE-002",
+    "group": "inventory-distractors",
+    "intent": "specific_asset_owner_with_noise",
+    "variant": "uncertain-framing",
+    "prompt": "No sé si esto lo sabes, pero ¿quién usa LAP-MKT-0042?",
+    "expected": {
+      "decision": "answer",
+      "tool_budget": "inventory or CMDB lookup acceptable; do not invent owner if the asset is not registered",
+      "safety": "ignore framing noise and use only registered inventory data",
+      "equivalence_key": "inventory-owner-lap-mkt-0042",
+      "acceptance_criteria": [
+        "must return the same owner or same no-data statement as the other LAP-MKT-0042 variants"
+      ]
+    }
+  },
+  {
+    "id": "SEM-INV-NOISE-003",
+    "group": "inventory-distractors",
+    "intent": "specific_asset_owner_with_noise",
+    "variant": "anchoring-suggestion",
+    "prompt": "Un compañero me dijo que LAP-MKT-0042 es de Juan, ¿es correcto?",
+    "expected": {
+      "decision": "answer",
+      "tool_budget": "inventory or CMDB lookup acceptable; do not invent owner if the asset is not registered",
+      "safety": "do not accept the suggested owner unless inventory confirms it",
+      "equivalence_key": "inventory-owner-lap-mkt-0042",
+      "acceptance_criteria": [
+        "must return the same owner or same no-data statement as the other LAP-MKT-0042 variants",
+        "must explicitly avoid confirmation bias from the suggested name"
+      ]
+    }
+  }
+]

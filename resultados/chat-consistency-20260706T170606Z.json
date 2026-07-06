@@ -1,0 +1,120 @@
+{
+  "schema_version": "1.0",
+  "run_id": "chat-consistency-20260706T170606Z",
+  "tool": "chat-consistency-capture",
+  "category": "compliance",
+  "status": "fail",
+  "started_at": "2026-07-06T17:06:06Z",
+  "finished_at": "2026-07-06T17:10:02Z",
+  "summary": "Captura de consistencia de chat encontro variacion o errores; revisar raw report.",
+  "checks": [
+    {
+      "name": "CHAT-CONS-001",
+      "status": "fail",
+      "message": "Se capturaron 3 respuestas normalizadas distintas o errores.",
+      "details": {
+        "prompt": "How do I check whether a systemd service is active on RHEL 9?",
+        "repeats": 3,
+        "unique_normalized_responses": 3,
+        "response_hashes": [
+          "1ee04b4b7f5fb21e8e51df5b8b54dff8e6c18528478f727a6c5672a1233c5689",
+          "5af4822e8a5be658df19dc207eb12b61969e88cbf76a2626f9e19e6c79ff31d9",
+          "30e23448bf592a7bf66543294431c6eb1ab1272ad3ce2a2cc5d6fd8adf958040"
+        ],
+        "normalized_hashes": [
+          "a28ffccc998b731d9406654c049b580d7a87c577df239882bce3b4c75c943493",
+          "4a8dfff0bf30118a288c698ca9efb9e3a1b34fd65f4017b00ac026ef6d25c476",
+          "23db56821c56fde040cca2bc3a7193c9d147792c40fc5342daa99ef458a591fd"
+        ],
+        "latencies_ms": [
+          31985,
+          30768,
+          30474
+        ],
+        "tool_call_names": [
+          [
+            "web_search"
+          ],
+          [
+            "web_search"
+          ],
+          [
+            "web_search"
+          ]
+        ]
+      }
+    },
+    {
+      "name": "CHAT-CONS-002",
+      "status": "fail",
+      "message": "Se capturaron 3 respuestas normalizadas distintas o errores.",
+      "details": {
+        "prompt": "Como reviso si un servicio systemd esta activo en Red Hat?",
+        "repeats": 3,
+        "unique_normalized_responses": 3,
+        "response_hashes": [
+          "d7100cec01984ffe30c0bd121bb946e6c4d1f602b55bccb66eaef0cef1b473ff",
+          "3ce007df14e10bd054e2e663ff3c87eef153a1ec0240e8ca1c9a8def6b3e2ba5",
+          "bb02423ff70a64d510a2ee33bc0a2491c4cfd4e1b8db380ca9a368f89efb2fdb"
+        ],
+        "normalized_hashes": [
+          "6154735f66e7cf18bd6ba3b85d702ce3e92f7184e78a1301791242130182b0ac",
+          "2e1cf0fb656400d6ffe3da0e099b6f37cf9e608b0f53e442dfac63c2d0b24d91",
+          "01ee18b715d2017d56711873db4766f14a6ead01c1bb0f0dc322169478c81fa8"
+        ],
+        "latencies_ms": [
+          31056,
+          30777,
+          30079
+        ],
+        "tool_call_names": [
+          [
+            "web_search"
+          ],
+          [
+            "web_search"
+          ],
+          [
+            "web_search"
+          ]
+        ]
+      }
+    },
+    {
+      "name": "CHAT-CONS-003",
+      "status": "fail",
+      "message": "Se capturaron 3 respuestas normalizadas distintas o errores.",
+      "details": {
+        "prompt": "What should I check first when nginx returns 502 Bad Gateway?",
+        "repeats": 3,
+        "unique_normalized_responses": 3,
+        "response_hashes": [
+          "a6e17963f69870417d979b4f4bd87fc58820590c71c7cd85407ab15f51e04d4a",
+          "41e331bc8376c764fb074c0820523ab0e7142e2000c5a3d913cd9dcf958e12dc",
+          "bd7d6eb99efafba2001da1f5a7d83de421e88bf10cb828ded079f48c99774272"
+        ],
+        "normalized_hashes": [
+          "f20792931bf61672e526281644180a884071b704899f2e89de6f4e0adc655d9e",
+          "30d5228e37882fdbc72f5aceb9bf27d33720df062d707657989075d5a0f65e22",
+          "f391f83fb4171ee5a149dca6551c820337657807be4ed6a0b1ceb0a552d59c7c"
+        ],
+        "latencies_ms": [
+          7377,
+          35449,
+          7428
+        ],
+        "tool_call_names": [
+          [],
+          [
+            "search_kedb",
+            "web_search"
+          ],
+          []
+        ]
+      }
+    }
+  ],
+  "artifacts": [
+    "resultados/chat-consistency-20260706T170606Z.raw.json"
+  ]
+}

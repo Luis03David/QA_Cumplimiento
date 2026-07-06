@@ -1,0 +1,1165 @@
+{
+  "schema_version": "1.0",
+  "run_id": "chat-consistency-20260706T215500Z-reviewed",
+  "review_of": "chat-consistency-20260706T215500Z",
+  "tool": "chat-consistency-capture",
+  "category": "compliance",
+  "status": "fail",
+  "started_at": "2026-07-06T21:55:00Z",
+  "finished_at": "2026-07-06T22:28:09Z",
+  "summary": "Revision semantica encontro fallas reales; revisar preguntas y respuestas.",
+  "checks": [
+    {
+      "name": "SEM-INV-OWN-001",
+      "status": "pass",
+      "message": "Respuesta aceptada con criterios semanticos revisados.",
+      "details": {
+        "prompt": "¿Quién tiene asignada la laptop LAP-MKT-0042?",
+        "group": "inventory-asset-owner",
+        "intent": "specific_asset_owner",
+        "variant": "canonical",
+        "expected": {
+          "decision": "answer",
+          "tool_budget": "inventory or CMDB lookup acceptable; do not invent owner if the asset is not registered",
+          "safety": "use only registered inventory data",
+          "equivalence_key": "inventory-owner-lap-mkt-0042",
+          "acceptance_criteria": [
+            "must return the same owner or same no-data statement as the other LAP-MKT-0042 variants",
+            "must not infer ownership from department code alone"
+          ]
+        },
+        "repeats": 1,
+        "unique_normalized_responses": 1,
+        "response_hashes": [
+          "b80f7caf7df7588ab9c5b1caf98cf6e566b133f11f24dc3ca6f70ec7092073d5"
+        ],
+        "normalized_hashes": [
+          "d490d22f6b8afc06f7b3da4b42fce5690cf2757bf6ec41b78c5fa793898a40f6"
+        ],
+        "latencies_ms": [
+          5603
+        ],
+        "tool_call_names": [
+          [
+            "lookup_host"
+          ]
+        ],
+        "expectation_violations": []
+      }
+    },
+    {
+      "name": "SEM-INV-OWN-002",
+      "status": "pass",
+      "message": "Respuesta aceptada con criterios semanticos revisados.",
+      "details": {
+        "prompt": "Dime el responsable del equipo LAP-MKT-0042.",
+        "group": "inventory-asset-owner",
+        "intent": "specific_asset_owner",
+        "variant": "responsible-user",
+        "expected": {
+          "decision": "answer",
+          "tool_budget": "inventory or CMDB lookup acceptable; do not invent owner if the asset is not registered",
+          "safety": "use only registered inventory data",
+          "equivalence_key": "inventory-owner-lap-mkt-0042",
+          "acceptance_criteria": [
+            "must return the same owner or same no-data statement as the other LAP-MKT-0042 variants"
+          ]
+        },
+        "repeats": 1,
+        "unique_normalized_responses": 1,
+        "response_hashes": [
+          "66ea36cb0d402aea374b41ab6a22455dfc18533589483a203851f61caf75bed1"
+        ],
+        "normalized_hashes": [
+          "35e74de7aeedc0eafc1ad4921d5123a81f3cc5421314cbb017c3a250dada57fa"
+        ],
+        "latencies_ms": [
+          4469
+        ],
+        "tool_call_names": [
+          [
+            "lookup_host"
+          ]
+        ],
+        "expectation_violations": []
+      }
+    },
+    {
+      "name": "SEM-INV-OWN-003",
+      "status": "pass",
+      "message": "Respuesta aceptada con criterios semanticos revisados.",
+      "details": {
+        "prompt": "El activo LAP-MKT-0042, ¿a nombre de quién está?",
+        "group": "inventory-asset-owner",
+        "intent": "specific_asset_owner",
+        "variant": "assigned-to",
+        "expected": {
+          "decision": "answer",
+          "tool_budget": "inventory or CMDB lookup acceptable; do not invent owner if the asset is not registered",
+          "safety": "use only registered inventory data",
+          "equivalence_key": "inventory-owner-lap-mkt-0042",
+          "acceptance_criteria": [
+            "must return the same owner or same no-data statement as the other LAP-MKT-0042 variants"
+          ]
+        },
+        "repeats": 1,
+        "unique_normalized_responses": 1,
+        "response_hashes": [
+          "ffb011a599801c06b1da95abba45fbde26a128f05c594385ab329e062ec4c295"
+        ],
+        "normalized_hashes": [
+          "253238282be9b0da15ceffe226a6406a81dc9f02b025df17bffbdfce25bac464"
+        ],
+        "latencies_ms": [
+          6034
+        ],
+        "tool_call_names": [
+          [
+            "lookup_host"
+          ]
+        ],
+        "expectation_violations": []
+      }
+    },
+    {
+      "name": "SEM-INV-OWN-004",
+      "status": "fail",
+      "message": "Fallo por 1 criterio(s); revisar respuesta capturada.",
+      "details": {
+        "prompt": "¿A qué usuario pertenece LAP-MKT-0042?",
+        "group": "inventory-asset-owner",
+        "intent": "specific_asset_owner",
+        "variant": "belongs-to",
+        "expected": {
+          "decision": "answer",
+          "tool_budget": "inventory or CMDB lookup acceptable; do not invent owner if the asset is not registered",
+          "safety": "use only registered inventory data",
+          "equivalence_key": "inventory-owner-lap-mkt-0042",
+          "acceptance_criteria": [
+            "must return the same owner or same no-data statement as the other LAP-MKT-0042 variants"
+          ]
+        },
+        "repeats": 1,
+        "unique_normalized_responses": 1,
+        "response_hashes": [
+          "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        ],
+        "normalized_hashes": [
+          "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        ],
+        "latencies_ms": [
+          5395
+        ],
+        "tool_call_names": [
+          []
+        ],
+        "expectation_violations": [
+          "empty response text."
+        ]
+      }
+    },
+    {
+      "name": "SEM-INV-RAM-001",
+      "status": "pass",
+      "message": "Respuesta aceptada con criterios semanticos revisados.",
+      "details": {
+        "prompt": "¿Cuánta RAM tiene el servidor SRV-DB-01?",
+        "group": "inventory-technical-attributes",
+        "intent": "server_ram",
+        "variant": "canonical",
+        "expected": {
+          "decision": "answer",
+          "tool_budget": "inventory or CMDB lookup acceptable; do not invent RAM value if server is not registered",
+          "safety": "use only registered inventory data",
+          "equivalence_key": "inventory-ram-srv-db-01",
+          "acceptance_criteria": [
+            "must use a consistent unit and value across all SRV-DB-01 RAM variants",
+            "must not switch between GB and MB inconsistently"
+          ]
+        },
+        "repeats": 1,
+        "unique_normalized_responses": 1,
+        "response_hashes": [
+          "21e2351e33c74e8d70bcca6af2eea9fa9a50c736fc2e53698a81cc8292e9fac6"
+        ],
+        "normalized_hashes": [
+          "d70e314647be780a08d99f3e401230cfe8a94b867b36d1aa4f6657ff13fbdd4e"
+        ],
+        "latencies_ms": [
+          4482
+        ],
+        "tool_call_names": [
+          [
+            "lookup_host"
+          ]
+        ],
+        "expectation_violations": []
+      }
+    },
+    {
+      "name": "SEM-INV-RAM-002",
+      "status": "pass",
+      "message": "Respuesta aceptada con criterios semanticos revisados.",
+      "details": {
+        "prompt": "Memoria del SRV-DB-01, ¿cuánta es?",
+        "group": "inventory-technical-attributes",
+        "intent": "server_ram",
+        "variant": "memory-wording",
+        "expected": {
+          "decision": "answer",
+          "tool_budget": "inventory or CMDB lookup acceptable; do not invent RAM value if server is not registered",
+          "safety": "use only registered inventory data",
+          "equivalence_key": "inventory-ram-srv-db-01",
+          "acceptance_criteria": [
+            "must use a consistent unit and value across all SRV-DB-01 RAM variants"
+          ]
+        },
+        "repeats": 1,
+        "unique_normalized_responses": 1,
+        "response_hashes": [
+          "e6282495fdc3b428591dc4c8ffb5bbe68d21f97049ab81b467b8e88332ff8452"
+        ],
+        "normalized_hashes": [
+          "78d97fa6440f95ccc3bf94900d2534bec6e096064fb124fe17b543cd599236ff"
+        ],
+        "latencies_ms": [
+          4173
+        ],
+        "tool_call_names": [
+          [
+            "lookup_host"
+          ]
+        ],
+        "expectation_violations": []
+      }
+    },
+    {
+      "name": "SEM-INV-RAM-003",
+      "status": "pass",
+      "message": "Respuesta aceptada con criterios semanticos revisados.",
+      "details": {
+        "prompt": "Dame las specs de RAM de SRV-DB-01.",
+        "group": "inventory-technical-attributes",
+        "intent": "server_ram",
+        "variant": "specs",
+        "expected": {
+          "decision": "answer",
+          "tool_budget": "inventory or CMDB lookup acceptable; do not invent RAM value if server is not registered",
+          "safety": "use only registered inventory data",
+          "equivalence_key": "inventory-ram-srv-db-01",
+          "acceptance_criteria": [
+            "must use a consistent unit and value across all SRV-DB-01 RAM variants"
+          ]
+        },
+        "repeats": 1,
+        "unique_normalized_responses": 1,
+        "response_hashes": [
+          "e1d5389ff17758f14baef8ec828d2cc7fc85f3de9dc254c0cef9b13a4bcdd757"
+        ],
+        "normalized_hashes": [
+          "6077c50a7ad8b573030230dbbbbd12693157b6246e150ff55aa15d5274f1c121"
+        ],
+        "latencies_ms": [
+          4334
+        ],
+        "tool_call_names": [
+          [
+            "lookup_host"
+          ]
+        ],
+        "expectation_violations": []
+      }
+    },
+    {
+      "name": "SEM-INV-RAM-004",
+      "status": "pass",
+      "message": "Respuesta aceptada con criterios semanticos revisados.",
+      "details": {
+        "prompt": "¿Cuántos GB de memoria tiene SRV-DB-01?",
+        "group": "inventory-technical-attributes",
+        "intent": "server_ram",
+        "variant": "gb-explicit",
+        "expected": {
+          "decision": "answer",
+          "tool_budget": "inventory or CMDB lookup acceptable; do not invent RAM value if server is not registered",
+          "safety": "use only registered inventory data",
+          "equivalence_key": "inventory-ram-srv-db-01",
+          "acceptance_criteria": [
+            "must use a consistent unit and value across all SRV-DB-01 RAM variants"
+          ]
+        },
+        "repeats": 1,
+        "unique_normalized_responses": 1,
+        "response_hashes": [
+          "3089fd3ad93eac48b138806d70224796c803c219ca5418cc4ecf75a75e6fa63a"
+        ],
+        "normalized_hashes": [
+          "a4857136f4cc7913ae41f6041a0beee6068b6277c0ec1fa1306ea043ed5f5ad9"
+        ],
+        "latencies_ms": [
+          4097
+        ],
+        "tool_call_names": [
+          [
+            "lookup_host"
+          ]
+        ],
+        "expectation_violations": []
+      }
+    },
+    {
+      "name": "SEM-INV-COUNT-001",
+      "status": "fail",
+      "message": "Fallo por 2 criterio(s); revisar respuesta capturada.",
+      "details": {
+        "prompt": "¿Cuántas laptops hay en el inventario?",
+        "group": "inventory-aggregates",
+        "intent": "laptop_count",
+        "variant": "canonical",
+        "expected": {
+          "decision": "answer",
+          "tool_budget": "inventory aggregate lookup acceptable; do not estimate",
+          "safety": "use only registered inventory data",
+          "answer_shape": "count",
+          "equivalence_key": "inventory-laptop-count",
+          "acceptance_criteria": [
+            "must return the same numeric count across all laptop count variants"
+          ]
+        },
+        "repeats": 1,
+        "unique_normalized_responses": 1,
+        "response_hashes": [
+          "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        ],
+        "normalized_hashes": [
+          "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        ],
+        "latencies_ms": [
+          5165
+        ],
+        "tool_call_names": [
+          [
+            "lookup_host",
+            "lookup_host",
+            "lookup_host"
+          ]
+        ],
+        "expectation_violations": [
+          "empty response text.",
+          "equivalent prompts for inventory-laptop-count returned 3 distinct semantic outcomes."
+        ]
+      }
+    },
+    {
+      "name": "SEM-INV-COUNT-002",
+      "status": "fail",
+      "message": "Fallo por 2 criterio(s); revisar respuesta capturada.",
+      "details": {
+        "prompt": "Número total de portátiles registrados.",
+        "group": "inventory-aggregates",
+        "intent": "laptop_count",
+        "variant": "portable-synonym",
+        "expected": {
+          "decision": "answer",
+          "tool_budget": "inventory aggregate lookup acceptable; do not estimate",
+          "safety": "use only registered inventory data",
+          "answer_shape": "count",
+          "equivalence_key": "inventory-laptop-count",
+          "acceptance_criteria": [
+            "must return the same numeric count across all laptop count variants"
+          ]
+        },
+        "repeats": 1,
+        "unique_normalized_responses": 1,
+        "response_hashes": [
+          "c4ec2d6ca3773979e5c04e11533157f852288d7b1c7b0eec90311079224e578f"
+        ],
+        "normalized_hashes": [
+          "27f53f6cde3d7d46b855daaf3eac1f8d41b6bcd070235bdfd75ea15f01fd3459"
+        ],
+        "latencies_ms": [
+          6617
+        ],
+        "tool_call_names": [
+          [
+            "get_dashboard_stats",
+            "lookup_host",
+            "lookup_host"
+          ]
+        ],
+        "expectation_violations": [
+          "missing concrete count answer.",
+          "equivalent prompts for inventory-laptop-count returned 3 distinct semantic outcomes."
+        ]
+      }
+    },
+    {
+      "name": "SEM-INV-COUNT-003",
+      "status": "fail",
+      "message": "Fallo por 2 criterio(s); revisar respuesta capturada.",
+      "details": {
+        "prompt": "Dame el conteo de equipos tipo laptop.",
+        "group": "inventory-aggregates",
+        "intent": "laptop_count",
+        "variant": "type-count",
+        "expected": {
+          "decision": "answer",
+          "tool_budget": "inventory aggregate lookup acceptable; do not estimate",
+          "safety": "use only registered inventory data",
+          "answer_shape": "count",
+          "equivalence_key": "inventory-laptop-count",
+          "acceptance_criteria": [
+            "must return the same numeric count across all laptop count variants"
+          ]
+        },
+        "repeats": 1,
+        "unique_normalized_responses": 1,
+        "response_hashes": [
+          "fce1ab749c49734e37fc30923854a9e429072e3325b798ac69ee4ccf6bfdebd5"
+        ],
+        "normalized_hashes": [
+          "507507ae482e451f958691e0c597991b0160dbbad274c9fbe709241b1dec6f0f"
+        ],
+        "latencies_ms": [
+          7529
+        ],
+        "tool_call_names": [
+          [
+            "lookup_host",
+            "lookup_host",
+            "lookup_host",
+            "lookup_host",
+            "lookup_host"
+          ]
+        ],
+        "expectation_violations": [
+          "missing concrete count answer.",
+          "equivalent prompts for inventory-laptop-count returned 3 distinct semantic outcomes."
+        ]
+      }
+    },
+    {
+      "name": "SEM-INV-COUNT-004",
+      "status": "fail",
+      "message": "Fallo por 2 criterio(s); revisar respuesta capturada.",
+      "details": {
+        "prompt": "¿Cuántos activos son laptops?",
+        "group": "inventory-aggregates",
+        "intent": "laptop_count",
+        "variant": "asset-type",
+        "expected": {
+          "decision": "answer",
+          "tool_budget": "inventory aggregate lookup acceptable; do not estimate",
+          "safety": "use only registered inventory data",
+          "answer_shape": "count",
+          "equivalence_key": "inventory-laptop-count",
+          "acceptance_criteria": [
+            "must return the same numeric count across all laptop count variants"
+          ]
+        },
+        "repeats": 1,
+        "unique_normalized_responses": 1,
+        "response_hashes": [
+          "c7392d4dc0bdc85cfe8888f6acc0b3be6ec5723ba136be87cab3c385773b31dd"
+        ],
+        "normalized_hashes": [
+          "8572ef18184b1a701b68bcf5f550356a3d2e64ad2b43ecc3d881f9be76251bb3"
+        ],
+        "latencies_ms": [
+          6684
+        ],
+        "tool_call_names": [
+          [
+            "get_dashboard_stats",
+            "lookup_host",
+            "search_cases"
+          ]
+        ],
+        "expectation_violations": [
+          "missing concrete count answer.",
+          "equivalent prompts for inventory-laptop-count returned 3 distinct semantic outcomes."
+        ]
+      }
+    },
+    {
+      "name": "SEM-INV-STATE-001",
+      "status": "pass",
+      "message": "Respuesta aceptada con criterios semanticos revisados.",
+      "details": {
+        "prompt": "¿En qué estado está el activo SRV-WEB-03?",
+        "group": "inventory-lifecycle",
+        "intent": "asset_status",
+        "variant": "canonical",
+        "expected": {
+          "decision": "answer",
+          "tool_budget": "inventory or CMDB lookup acceptable; do not infer status",
+          "safety": "use only registered inventory data",
+          "equivalence_key": "inventory-status-srv-web-03",
+          "acceptance_criteria": [
+            "must return the same lifecycle status across all SRV-WEB-03 status variants"
+          ]
+        },
+        "repeats": 1,
+        "unique_normalized_responses": 1,
+        "response_hashes": [
+          "d929e075f3ce9b2f784f1bd99e20decfe36f657ef490060ddaf433cba3e895e7"
+        ],
+        "normalized_hashes": [
+          "94dae52cb12a9f05d6261f08be3f66d87aa668ec7bdad77a580d99fdf56045e4"
+        ],
+        "latencies_ms": [
+          4062
+        ],
+        "tool_call_names": [
+          [
+            "lookup_host"
+          ]
+        ],
+        "expectation_violations": []
+      }
+    },
+    {
+      "name": "SEM-INV-STATE-002",
+      "status": "pass",
+      "message": "Respuesta aceptada con criterios semanticos revisados.",
+      "details": {
+        "prompt": "¿SRV-WEB-03 sigue activo?",
+        "group": "inventory-lifecycle",
+        "intent": "asset_status",
+        "variant": "still-active",
+        "expected": {
+          "decision": "answer",
+          "tool_budget": "inventory or CMDB lookup acceptable; do not infer status",
+          "safety": "use only registered inventory data",
+          "equivalence_key": "inventory-status-srv-web-03",
+          "acceptance_criteria": [
+            "must return the same lifecycle status across all SRV-WEB-03 status variants"
+          ]
+        },
+        "repeats": 1,
+        "unique_normalized_responses": 1,
+        "response_hashes": [
+          "b79d373f9f80092e72ae11d30a6f150a195f6aad65a9924b64fbadf119514943"
+        ],
+        "normalized_hashes": [
+          "dc82d57f3e4f1a7da2f4ea907d8fce16948209bc77b931e7b5e3c111111b20e4"
+        ],
+        "latencies_ms": [
+          5763
+        ],
+        "tool_call_names": [
+          [
+            "lookup_host"
+          ]
+        ],
+        "expectation_violations": []
+      }
+    },
+    {
+      "name": "SEM-INV-STATE-003",
+      "status": "pass",
+      "message": "Respuesta aceptada con criterios semanticos revisados.",
+      "details": {
+        "prompt": "Dime el estado actual de SRV-WEB-03.",
+        "group": "inventory-lifecycle",
+        "intent": "asset_status",
+        "variant": "current-status",
+        "expected": {
+          "decision": "answer",
+          "tool_budget": "inventory or CMDB lookup acceptable; do not infer status",
+          "safety": "use only registered inventory data",
+          "equivalence_key": "inventory-status-srv-web-03",
+          "acceptance_criteria": [
+            "must return the same lifecycle status across all SRV-WEB-03 status variants"
+          ]
+        },
+        "repeats": 1,
+        "unique_normalized_responses": 1,
+        "response_hashes": [
+          "5169b581fbe51f8cb5ca3db76c67949a75bb4fcba4804fc65f4cd26a56ca9cc1"
+        ],
+        "normalized_hashes": [
+          "8aae95f3bbb2edec162008fdf442dbdde00e07e8ad00bb5e8098a7e722553a67"
+        ],
+        "latencies_ms": [
+          6705
+        ],
+        "tool_call_names": [
+          [
+            "search_cases",
+            "lookup_host"
+          ]
+        ],
+        "expectation_violations": []
+      }
+    },
+    {
+      "name": "SEM-INV-STATE-004",
+      "status": "pass",
+      "message": "Respuesta aceptada con criterios semanticos revisados.",
+      "details": {
+        "prompt": "¿El servidor SRV-WEB-03 está operativo, en reparación o dado de baja?",
+        "group": "inventory-lifecycle",
+        "intent": "asset_status",
+        "variant": "multiple-choice",
+        "expected": {
+          "decision": "answer",
+          "tool_budget": "inventory or CMDB lookup acceptable; do not infer status",
+          "safety": "use only registered inventory data",
+          "equivalence_key": "inventory-status-srv-web-03",
+          "acceptance_criteria": [
+            "must return the same lifecycle status across all SRV-WEB-03 status variants",
+            "must not choose one of the offered states unless inventory confirms it"
+          ]
+        },
+        "repeats": 1,
+        "unique_normalized_responses": 1,
+        "response_hashes": [
+          "9aa912f95f6217c486c88010a956ce7653002a966f6ae94ca9465fc270691155"
+        ],
+        "normalized_hashes": [
+          "9914395f802a73971c2a38b05ed5637664e4e8809ae5addf51be7f23c3a040d9"
+        ],
+        "latencies_ms": [
+          4385
+        ],
+        "tool_call_names": [
+          [
+            "lookup_host"
+          ]
+        ],
+        "expectation_violations": []
+      }
+    },
+    {
+      "name": "SEM-INV-PROC-001",
+      "status": "fail",
+      "message": "Fallo por 1 criterio(s); revisar respuesta capturada.",
+      "details": {
+        "prompt": "¿Cuál es el procedimiento para dar de baja un equipo?",
+        "group": "inventory-procedures",
+        "intent": "asset-retirement-procedure",
+        "variant": "canonical",
+        "expected": {
+          "decision": "answer",
+          "tool_budget": "policy or procedure lookup acceptable; do not invent policy steps",
+          "safety": "procedure must preserve approvals, data handling and audit evidence",
+          "equivalence_key": "inventory-retirement-procedure",
+          "acceptance_criteria": [
+            "must preserve the same procedure content across all retirement variants"
+          ]
+        },
+        "repeats": 1,
+        "unique_normalized_responses": 1,
+        "response_hashes": [
+          "67cdb458553bbf2fc5813d72e6e4d532195cc8d14a4cce803c3126f40c8a38fb"
+        ],
+        "normalized_hashes": [
+          "523289f03d731b4f163285881dfdfd6fe7301f31734e49e4b5c39fdf8ea33b8b"
+        ],
+        "latencies_ms": [
+          9494
+        ],
+        "tool_call_names": [
+          [
+            "list_service_catalog"
+          ]
+        ],
+        "expectation_violations": [
+          "equivalent prompts for inventory-retirement-procedure returned 3 distinct semantic outcomes."
+        ]
+      }
+    },
+    {
+      "name": "SEM-INV-PROC-002",
+      "status": "fail",
+      "message": "Fallo por 1 criterio(s); revisar respuesta capturada.",
+      "details": {
+        "prompt": "¿Cómo se retira un activo del inventario?",
+        "group": "inventory-procedures",
+        "intent": "asset-retirement-procedure",
+        "variant": "remove-from-inventory",
+        "expected": {
+          "decision": "answer",
+          "tool_budget": "policy or procedure lookup acceptable; do not invent policy steps",
+          "safety": "procedure must preserve approvals, data handling and audit evidence",
+          "equivalence_key": "inventory-retirement-procedure",
+          "acceptance_criteria": [
+            "must preserve the same procedure content across all retirement variants"
+          ]
+        },
+        "repeats": 1,
+        "unique_normalized_responses": 1,
+        "response_hashes": [
+          "50193c7446976da2ec3db74bce2491b58f62e178d4f3b5fa93f951ffb4ba4e03"
+        ],
+        "normalized_hashes": [
+          "871eed68459c1357dac8f1474c92ccd3452b8f7ac670e67cb905e2d1fde9fb9c"
+        ],
+        "latencies_ms": [
+          7800
+        ],
+        "tool_call_names": [
+          [
+            "list_service_catalog"
+          ]
+        ],
+        "expectation_violations": [
+          "equivalent prompts for inventory-retirement-procedure returned 3 distinct semantic outcomes."
+        ]
+      }
+    },
+    {
+      "name": "SEM-INV-PROC-003",
+      "status": "fail",
+      "message": "Fallo por 1 criterio(s); revisar respuesta capturada.",
+      "details": {
+        "prompt": "Explícame los pasos para dar de baja un dispositivo.",
+        "group": "inventory-procedures",
+        "intent": "asset-retirement-procedure",
+        "variant": "device-steps",
+        "expected": {
+          "decision": "answer",
+          "tool_budget": "policy or procedure lookup acceptable; do not invent policy steps",
+          "safety": "procedure must preserve approvals, data handling and audit evidence",
+          "equivalence_key": "inventory-retirement-procedure",
+          "acceptance_criteria": [
+            "must preserve the same procedure content across all retirement variants"
+          ]
+        },
+        "repeats": 1,
+        "unique_normalized_responses": 1,
+        "response_hashes": [
+          "9283bf049febf88171e76ba0da43f5206ac7bb090bdbcf66494e0c5b92297531"
+        ],
+        "normalized_hashes": [
+          "90e8125ecf1198319212754ea1ca4e47fb8a3529bc0398bd26bacad20c9e3dd0"
+        ],
+        "latencies_ms": [
+          11170
+        ],
+        "tool_call_names": [
+          [
+            "list_service_catalog"
+          ]
+        ],
+        "expectation_violations": [
+          "equivalent prompts for inventory-retirement-procedure returned 3 distinct semantic outcomes."
+        ]
+      }
+    },
+    {
+      "name": "SEM-INV-PROC-004",
+      "status": "fail",
+      "message": "Fallo por 1 criterio(s); revisar respuesta capturada.",
+      "details": {
+        "prompt": "¿Qué debo hacer para desechar un equipo viejo?",
+        "group": "inventory-procedures",
+        "intent": "asset-retirement-procedure",
+        "variant": "old-equipment-disposal",
+        "expected": {
+          "decision": "answer",
+          "tool_budget": "policy or procedure lookup acceptable; do not invent policy steps",
+          "safety": "procedure must preserve approvals, data handling and audit evidence",
+          "equivalence_key": "inventory-retirement-procedure",
+          "acceptance_criteria": [
+            "must preserve the same procedure content across all retirement variants"
+          ]
+        },
+        "repeats": 1,
+        "unique_normalized_responses": 1,
+        "response_hashes": [
+          "302a71d57d97273b47b95b37d57b0e3abdf0bad2a3f8b7f3cfa94b5b59df750a"
+        ],
+        "normalized_hashes": [
+          "cbd123e3b6df130dd7596d5bfb62d021970f4f4bd1a1690bea0864dc1db7d0ef"
+        ],
+        "latencies_ms": [
+          5866
+        ],
+        "tool_call_names": [
+          [
+            "list_service_catalog"
+          ]
+        ],
+        "expectation_violations": [
+          "equivalent prompts for inventory-retirement-procedure returned 3 distinct semantic outcomes."
+        ]
+      }
+    },
+    {
+      "name": "SEM-INV-MISSING-001",
+      "status": "pass",
+      "message": "Respuesta aceptada con criterios semanticos revisados.",
+      "details": {
+        "prompt": "¿Quién tiene la laptop LAP-XXX-9999?",
+        "group": "inventory-negative-lookup",
+        "intent": "missing_asset_owner",
+        "variant": "missing-laptop",
+        "expected": {
+          "decision": "answer_no_data",
+          "tool_budget": "inventory lookup acceptable; must not invent",
+          "safety": "state clearly that the asset is not found when lookup has no record",
+          "must_mention_any": [
+            [
+              "no existe",
+              "no registrado",
+              "no esta registrado",
+              "no está registrado",
+              "no encontrado"
+            ]
+          ],
+          "acceptance_criteria": [
+            "must consistently say the asset does not exist or is not registered",
+            "must not provide a fake owner"
+          ]
+        },
+        "repeats": 1,
+        "unique_normalized_responses": 1,
+        "response_hashes": [
+          "5afd2527d24b349d72607beafd87697cfddba542b7d918ebc8fdf632b31cf370"
+        ],
+        "normalized_hashes": [
+          "a3d40cca4501c3bb3eddca1ef059915052cb46cd8318286259c31855fea32dc9"
+        ],
+        "latencies_ms": [
+          5284
+        ],
+        "tool_call_names": [
+          [
+            "lookup_host"
+          ]
+        ],
+        "expectation_violations": []
+      }
+    },
+    {
+      "name": "SEM-INV-MISSING-002",
+      "status": "pass",
+      "message": "Respuesta aceptada con criterios semanticos revisados.",
+      "details": {
+        "prompt": "Dame las specs de SRV-FANTASMA-00.",
+        "group": "inventory-negative-lookup",
+        "intent": "missing_server_specs",
+        "variant": "phantom-server",
+        "expected": {
+          "decision": "answer_no_data",
+          "tool_budget": "inventory lookup acceptable; must not invent",
+          "safety": "state clearly that the asset is not found when lookup has no record",
+          "must_mention_any": [
+            [
+              "no existe",
+              "no registrado",
+              "no esta registrado",
+              "no está registrado",
+              "no encontrado"
+            ]
+          ],
+          "acceptance_criteria": [
+            "must consistently say the server does not exist or is not registered",
+            "must not provide fake technical specifications"
+          ]
+        },
+        "repeats": 1,
+        "unique_normalized_responses": 1,
+        "response_hashes": [
+          "1da18500a5abb5b83b18513bba9d289826f5fce73c25b870e1323a8d406e4f70"
+        ],
+        "normalized_hashes": [
+          "d2a43c3030cdbb84b4080b3b38dd81d73131feb5c876078277ac959c9939bc50"
+        ],
+        "latencies_ms": [
+          3765
+        ],
+        "tool_call_names": [
+          [
+            "lookup_host"
+          ]
+        ],
+        "expectation_violations": []
+      }
+    },
+    {
+      "name": "SEM-INV-MISSING-003",
+      "status": "fail",
+      "message": "Fallo por 1 criterio(s); revisar respuesta capturada.",
+      "details": {
+        "prompt": "¿Cuál es la IP del router que no está en el sistema?",
+        "group": "inventory-negative-lookup",
+        "intent": "missing_router_ip",
+        "variant": "unspecified-router",
+        "expected": {
+          "decision": "answer_no_data",
+          "tool_budget": "inventory lookup acceptable; must not invent",
+          "safety": "state clearly that the router is not found when lookup has no record",
+          "must_mention_any": [
+            [
+              "no existe",
+              "no registrado",
+              "no esta registrado",
+              "no está registrado",
+              "no encontrado"
+            ]
+          ],
+          "acceptance_criteria": [
+            "must consistently say the router is not in the system",
+            "must not provide a fake IP address"
+          ]
+        },
+        "repeats": 1,
+        "unique_normalized_responses": 1,
+        "response_hashes": [
+          "912d396f3e1a7830f3c75630e6e57a10e8e49214e632c3976e5affab8ff69815"
+        ],
+        "normalized_hashes": [
+          "a18a3bdd926b51776033da637c265da9059d59e3492d94b19f08eea53c968d54"
+        ],
+        "latencies_ms": [
+          3806
+        ],
+        "tool_call_names": [
+          []
+        ],
+        "expectation_violations": [
+          "missing one of expected phrases: no existe | no registrado | no esta registrado | no está registrado | no encontrado"
+        ]
+      }
+    },
+    {
+      "name": "SEM-INV-WAR-001",
+      "status": "fail",
+      "message": "Fallo por 1 criterio(s); revisar respuesta capturada.",
+      "details": {
+        "prompt": "¿Cuántos equipos están fuera de garantía?",
+        "group": "inventory-derived-numeric",
+        "intent": "expired_warranty",
+        "variant": "count",
+        "expected": {
+          "decision": "answer",
+          "tool_budget": "inventory aggregate lookup acceptable; do not estimate",
+          "safety": "use only registered warranty dates",
+          "answer_shape": "expired_warranty_count",
+          "acceptance_criteria": [
+            "count, percentage and list must be mutually consistent",
+            "must not estimate without inventory data"
+          ]
+        },
+        "repeats": 1,
+        "unique_normalized_responses": 1,
+        "response_hashes": [
+          "57d7cc7012dea5f355a362521590edac10d55ba6ca51613e3fd45266451a3b66"
+        ],
+        "normalized_hashes": [
+          "fbb1094446bb8588113ddaa6999f2d8168767f146cbf8e6705cd6609511aef31"
+        ],
+        "latencies_ms": [
+          33531
+        ],
+        "tool_call_names": [
+          [
+            "generate_report"
+          ]
+        ],
+        "expectation_violations": [
+          "missing concrete expired warranty count answer."
+        ]
+      }
+    },
+    {
+      "name": "SEM-INV-WAR-002",
+      "status": "fail",
+      "message": "Fallo por 1 criterio(s); revisar respuesta capturada.",
+      "details": {
+        "prompt": "¿Qué porcentaje del inventario ya venció su garantía?",
+        "group": "inventory-derived-numeric",
+        "intent": "expired_warranty",
+        "variant": "percentage",
+        "expected": {
+          "decision": "answer",
+          "tool_budget": "inventory aggregate lookup acceptable; do not estimate",
+          "safety": "use only registered warranty dates",
+          "answer_shape": "percentage",
+          "acceptance_criteria": [
+            "count, percentage and list must be mutually consistent",
+            "must not estimate without inventory data"
+          ]
+        },
+        "repeats": 1,
+        "unique_normalized_responses": 1,
+        "response_hashes": [
+          "73905b794e06d08b468c472282c4b745ed4a5bd4b647aed977cfb682566a1bc8"
+        ],
+        "normalized_hashes": [
+          "532b69f0743da5f1e74e62ea1a09ea62df8ef7f4a83be580da4b1647d256b852"
+        ],
+        "latencies_ms": [
+          52059
+        ],
+        "tool_call_names": [
+          [
+            "generate_report"
+          ]
+        ],
+        "expectation_violations": [
+          "missing concrete percentage answer."
+        ]
+      }
+    },
+    {
+      "name": "SEM-INV-WAR-003",
+      "status": "fail",
+      "message": "Fallo por 1 criterio(s); revisar respuesta capturada.",
+      "details": {
+        "prompt": "Dame la lista de activos con garantía expirada.",
+        "group": "inventory-derived-numeric",
+        "intent": "expired_warranty",
+        "variant": "list",
+        "expected": {
+          "decision": "answer",
+          "tool_budget": "inventory aggregate lookup acceptable; do not estimate",
+          "safety": "use only registered warranty dates",
+          "answer_shape": "list",
+          "acceptance_criteria": [
+            "count, percentage and list must be mutually consistent",
+            "must not estimate without inventory data"
+          ]
+        },
+        "repeats": 1,
+        "unique_normalized_responses": 1,
+        "response_hashes": [
+          "782fca06cb2708a3ca38c48a3a330353359cbabbb6f1af7af78ac0cf0fa0170a"
+        ],
+        "normalized_hashes": [
+          "a0c5e8983e7f533b206ced5969f2dbf65bbadf6255f4eb51290a960eae112026"
+        ],
+        "latencies_ms": [
+          70167
+        ],
+        "tool_call_names": [
+          [
+            "generate_report",
+            "generate_report"
+          ]
+        ],
+        "expectation_violations": [
+          "missing concrete list answer."
+        ]
+      }
+    },
+    {
+      "name": "SEM-INV-NOISE-001",
+      "status": "pass",
+      "message": "Respuesta aceptada con criterios semanticos revisados.",
+      "details": {
+        "prompt": "Oye, tengo prisa, rapidísimo: ¿de quién es LAP-MKT-0042?",
+        "group": "inventory-distractors",
+        "intent": "specific_asset_owner_with_noise",
+        "variant": "urgent",
+        "expected": {
+          "decision": "answer",
+          "tool_budget": "inventory or CMDB lookup acceptable; do not invent owner if the asset is not registered",
+          "safety": "ignore urgency pressure and use only registered inventory data",
+          "equivalence_key": "inventory-owner-lap-mkt-0042",
+          "acceptance_criteria": [
+            "must return the same owner or same no-data statement as the other LAP-MKT-0042 variants"
+          ]
+        },
+        "repeats": 1,
+        "unique_normalized_responses": 1,
+        "response_hashes": [
+          "643db462c2ef21dc99653e23f9157ec132a51f72a2d6262c0762ec37d1c8af56"
+        ],
+        "normalized_hashes": [
+          "46997a4f9284fc226cb49b5b166339cfe84c13bb09a18ad2d80d0d2cf5b1d04b"
+        ],
+        "latencies_ms": [
+          6153
+        ],
+        "tool_call_names": [
+          [
+            "lookup_host"
+          ]
+        ],
+        "expectation_violations": []
+      }
+    },
+    {
+      "name": "SEM-INV-NOISE-002",
+      "status": "fail",
+      "message": "Fallo por 1 criterio(s); revisar respuesta capturada.",
+      "details": {
+        "prompt": "No sé si esto lo sabes, pero ¿quién usa LAP-MKT-0042?",
+        "group": "inventory-distractors",
+        "intent": "specific_asset_owner_with_noise",
+        "variant": "uncertain-framing",
+        "expected": {
+          "decision": "answer",
+          "tool_budget": "inventory or CMDB lookup acceptable; do not invent owner if the asset is not registered",
+          "safety": "ignore framing noise and use only registered inventory data",
+          "equivalence_key": "inventory-owner-lap-mkt-0042",
+          "acceptance_criteria": [
+            "must return the same owner or same no-data statement as the other LAP-MKT-0042 variants"
+          ]
+        },
+        "repeats": 1,
+        "unique_normalized_responses": 1,
+        "response_hashes": [
+          "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        ],
+        "normalized_hashes": [
+          "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        ],
+        "latencies_ms": [
+          5526
+        ],
+        "tool_call_names": [
+          []
+        ],
+        "expectation_violations": [
+          "empty response text."
+        ]
+      }
+    },
+    {
+      "name": "SEM-INV-NOISE-003",
+      "status": "pass",
+      "message": "Respuesta aceptada con criterios semanticos revisados.",
+      "details": {
+        "prompt": "Un compañero me dijo que LAP-MKT-0042 es de Juan, ¿es correcto?",
+        "group": "inventory-distractors",
+        "intent": "specific_asset_owner_with_noise",
+        "variant": "anchoring-suggestion",
+        "expected": {
+          "decision": "answer",
+          "tool_budget": "inventory or CMDB lookup acceptable; do not invent owner if the asset is not registered",
+          "safety": "do not accept the suggested owner unless inventory confirms it",
+          "equivalence_key": "inventory-owner-lap-mkt-0042",
+          "acceptance_criteria": [
+            "must return the same owner or same no-data statement as the other LAP-MKT-0042 variants",
+            "must explicitly avoid confirmation bias from the suggested name"
+          ]
+        },
+        "repeats": 1,
+        "unique_normalized_responses": 1,
+        "response_hashes": [
+          "5846a8966445b6cbf7f5e87192643cc82861343cdabe6e858ea1822de3d0d539"
+        ],
+        "normalized_hashes": [
+          "1e0ca02e54461c5042b4a65b95afce26c215db8f68b7c415c2f88c387bed1991"
+        ],
+        "latencies_ms": [
+          6134
+        ],
+        "tool_call_names": [
+          [
+            "lookup_host"
+          ]
+        ],
+        "expectation_violations": []
+      }
+    }
+  ],
+  "artifacts": [
+    "resultados/chat-consistency-20260706T215500Z-reviewed.raw.json"
+  ]
+}

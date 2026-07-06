@@ -1,0 +1,249 @@
+# Golden set de evaluación RAG — AITOps Librarian — DG — 2026-07-06
+#
+# Formato de evaluación (ver rag_eval.py):
+#   - recall@k  : la query "acierta" a k si algún snippet del top-k tiene
+#                 source_id en relevant_sources O su texto contiene alguno de
+#                 los marcadores must_contain_any (robusto a cambios de chunk).
+#   - MRR@10    : 1/rank del primer snippet relevante.
+#   - nDCG@10   : relevancia graduada (grade en relevant, 0 si no).
+#   - hit/miss  : se compara result.hit y result.confidence contra expect.
+#
+# Los source_id deben coincidir con los que produce ingest_golden.py
+# (source_id = nombre del archivo de corpus sin extensión).
+#
+# Tenants de prueba (usar los del entorno md-staging, NO prod):
+#   golden_a  -> tenant KB privado A
+#   golden_b  -> tenant KB privado B (para pruebas de aislamiento)
+#   global    -> vendor docs (visibility=global)
+
+meta:
+  version: 1
+  embed_model: "Qwen3-Embedding-0.6B"
+  reranker: "Qwen3-Reranker-0.6B"
+  threshold: 0.72
+  top_k: 5
+  determinism_repeats: 20      # RET-1 / RRK-2
+  thresholds:                  # gates del plan de pruebas (§0)
+    recall_at_5: 0.85
+    mrr_at_10: 0.70
+    ndcg_at_10: 0.75
+    score_stability_abs: 0.01
+    rank_stability_tau: 0.98
+    rerank_uplift_min: 0.0
+    tenant_leaks_max: 0
+
+queries:
+  # ─── Aciertos exactos en vendor docs (confianza alta) ────────────────
+  - id: Q001
+    query: "How do I check whether a systemd service is active on RHEL 9?"
+    lang: en
+    tenant_id: global
+    scope: vendor
+    vendor: "Red Hat"
+    product: "RHEL"
+    expect:
+      hit: true
+      min_confidence: 0.80
+      relevant_sources: ["redhat-rhel-systemd"]
+      must_contain_any: ["systemctl status", "systemctl is-active"]
+      grade: 3
+
+  - id: Q002
+    query: "¿Cómo reinicio un servicio con systemd en Red Hat?"
+    lang: es
+    tenant_id: global
+    scope: vendor
+    expect:
+      hit: true
+      min_confidence: 0.72
+      relevant_sources: ["redhat-rhel-systemd"]
+      must_contain_any: ["systemctl restart"]
+      grade: 3
+
+  - id: Q003
+    query: "Configure a static IP with netplan on Ubuntu Server 22.04"
+    lang: en
+    tenant_id: global
+    scope: vendor
+    vendor: "Canonical"
+    product: "Ubuntu Server"
+    expect:
+      hit: true
+      min_confidence: 0.80
+      relevant_sources: ["ubuntu-server-networking"]
+      must_contain_any: ["netplan", "/etc/netplan"]
+      grade: 3
+
+  - id: Q004
+    query: "How to restart a Windows service from PowerShell"
+    lang: en
+    tenant_id: global
+    scope: vendor
+    vendor: "Microsoft"
+    expect:
+      hit: true
+      min_confidence: 0.78
+      relevant_sources: ["microsoft-windows-services"]
+      must_contain_any: ["Restart-Service", "Get-Service"]
+      grade: 3
+
+  - id: Q005
+    query: "Set up streaming replication in PostgreSQL"
+    lang: en
+    tenant_id: global
+    scope: vendor
+    vendor: "PostgreSQL"
+    expect:
+      hit: true
+      min_confidence: 0.78
+      relevant_sources: ["postgresql-replication"]
+      must_contain_any: ["wal_level", "primary_conninfo", "replication"]
+      grade: 3
+
+  - id: Q006
+    query: "nginx as a reverse proxy with upstream backends"
+    lang: en
+    tenant_id: global
+    scope: vendor
+    expect:
+      hit: true
+      min_confidence: 0.76
+      relevant_sources: ["nginx-reverse-proxy"]
+      must_contain_any: ["proxy_pass", "upstream"]
+      grade: 3
+
+  # ─── Relacionado / extrapolado (0.70–0.90) ───────────────────────────
+  - id: Q007
+    query: "My web server returns 502 Bad Gateway, where do I look?"
+    lang: en
+    tenant_id: global
+    scope: vendor
+    expect:
+      hit: true
+      min_confidence: 0.70
+      relevant_sources: ["nginx-reverse-proxy"]
+      must_contain_any: ["502", "upstream", "proxy"]
+      grade: 2
+
+  - id: Q008
+    query: "disco lleno en Linux, cómo libero espacio"
+    lang: es
+    tenant_id: global
+    scope: vendor
+    expect:
+      hit: true
+      min_confidence: 0.70
+      relevant_sources: ["linux-disk-troubleshooting"]
+      must_contain_any: ["df -h", "du -sh", "journalctl --vacuum"]
+      grade: 2
+
+  # ─── KB privado por tenant ───────────────────────────────────────────
+  - id: Q009
+    query: "What is the escalation path for a P1 incident at this client?"
+    lang: en
+    tenant_id: golden_a
+    scope: kb
+    expect:
+      hit: true
+      min_confidence: 0.74
+      relevant_sources: ["tenant-a-runbook-escalation"]
+      must_contain_any: ["escalation", "P1", "on-call"]
+      grade: 3
+
+  - id: Q010
+    query: "cuál es la ventana de mantenimiento aprobada para el cliente"
+    lang: es
+    tenant_id: golden_a
+    scope: kb
+    expect:
+      hit: true
+      min_confidence: 0.72
+      relevant_sources: ["tenant-a-runbook-escalation"]
+      must_contain_any: ["ventana de mantenimiento", "maintenance window"]
+      grade: 2
+
+  # ─── Aislamiento por tenant (BLOQUEANTE, MET-1) ──────────────────────
+  # Consultamos como tenant B algo que SOLO existe en el KB de A.
+  - id: Q011
+    query: "escalation path P1 incident on-call rotation"
+    lang: en
+    tenant_id: golden_b
+    scope: kb
+    expect:
+      hit: false                       # B no debe ver el runbook de A
+      forbidden_sources: ["tenant-a-runbook-escalation"]
+      leak_tenants: ["golden_a"]       # 0 snippets con tenant_id=golden_a
+      grade: 0
+
+  # ─── Filtro vendor/product mal casado (MET-4) ────────────────────────
+  # Query correcta pero con filtro vendor equivocado -> no debe traer el doc.
+  - id: Q012
+    query: "How do I check whether a systemd service is active?"
+    lang: en
+    tenant_id: global
+    scope: vendor
+    vendor: "Microsoft"                # filtro incorrecto a propósito
+    expect:
+      hit: false
+      forbidden_sources: ["redhat-rhel-systemd"]
+      grade: 0
+
+  # ─── Miss legítimo -> debe sugerir Tier 2 (RET-3) ────────────────────
+  - id: Q013
+    query: "What is the airspeed velocity of an unladen swallow?"
+    lang: en
+    tenant_id: global
+    scope: all
+    expect:
+      hit: false
+      suggest_tier2: true
+      grade: 0
+
+  - id: Q014
+    query: "precio de las acciones de una empresa ficticia inexistente XYZ"
+    lang: es
+    tenant_id: golden_a
+    scope: all
+    expect:
+      hit: false
+      suggest_tier2: true
+      grade: 0
+
+  # ─── Case-lessons (F-F3) ─────────────────────────────────────────────
+  - id: Q015
+    query: "We saw high CPU from a backup agent before; what did we learn?"
+    lang: en
+    tenant_id: golden_a
+    scope: lessons
+    expect:
+      hit: true
+      min_confidence: 0.72
+      relevant_sources: ["tenant-a-lesson-backup-cpu"]
+      must_contain_any: ["backup", "CPU", "throttle"]
+      grade: 3
+
+  # ─── Multilingüe cruzado: query ES contra doc EN (embeddings multi) ──
+  - id: Q016
+    query: "cómo configurar proxy inverso con balanceo hacia varios backends"
+    lang: es
+    tenant_id: global
+    scope: vendor
+    expect:
+      hit: true
+      min_confidence: 0.70
+      relevant_sources: ["nginx-reverse-proxy"]
+      must_contain_any: ["upstream", "proxy_pass"]
+      grade: 2
+
+  # ─── Scope 'all' debe encontrar el vendor doc correcto entre ruido ───
+  - id: Q017
+    query: "enable and start a service at boot on a Red Hat system"
+    lang: en
+    tenant_id: golden_a           # tenant real pero el hit está en vendor global
+    scope: all
+    expect:
+      hit: true
+      min_confidence: 0.74
+      relevant_sources: ["redhat-rhel-systemd"]
+      must_contain_any: ["systemctl enable"]
+      grade: 3
