@@ -2,6 +2,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import ChatConsistencyLauncher from './ChatConsistencyLauncher';
 import CloudflareAccessPanel from './CloudflareAccessPanel';
+import JudgeReviewButton from './JudgeReviewButton';
 import ToolPolicyEditor from './ToolPolicyEditor';
 import {
   AlertTriangle,
@@ -61,7 +62,9 @@ export default async function Dashboard({ searchParams }) {
     return typeMatch && queryMatch;
   });
 
-  const chatConsistency = loadLatestChatConsistency();
+  const selectedRunId = String(params?.run || '');
+  const chatRuns = loadChatConsistencyRuns();
+  const chatConsistency = loadChatConsistencyById(selectedRunId);
   const executedCaseIds = new Set(chatConsistency?.raw?.cases?.map((item) => item.id) || []);
   const executedCases = promptCatalog.filter((item) => executedCaseIds.has(item.id)).length;
   const bankProgress = promptCatalog.length ? Math.round((executedCases / promptCatalog.length) * 100) : 0;
@@ -235,7 +238,7 @@ export default async function Dashboard({ searchParams }) {
           </section>
           <AgenticEvalsSection result={latestAgentic} />
           <EvalStackSection results={evalStackResults} />
-          <ChatConsistencySection data={chatConsistency} />
+          <ChatConsistencySection data={chatConsistency} runs={chatRuns} selectedRunId={chatConsistency?.result?.run_id || selectedRunId} />
           <section className="content-grid">
             <div className="panel wide">
               <div className="panel-heading">
@@ -471,8 +474,8 @@ export default async function Dashboard({ searchParams }) {
                       </tr>
                     </thead>
                     <tbody>
-                      {filtered.map((result) => (
-                        <tr key={result.run_id}>
+                      {filtered.map((result, index) => (
+                        <tr key={`${result.run_id}-${index}`}>
                           <td className="mono">{result.run_id}</td>
                           <td>{result.category}</td>
                           <td><StatusBadge status={result.status} /></td>
@@ -510,7 +513,7 @@ export default async function Dashboard({ searchParams }) {
           </section>
         </>}
 
-        {selectedTab === 'consistencia' && <ChatConsistencySection data={chatConsistency} />}
+        {selectedTab === 'consistencia' && <ChatConsistencySection data={chatConsistency} runs={chatRuns} selectedRunId={chatConsistency?.result?.run_id || selectedRunId} />}
 
         {(selectedTab === 'editor-tools' || selectedTab === 'configuracion') && <section className="content-grid">
           <div className="panel wide">
@@ -532,71 +535,16 @@ export default async function Dashboard({ searchParams }) {
         </section>}
 
         {(selectedTab === 'catalogo-pruebas' || selectedTab === 'catalogos') && <section className="content-grid">
-          <div className="panel wide">
+          <div className="panel full">
             <div className="panel-heading">
               <div>
-                <p className="eyebrow">Banco editable</p>
-                <h2>Crear, editar y borrar casos</h2>
+                <p className="eyebrow">Catálogo único</p>
+                <h2>Catálogo de casos (crear, editar y borrar)</h2>
               </div>
-              <FileJson size={18} aria-hidden="true" />
+              <span>{unifiedCatalog.length} casos · {promptCatalog.length} editables · {externalCatalog.length} de reportes</span>
             </div>
-            <p className="editor-note">Aqui se crean y modifican los prompts, criterios y familia de prueba que despues usa el lanzador de Chat.</p>
-            <ToolPolicyEditor />
-          </div>
-
-          <div className="panel wide">
-            <div className="panel-heading">
-              <h2>Catálogo de referencia</h2>
-              <span>{unifiedCatalog.length} casos</span>
-            </div>
-            <form method="get" className="catalog-filters">
-              <input type="hidden" name="tab" value={selectedTab === 'catalogos' ? 'catalogos' : 'catalogo-pruebas'} />
-              <label>
-                <span>Tipo</span>
-                <select name="catalogType" defaultValue={selectedCatalogType}>
-                  <option value="all">all</option>
-                  <option value="consistencia">consistencia</option>
-                  <option value="jailbreak">jailbreak</option>
-                  <option value="adversarial">adversarial</option>
-                </select>
-              </label>
-              <label>
-                <span>Buscar ID o texto</span>
-                <input name="catalogQ" defaultValue={catalogQueryRaw} placeholder="ej: JB-020, prompt injection" />
-              </label>
-              <button type="submit">Filtrar</button>
-              <a className="secondary-action" href={hrefWith({ tab: selectedTab === 'catalogos' ? 'catalogos' : 'catalogo-pruebas' }, { catalogType: 'all', catalogQ: '' })}>Limpiar</a>
-            </form>
-            {filteredCatalog.length === 0 ? (
-              <p className="empty-note">No hay casos para esos filtros.</p>
-            ) : (
-              <div className="table-wrap compact">
-                <table>
-                  <thead>
-                    <tr>
-                      <th>Tipo</th>
-                      <th>ID</th>
-                      <th>Grupo</th>
-                      <th>Prompt enviado</th>
-                      <th>Criterios de aceptación</th>
-                      <th>Fuente</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {filteredCatalog.map((item) => (
-                      <tr key={`${item.type}-${item.id}-${item.source}`}>
-                        <td>{item.type}</td>
-                        <td className="mono"><a className="inline-link" href={glossaryLinkForCode(item.id)}>{item.id}</a></td>
-                        <td>{item.group || item.intent || '-'}</td>
-                        <td>{item.prompt || '-'}</td>
-                        <td>{item.acceptance || '-'}</td>
-                        <td>{item.source}</td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-              </div>
-            )}
+            <p className="editor-note">Un solo catálogo para todos los prompts, criterios y familias de prueba que usa el lanzador de Chat. Los casos del banco se editan aquí; los que vienen de reportes se importan al banco para poder editarlos.</p>
+            <ToolPolicyEditor externalCases={externalCatalog} />
           </div>
         </section>}
 
@@ -684,7 +632,27 @@ export default async function Dashboard({ searchParams }) {
   );
 }
 
-function ChatConsistencySection({ data }) {
+function RunSelector({ runs, selectedRunId }) {
+  if (!runs || runs.length === 0) return null;
+  return (
+    <form method="get" className="run-selector">
+      <input type="hidden" name="tab" value="chat" />
+      <label>
+        <span>Corrida</span>
+        <select name="run" defaultValue={selectedRunId || runs[0]?.run_id}>
+          {runs.map((run) => (
+            <option value={run.run_id} key={run.run_id}>
+              {shortRunId(run.run_id)} · {run.status === 'pass' ? 'paso' : 'fallo'} · {run.failed_cases}/{run.total_cases} fallaron · {formatDate(run.finished_at)}
+            </option>
+          ))}
+        </select>
+      </label>
+      <button type="submit">Ver esta corrida</button>
+    </form>
+  );
+}
+
+function ChatConsistencySection({ data, runs = [], selectedRunId = '' }) {
   if (!data) {
     return (
       <section className="content-grid">
@@ -726,6 +694,15 @@ function ChatConsistencySection({ data }) {
           </div>
           <StatusBadge status={result.status} />
         </div>
+
+        <RunSelector runs={runs} selectedRunId={selectedRunId} />
+
+        {raw.review_of && (
+          <div className="review-banner">
+            <strong>Corrida revisada por el juez ({raw.review_model || 'LLM'})</strong>
+            <span>Los estados de abajo son el veredicto inteligente sobre la corrida mecánica <span className="mono">{raw.review_of}</span>. La revisión rescata variación de forma aceptable pero mantiene fallas de seguridad, contradicciones y respuestas que no pasaron la barrera.</span>
+          </div>
+        )}
 
         <div className="consistency-metrics">
           <MiniMetric label="Casos" value={summary.totalCases} />
@@ -827,6 +804,11 @@ function ChatConsistencySection({ data }) {
         <ChatConsistencyLauncher />
 
         <div className="panel-subsection">
+          <h3>Revisión inteligente</h3>
+          <JudgeReviewButton runId={raw.review_of || result.run_id} isReviewed={Boolean(raw.review_of)} />
+        </div>
+
+        <div className="panel-subsection">
           <h3>Editor de tools</h3>
           <a href={tabHref('catalogos')} className="artifact-line">Abrir catalogos y criterios</a>
         </div>
@@ -872,8 +854,7 @@ function ChatConsistencySection({ data }) {
           {raw.cases.map((item) => {
             const toolSequences = item.runs.map((run) => toolNames(run).join(', ') || '-');
             const distinctTools = unique(toolSequences);
-            const violations = unique(item.expectation_violations || []);
-            const failures = explainCaseFailures(item);
+            const reasons = plainCaseReasons(item);
             const primaryRun = item.runs.find((run) => String(run.response_text || '').trim()) || item.runs[0];
             const primaryResponse = String(primaryRun?.response_text || '').trim();
             return (
@@ -893,17 +874,34 @@ function ChatConsistencySection({ data }) {
                   <span>Respuesta</span>
                   <p>{primaryResponse || 'Sin respuesta final capturada.'}</p>
                 </div>
-                {violations.length > 0 && (
+                {item.status === 'fail' && (
                   <div className="qa-block issue">
-                    <span>Por que fallo</span>
+                    <span>Por qué falló</span>
                     <ul>
-                      {violations.map((violation) => <li key={violation}>{explainViolation(violation)}</li>)}
+                      {reasons.map((reason) => <li key={reason}>{reason}</li>)}
                     </ul>
                   </div>
                 )}
-                <div className="failure-reasons">
-                  {failures.map((reason) => <span key={reason}>{reason}</span>)}
-                </div>
+                {item.review && item.review.category !== 'skipped' ? (
+                  <div className={`qa-block review ${item.review.verdict}`}>
+                    <span>Revisión del juez</span>
+                    <p>
+                      <strong>{reviewCategoryLabel(item.review.category)}</strong>: mecánico {item.mechanical_status || 'fail'} → {item.review.verdict === 'pass' ? 'pasa' : 'se mantiene falla'}. {item.review.reason}
+                    </p>
+                    {item.review.model && (
+                      <small>
+                        Juez: {item.review.model}
+                        {typeof item.review.confidence === 'number' ? ` · confianza ${Math.round(item.review.confidence * 100)}%` : ''}
+                        {item.review.responses_considered ? ` · ${item.review.responses_considered} respuestas comparadas` : ''}
+                      </small>
+                    )}
+                  </div>
+                ) : item.status === 'pass' && (
+                  <div className="qa-block ok-note">
+                    <span>Resultado</span>
+                    <p>Pasó: las respuestas se mantuvieron consistentes con los criterios definidos.</p>
+                  </div>
+                )}
                 <div className="finding-tags">
                   <span>respuestas únicas: {item.unique_normalized_responses}</span>
                   <span>tools: {distinctTools.join(' | ')}</span>
@@ -1705,22 +1703,60 @@ function cleanHtmlCell(value) {
     .trim();
 }
 
-function loadLatestChatConsistency() {
-  const result = loadResults().find((item) => item.tool === 'chat-consistency-capture');
-  if (!result) return null;
+function chatConsistencyResults() {
+  return loadResults().filter((item) => item.tool === 'chat-consistency-capture');
+}
 
+// Lista compacta de corridas de consistencia para el selector del reporte.
+function loadChatConsistencyRuns() {
+  return chatConsistencyResults().map((result) => {
+    const cases = readRawCasesForResult(result);
+    const failed = cases.filter((item) => item.status === 'fail').length;
+    return {
+      run_id: result.run_id,
+      status: result.status,
+      finished_at: result.finished_at,
+      started_at: result.started_at,
+      total_cases: cases.length,
+      failed_cases: failed,
+    };
+  });
+}
+
+function readRawCasesForResult(result) {
+  const rawArtifact = result?.artifacts?.find((artifact) => artifact.includes('.raw.json'));
+  if (!rawArtifact) return [];
+  const rawPath = path.join(ROOT, rawArtifact);
+  if (!fs.existsSync(rawPath)) return [];
+  try {
+    return JSON.parse(fs.readFileSync(rawPath, 'utf8')).cases || [];
+  } catch {
+    return [];
+  }
+}
+
+function buildViewForResult(result) {
+  if (!result) return null;
   const rawArtifact = result.artifacts?.find((artifact) => artifact.includes('.raw.json'));
   if (!rawArtifact) return null;
-
   const rawPath = path.join(ROOT, rawArtifact);
   if (!fs.existsSync(rawPath)) return null;
-
   try {
     const raw = JSON.parse(fs.readFileSync(rawPath, 'utf8'));
     return buildChatConsistencyView(result, raw);
   } catch {
     return null;
   }
+}
+
+function loadLatestChatConsistency() {
+  return buildViewForResult(chatConsistencyResults()[0]);
+}
+
+function loadChatConsistencyById(runId) {
+  if (!runId) return loadLatestChatConsistency();
+  const result = chatConsistencyResults().find((item) => item.run_id === runId);
+  return buildViewForResult(result) || loadLatestChatConsistency();
 }
 
 function buildChatConsistencyView(result, raw) {
@@ -1840,6 +1876,53 @@ function buildCriticalFindings(cases, emptyRuns) {
 
 function hasToolDrift(item) {
   return unique((item.runs || []).map((run) => toolNames(run).join(',') || '-')).length > 1;
+}
+
+function reviewCategoryLabel(category) {
+  const labels = {
+    soft: 'Revisión semántica',
+    hard: 'Seguridad (no anulable)',
+    'no-response': 'Sin respuesta (no pasó la barrera)',
+    'judge-error': 'Error del juez',
+    skipped: 'Sin revisión',
+  };
+  return labels[category] || 'Revisión';
+}
+
+// Motivos de falla en lenguaje sencillo, sin jerga tecnica, para el reporte.
+function plainCaseReasons(item) {
+  const reasons = [];
+  const violations = unique(item.expectation_violations || []);
+  for (const violation of violations) {
+    reasons.push(explainViolation(violation));
+  }
+
+  const hasEquivalence = violations.some((v) => v.includes('equivalent prompts'));
+  const hasEmptyViolation = violations.some((v) => v.includes('empty response text'));
+
+  if (!hasEquivalence && Number(item.unique_normalized_responses || 0) > 1) {
+    reasons.push(`Las repeticiones no dieron la misma respuesta (${item.unique_normalized_responses} variantes distintas).`);
+  }
+
+  const emptyRuns = (item.runs || [])
+    .filter((run) => run.status === 'ok' && !String(run.response_text || '').trim())
+    .map((run) => run.repeat);
+  if (emptyRuns.length && !hasEmptyViolation) {
+    reasons.push(`El asistente no devolvió respuesta final en la repetición ${emptyRuns.join(', ')}.`);
+  }
+
+  const errorRuns = (item.runs || [])
+    .filter((run) => run.status !== 'ok')
+    .map((run) => run.repeat);
+  if (errorRuns.length) {
+    reasons.push(`Hubo errores de ejecución en la repetición ${errorRuns.join(', ')} (revisa timeout o acceso).`);
+  }
+
+  if (!reasons.length && item.status === 'fail') {
+    reasons.push('Falló pero no quedó registrado un motivo específico en el detalle técnico.');
+  }
+
+  return unique(reasons);
 }
 
 function explainCaseFailures(item) {

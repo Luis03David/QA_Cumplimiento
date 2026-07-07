@@ -31,19 +31,38 @@ function familyLabel(family) {
   return labels[family] || family;
 }
 
-export default function ToolPolicyEditor() {
+// Normaliza los casos externos (parseados de reportes HTML) al mismo shape
+// que usa el catalogo editable, marcandolos como no editables.
+function normalizeExternal(externalCases = []) {
+  return externalCases.map((item) => ({
+    id: item.id,
+    family: item.type || inferCaseFamily(item),
+    group: item.group || '',
+    intent: item.intent || '',
+    variant: '',
+    prompt: item.prompt || '',
+    acceptance: item.acceptance || '',
+    source: item.source || 'reporte externo',
+    editable: false,
+  }));
+}
+
+export default function ToolPolicyEditor({ externalCases = [] }) {
   const searchParams = useSearchParams();
   const requestedCaseId = searchParams.get('caseId') || '';
   const [cases, setCases] = useState([]);
   const [selectedId, setSelectedId] = useState('');
+  const [selectedExternalId, setSelectedExternalId] = useState('');
   const [draft, setDraft] = useState(null);
   const [status, setStatus] = useState('');
   const [loadError, setLoadError] = useState('');
   const [caseQuery, setCaseQuery] = useState('');
   const [groupFilter, setGroupFilter] = useState('all');
+  const [familyFilter, setFamilyFilter] = useState('all');
   const [isLoading, setIsLoading] = useState(true);
   const [isSaving, setIsSaving] = useState(false);
   const [isCreating, setIsCreating] = useState(false);
+  const [showCreate, setShowCreate] = useState(false);
   const [newCase, setNewCase] = useState({
     id: '',
     family: 'consistency',
@@ -53,35 +72,43 @@ export default function ToolPolicyEditor() {
     prompt: '',
   });
 
+  const external = useMemo(() => normalizeExternal(externalCases), [externalCases]);
+
+  // Un solo catalogo: casos del banco (editables) + externos (solo lectura).
+  const allCases = useMemo(() => [
+    ...cases.map((item) => ({ ...item, family: item.family || inferCaseFamily(item), editable: true })),
+    ...external,
+  ], [cases, external]);
+
   const selected = useMemo(
     () => cases.find((item) => item.id === selectedId),
     [cases, selectedId],
   );
+  const selectedExternal = useMemo(
+    () => external.find((item) => item.id === selectedExternalId),
+    [external, selectedExternalId],
+  );
   const groups = useMemo(
-    () => ['all', ...Array.from(new Set(cases.map((item) => item.group).filter(Boolean))).sort()],
-    [cases],
+    () => ['all', ...Array.from(new Set(allCases.map((item) => item.group).filter(Boolean))).sort()],
+    [allCases],
   );
   const families = ['all', 'consistency', 'jailbreak', 'adversarial'];
-  const [familyFilter, setFamilyFilter] = useState('all');
+  const familyCounts = useMemo(() => allCases.reduce((acc, item) => {
+    const family = item.family || inferCaseFamily(item);
+    acc[family] = (acc[family] || 0) + 1;
+    return acc;
+  }, {}), [allCases]);
+
   const filteredCases = useMemo(() => {
     const query = caseQuery.trim().toLowerCase();
-    return cases.filter((item) => {
+    return allCases.filter((item) => {
       const family = item.family || inferCaseFamily(item);
       const familyMatch = familyFilter === 'all' || family === familyFilter;
       const groupMatch = groupFilter === 'all' || item.group === groupFilter;
       const searchable = `${family} ${item.id} ${item.group} ${item.intent} ${item.variant} ${item.prompt}`.toLowerCase();
       return familyMatch && groupMatch && (!query || searchable.includes(query));
     });
-  }, [cases, caseQuery, familyFilter, groupFilter]);
-  const selectableCases = selected && !filteredCases.some((item) => item.id === selected.id)
-    ? [selected, ...filteredCases]
-    : filteredCases;
-
-  useEffect(() => {
-    if (filteredCases.length === 1 && filteredCases[0].id !== selectedId) {
-      setSelectedId(filteredCases[0].id);
-    }
-  }, [filteredCases, selectedId]);
+  }, [allCases, caseQuery, familyFilter, groupFilter]);
 
   async function loadCases() {
     setIsLoading(true);
@@ -119,6 +146,7 @@ export default function ToolPolicyEditor() {
       return;
     }
     setSelectedId(requested.id);
+    setSelectedExternalId('');
     setCaseQuery(requested.id);
     setFamilyFilter('all');
     setGroupFilter('all');
@@ -147,6 +175,17 @@ export default function ToolPolicyEditor() {
       must_not_mention: lines(selected.expected?.must_not_mention),
     });
   }, [selected]);
+
+  function selectRow(item) {
+    setStatus('');
+    if (item.editable) {
+      setSelectedId(item.id);
+      setSelectedExternalId('');
+    } else {
+      setSelectedExternalId(item.id);
+      setSelectedId('');
+    }
+  }
 
   async function saveDraft() {
     if (!selectedId || !draft) return;
@@ -188,103 +227,110 @@ export default function ToolPolicyEditor() {
     }
   }
 
-  async function createCase() {
-    if (!newCase.id.trim() || !newCase.prompt.trim()) {
-      setStatus('Nuevo caso requiere id y prompt.');
-      return;
-    }
+  async function createCaseFrom(payloadBody, successMessage) {
     setStatus('');
     setIsCreating(true);
     try {
       const response = await fetch('/api/chat-consistency/prompts', {
         method: 'POST',
         headers: { 'content-type': 'application/json' },
-        body: JSON.stringify({
-          ...newCase,
-          expected: {
-            decision: '',
-            tool_budget: '',
-            safety: '',
-            format: '',
-            equivalence_key: '',
-            answer_shape: '',
-            acceptance_criteria: [],
-            must_mention: [],
-            must_mention_any: [],
-            must_not_mention: [],
-          },
-        }),
+        body: JSON.stringify(payloadBody),
       });
       const payload = await response.json();
       if (!response.ok) throw new Error(payload.error || `HTTP ${response.status}`);
       setCases((current) => [...current, payload.case]);
       setSelectedId(payload.case.id);
+      setSelectedExternalId('');
       setCaseQuery('');
       setFamilyFilter('all');
       setGroupFilter('all');
-      setNewCase({ id: '', family: 'consistency', group: '', intent: '', variant: '', prompt: '' });
-      setStatus(`Caso creado. Backup: ${payload.backup}`);
+      setStatus(`${successMessage} Backup: ${payload.backup}`);
+      return payload.case;
     } catch (error) {
       setStatus(String(error.message || error));
+      return null;
     } finally {
       setIsCreating(false);
     }
   }
 
-  async function duplicateCase() {
-    if (!selected || !draft) {
-      setStatus('Selecciona un caso para duplicar.');
+  async function createCase() {
+    if (!newCase.id.trim() || !newCase.prompt.trim()) {
+      setStatus('Nuevo caso requiere id y prompt.');
       return;
     }
-
-    const proposedId = `${selected.id}-COPY`;
-    const duplicateId = window.prompt('ID para el duplicado:', proposedId);
-    if (!duplicateId) return;
-
-    setStatus('');
-    setIsCreating(true);
-    try {
-      const response = await fetch('/api/chat-consistency/prompts', {
-        method: 'POST',
-        headers: { 'content-type': 'application/json' },
-        body: JSON.stringify({
-          id: duplicateId,
-          family: draft.family || selected.family || inferCaseFamily(selected),
-          group: selected.group,
-          intent: selected.intent,
-          variant: selected.variant,
-          prompt: selected.prompt,
-          expected: {
-            decision: draft.decision,
-            tool_budget: draft.tool_budget,
-            safety: draft.safety,
-            format: draft.format,
-            equivalence_key: draft.equivalence_key,
-            answer_shape: draft.answer_shape,
-            acceptance_criteria: draft.acceptance_criteria,
-            must_mention: draft.must_mention,
-            must_mention_any: draft.must_mention_any,
-            must_not_mention: draft.must_not_mention,
-          },
-        }),
-      });
-      const payload = await response.json();
-      if (!response.ok) throw new Error(payload.error || `HTTP ${response.status}`);
-      setCases((current) => [...current, payload.case]);
-      setSelectedId(payload.case.id);
-      setStatus(`Caso duplicado. Backup: ${payload.backup}`);
-    } catch (error) {
-      setStatus(String(error.message || error));
-    } finally {
-      setIsCreating(false);
+    const created = await createCaseFrom({
+      ...newCase,
+      expected: {
+        decision: '', tool_budget: '', safety: '', format: '',
+        equivalence_key: '', answer_shape: '',
+        acceptance_criteria: [], must_mention: [], must_mention_any: [], must_not_mention: [],
+      },
+    }, 'Caso creado.');
+    if (created) {
+      setNewCase({ id: '', family: 'consistency', group: '', intent: '', variant: '', prompt: '' });
+      setShowCreate(false);
     }
+  }
+
+  async function importExternal() {
+    if (!selectedExternal) return;
+    const proposedId = selectedExternal.id;
+    const importId = window.prompt('ID para el caso importado al banco:', proposedId);
+    if (!importId) return;
+    const acceptanceCriteria = String(selectedExternal.acceptance || '')
+      .split(' | ')
+      .map((item) => item.trim())
+      .filter(Boolean);
+    await createCaseFrom({
+      id: importId.trim(),
+      family: selectedExternal.family,
+      group: selectedExternal.group,
+      intent: selectedExternal.intent || '',
+      variant: '',
+      prompt: selectedExternal.prompt,
+      expected: {
+        decision: '', tool_budget: '', safety: '', format: '',
+        equivalence_key: '', answer_shape: '',
+        acceptance_criteria: acceptanceCriteria,
+        must_mention: [], must_mention_any: [], must_not_mention: [],
+      },
+    }, 'Caso importado al banco y listo para editar.');
+  }
+
+  async function duplicateCase() {
+    if (!selected || !draft) {
+      setStatus('Selecciona un caso del banco para duplicar.');
+      return;
+    }
+    const duplicateId = window.prompt('ID para el duplicado:', `${selected.id}-COPY`);
+    if (!duplicateId) return;
+    await createCaseFrom({
+      id: duplicateId.trim(),
+      family: draft.family || selected.family || inferCaseFamily(selected),
+      group: selected.group,
+      intent: selected.intent,
+      variant: selected.variant,
+      prompt: selected.prompt,
+      expected: {
+        decision: draft.decision,
+        tool_budget: draft.tool_budget,
+        safety: draft.safety,
+        format: draft.format,
+        equivalence_key: draft.equivalence_key,
+        answer_shape: draft.answer_shape,
+        acceptance_criteria: draft.acceptance_criteria,
+        must_mention: draft.must_mention,
+        must_mention_any: draft.must_mention_any,
+        must_not_mention: draft.must_not_mention,
+      },
+    }, 'Caso duplicado.');
   }
 
   async function deleteCase() {
     if (!selectedId) return;
     const confirmed = window.confirm(`Eliminar caso ${selectedId}?`);
     if (!confirmed) return;
-
     setStatus('');
     setIsSaving(true);
     try {
@@ -295,11 +341,9 @@ export default function ToolPolicyEditor() {
       });
       const payload = await response.json();
       if (!response.ok) throw new Error(payload.error || `HTTP ${response.status}`);
-
       setCases((current) => {
         const next = current.filter((item) => item.id !== selectedId);
-        const nextId = next[0]?.id || '';
-        setSelectedId(nextId);
+        setSelectedId(next[0]?.id || '');
         return next;
       });
       setStatus(`Caso eliminado. Backup: ${payload.backup}`);
@@ -310,110 +354,17 @@ export default function ToolPolicyEditor() {
     }
   }
 
-  if (!draft) {
-    if (isLoading) {
-      return <p className="editor-note">Cargando editor de tools...</p>;
-    }
-
-    return (
-      <div className="tool-policy-editor">
-        <p className="editor-status">{loadError || 'No hay casos disponibles para editar.'}</p>
-        <button type="button" className="secondary-action" onClick={loadCases}>
-          Reintentar carga
-        </button>
-
-        <details className="panel-subsection" open>
-          <summary>Agregar caso al catálogo de chat</summary>
-          <div className="editor-create-grid">
-            <label className="editor-field">
-              <span>ID</span>
-              <input value={newCase.id} onChange={(event) => setNewCase((current) => ({ ...current, id: event.target.value }))} placeholder="SEM-NEW-001" />
-            </label>
-            <label className="editor-field">
-              <span>Familia</span>
-              <select value={newCase.family} onChange={(event) => setNewCase((current) => ({ ...current, family: event.target.value }))}>
-                <option value="consistency">consistencia</option>
-                <option value="jailbreak">jailbreak</option>
-                <option value="adversarial">adversarial</option>
-              </select>
-            </label>
-            <label className="editor-field">
-              <span>Grupo</span>
-              <input value={newCase.group} onChange={(event) => setNewCase((current) => ({ ...current, group: event.target.value }))} placeholder="ej: prompt-injection" />
-            </label>
-            <label className="editor-field">
-              <span>Intent</span>
-              <input value={newCase.intent} onChange={(event) => setNewCase((current) => ({ ...current, intent: event.target.value }))} placeholder="ej: tool_coercion" />
-            </label>
-            <label className="editor-field">
-              <span>Variante</span>
-              <input value={newCase.variant} onChange={(event) => setNewCase((current) => ({ ...current, variant: event.target.value }))} placeholder="ej: spanish" />
-            </label>
-          </div>
-          <label className="editor-field">
-            <span>Prompt</span>
-            <textarea
-              rows="3"
-              value={newCase.prompt}
-              onChange={(event) => setNewCase((current) => ({ ...current, prompt: event.target.value }))}
-              placeholder="Texto del prompt a evaluar"
-            />
-          </label>
-          <button type="button" className="secondary-action" disabled={isCreating} onClick={createCase}>
-            {isCreating ? 'Creando' : 'Agregar al catálogo'}
-          </button>
-        </details>
-      </div>
-    );
-  }
-
-  return (
-    <div className="tool-policy-editor">
-      <label className="editor-field">
-        <span>Caso</span>
-        <select value={selectedId} onChange={(event) => setSelectedId(event.target.value)}>
-          {selectableCases.map((item) => (
-            <option value={item.id} key={item.id}>
-              {item.id} · {item.group}
-            </option>
-          ))}
-        </select>
-      </label>
-
+  const createForm = (
+    <details className="panel-subsection catalog-create" open={showCreate} onToggle={(event) => setShowCreate(event.target.open)}>
+      <summary>Agregar caso nuevo al catálogo</summary>
       <div className="editor-create-grid">
         <label className="editor-field">
-          <span>Filtrar familia</span>
-          <select value={familyFilter} onChange={(event) => setFamilyFilter(event.target.value)}>
-            {families.map((family) => <option value={family} key={family}>{family === 'all' ? 'Todas' : familyLabel(family)}</option>)}
-          </select>
+          <span>ID</span>
+          <input value={newCase.id} onChange={(event) => setNewCase((current) => ({ ...current, id: event.target.value }))} placeholder="SEM-NEW-001" />
         </label>
-        <label className="editor-field">
-          <span>Filtrar grupo</span>
-          <select value={groupFilter} onChange={(event) => setGroupFilter(event.target.value)}>
-            {groups.map((group) => <option value={group} key={group}>{group === 'all' ? 'Todos' : group}</option>)}
-          </select>
-        </label>
-        <label className="editor-field">
-          <span>Buscar caso</span>
-          <input
-            value={caseQuery}
-            onChange={(event) => setCaseQuery(event.target.value)}
-            placeholder="ID, grupo, intención o prompt"
-          />
-        </label>
-      </div>
-
-      {filteredCases.length === 0 && <p className="editor-status">No hay casos para esos filtros.</p>}
-
-      <p className="editor-note">Edita el caso, el prompt y los criterios que usa la corrida para decidir si pasa o falla.</p>
-
-      <div className="editor-create-grid">
         <label className="editor-field">
           <span>Familia</span>
-          <select
-            value={draft.family}
-            onChange={(event) => setDraft((current) => ({ ...current, family: event.target.value }))}
-          >
+          <select value={newCase.family} onChange={(event) => setNewCase((current) => ({ ...current, family: event.target.value }))}>
             <option value="consistency">consistencia</option>
             <option value="jailbreak">jailbreak</option>
             <option value="adversarial">adversarial</option>
@@ -421,197 +372,243 @@ export default function ToolPolicyEditor() {
         </label>
         <label className="editor-field">
           <span>Grupo</span>
-          <input
-            value={draft.group}
-            onChange={(event) => setDraft((current) => ({ ...current, group: event.target.value }))}
-            placeholder="inventory-asset-owner"
-          />
+          <input value={newCase.group} onChange={(event) => setNewCase((current) => ({ ...current, group: event.target.value }))} placeholder="ej: prompt-injection" />
         </label>
         <label className="editor-field">
-          <span>Intención</span>
-          <input
-            value={draft.intent}
-            onChange={(event) => setDraft((current) => ({ ...current, intent: event.target.value }))}
-            placeholder="specific_asset_owner"
-          />
+          <span>Intent</span>
+          <input value={newCase.intent} onChange={(event) => setNewCase((current) => ({ ...current, intent: event.target.value }))} placeholder="ej: tool_coercion" />
         </label>
         <label className="editor-field">
           <span>Variante</span>
-          <input
-            value={draft.variant}
-            onChange={(event) => setDraft((current) => ({ ...current, variant: event.target.value }))}
-            placeholder="canonical"
-          />
-        </label>
-        <label className="editor-field">
-          <span>Forma de respuesta</span>
-          <select
-            value={draft.answer_shape}
-            onChange={(event) => setDraft((current) => ({ ...current, answer_shape: event.target.value }))}
-          >
-            <option value="">sin regla</option>
-            <option value="count">conteo concreto</option>
-            <option value="expired_warranty_count">conteo garantia vencida</option>
-            <option value="percentage">porcentaje concreto</option>
-            <option value="list">lista concreta</option>
-          </select>
+          <input value={newCase.variant} onChange={(event) => setNewCase((current) => ({ ...current, variant: event.target.value }))} placeholder="ej: spanish" />
         </label>
       </div>
-
       <label className="editor-field">
-        <span>Prompt enviado</span>
-        <textarea
-          rows="4"
-          value={draft.prompt}
-          onChange={(event) => setDraft((current) => ({ ...current, prompt: event.target.value }))}
-          placeholder="Pregunta exacta que se enviara al asistente"
-        />
-      </label>
-
-      <div className="panel-subsection">
-        <h3>Criterios de aceptación editables</h3>
-      </div>
-
-      <label className="editor-field">
-        <span>Decisión esperada</span>
-        <input
-          value={draft.decision}
-          onChange={(event) => setDraft((current) => ({ ...current, decision: event.target.value }))}
-          placeholder="Ej: answer | refuse | warn_or_refuse"
-        />
-      </label>
-
-      <label className="editor-field">
-        <span>Regla de tools</span>
+        <span>Prompt</span>
         <textarea
           rows="3"
-          value={draft.tool_budget}
-          onChange={(event) => setDraft((current) => ({ ...current, tool_budget: event.target.value }))}
-          placeholder="Ej: must not call web_search; no tool preferred; search_kedb acceptable"
+          value={newCase.prompt}
+          onChange={(event) => setNewCase((current) => ({ ...current, prompt: event.target.value }))}
+          placeholder="Texto del prompt a evaluar"
         />
       </label>
-
-      <label className="editor-field">
-        <span>Seguridad</span>
-        <textarea
-          rows="2"
-          value={draft.safety}
-          onChange={(event) => setDraft((current) => ({ ...current, safety: event.target.value }))}
-        />
-      </label>
-
-      <label className="editor-field">
-        <span>Criterios de aceptación</span>
-        <textarea
-          rows="3"
-          value={draft.acceptance_criteria}
-          onChange={(event) => setDraft((current) => ({ ...current, acceptance_criteria: event.target.value }))}
-          placeholder="Un criterio por línea"
-        />
-      </label>
-
-      <label className="editor-field">
-        <span>Clave de equivalencia</span>
-        <input
-          value={draft.equivalence_key}
-          onChange={(event) => setDraft((current) => ({ ...current, equivalence_key: event.target.value }))}
-          placeholder="inventory-owner-lap-mkt-0042"
-        />
-      </label>
-
-      <label className="editor-field">
-        <span>Debe mencionar</span>
-        <textarea
-          rows="3"
-          value={draft.must_mention}
-          onChange={(event) => setDraft((current) => ({ ...current, must_mention: event.target.value }))}
-          placeholder="Una frase por línea"
-        />
-      </label>
-
-      <label className="editor-field">
-        <span>Debe mencionar una opción</span>
-        <textarea
-          rows="3"
-          value={draft.must_mention_any}
-          onChange={(event) => setDraft((current) => ({ ...current, must_mention_any: event.target.value }))}
-          placeholder="Una línea por grupo de alternativas. Usa | para separar opciones: no existe | no registrado | no encontrado"
-        />
-      </label>
-
-      <label className="editor-field">
-        <span>No debe mencionar</span>
-        <textarea
-          rows="2"
-          value={draft.must_not_mention}
-          onChange={(event) => setDraft((current) => ({ ...current, must_not_mention: event.target.value }))}
-          placeholder="Una frase por línea"
-        />
-      </label>
-
-      <label className="editor-field">
-        <span>Formato esperado</span>
-        <input
-          value={draft.format}
-          onChange={(event) => setDraft((current) => ({ ...current, format: event.target.value }))}
-          placeholder="Ej: concise | json-only | table"
-        />
-      </label>
-
-      <button type="button" className="secondary-action" disabled={isSaving} onClick={saveDraft}>
-        {isSaving ? 'Guardando' : 'Guardar política'}
+      <button type="button" className="secondary-action" disabled={isCreating} onClick={createCase}>
+        {isCreating ? 'Creando' : 'Agregar al catálogo'}
       </button>
+    </details>
+  );
 
-      <div className="editor-actions">
-        <button type="button" className="secondary-action" disabled={isCreating || isSaving} onClick={duplicateCase}>
-          {isCreating ? 'Duplicando' : 'Duplicar caso'}
-        </button>
-        <button type="button" className="danger-action" disabled={isCreating || isSaving || !selectedId} onClick={deleteCase}>
-          Eliminar caso
-        </button>
-      </div>
-
-      <details className="panel-subsection" open>
-        <summary>Agregar caso al catálogo de chat</summary>
-        <div className="editor-create-grid">
-          <label className="editor-field">
-            <span>ID</span>
-            <input value={newCase.id} onChange={(event) => setNewCase((current) => ({ ...current, id: event.target.value }))} placeholder="SEM-NEW-001" />
-          </label>
-          <label className="editor-field">
-            <span>Familia</span>
-            <select value={newCase.family} onChange={(event) => setNewCase((current) => ({ ...current, family: event.target.value }))}>
-              <option value="consistency">consistencia</option>
-              <option value="jailbreak">jailbreak</option>
-              <option value="adversarial">adversarial</option>
-            </select>
-          </label>
+  return (
+    <div className="tool-policy-editor">
+      <div className="catalog-toolbar">
+        <div className="catalog-family-tabs">
+          {families.map((family) => (
+            <button
+              type="button"
+              key={family}
+              className={familyFilter === family ? 'secondary-action active' : 'secondary-action'}
+              onClick={() => setFamilyFilter(family)}
+            >
+              {family === 'all' ? `Todas (${allCases.length})` : `${familyLabel(family)} (${familyCounts[family] || 0})`}
+            </button>
+          ))}
+        </div>
+        <div className="catalog-toolbar-filters">
           <label className="editor-field">
             <span>Grupo</span>
-            <input value={newCase.group} onChange={(event) => setNewCase((current) => ({ ...current, group: event.target.value }))} placeholder="ej: prompt-injection" />
+            <select value={groupFilter} onChange={(event) => setGroupFilter(event.target.value)}>
+              {groups.map((group) => <option value={group} key={group}>{group === 'all' ? 'Todos' : group}</option>)}
+            </select>
           </label>
-          <label className="editor-field">
-            <span>Intent</span>
-            <input value={newCase.intent} onChange={(event) => setNewCase((current) => ({ ...current, intent: event.target.value }))} placeholder="ej: tool_coercion" />
-          </label>
-          <label className="editor-field">
-            <span>Variante</span>
-            <input value={newCase.variant} onChange={(event) => setNewCase((current) => ({ ...current, variant: event.target.value }))} placeholder="ej: spanish" />
+          <label className="editor-field grow">
+            <span>Buscar</span>
+            <input
+              value={caseQuery}
+              onChange={(event) => setCaseQuery(event.target.value)}
+              placeholder="ID, grupo, intención o texto del prompt"
+            />
           </label>
         </div>
-        <label className="editor-field">
-          <span>Prompt</span>
-          <textarea
-            rows="3"
-            value={newCase.prompt}
-            onChange={(event) => setNewCase((current) => ({ ...current, prompt: event.target.value }))}
-            placeholder="Texto del prompt a evaluar"
-          />
-        </label>
-        <button type="button" className="secondary-action" disabled={isCreating} onClick={createCase}>
-          {isCreating ? 'Creando' : 'Agregar al catálogo'}
-        </button>
-      </details>
+      </div>
+
+      {loadError && <p className="editor-status">{loadError} <button type="button" className="secondary-action" onClick={loadCases}>Reintentar</button></p>}
+      {isLoading && <p className="editor-note">Cargando catálogo…</p>}
+
+      <p className="editor-note">
+        Un solo catálogo. Haz clic en cualquier fila para verla; los casos <strong>editables</strong> (banco) se modifican aquí mismo,
+        y los de <strong>solo lectura</strong> (vienen de reportes) se pueden importar al banco para poder editarlos.
+      </p>
+
+      <div className="table-wrap compact catalog-table">
+        <table>
+          <thead>
+            <tr>
+              <th>Familia</th>
+              <th>ID</th>
+              <th>Grupo</th>
+              <th>Prompt</th>
+              <th>Estado</th>
+            </tr>
+          </thead>
+          <tbody>
+            {filteredCases.map((item, index) => {
+              const isActive = item.editable ? item.id === selectedId : item.id === selectedExternalId;
+              return (
+                <tr
+                  key={`${item.editable ? 'bank' : 'ext'}-${item.id}-${index}`}
+                  className={isActive ? 'row-active' : ''}
+                  onClick={() => selectRow(item)}
+                >
+                  <td><span className={`family-badge ${item.family}`}>{familyLabel(item.family)}</span></td>
+                  <td className="mono">{item.id}</td>
+                  <td>{item.group || item.intent || '-'}</td>
+                  <td className="catalog-prompt-cell">{item.prompt || '-'}</td>
+                  <td>{item.editable ? <span className="edit-badge editable">editable</span> : <span className="edit-badge readonly">solo lectura</span>}</td>
+                </tr>
+              );
+            })}
+            {filteredCases.length === 0 && !isLoading && (
+              <tr><td colSpan="5" className="editor-note">No hay casos para estos filtros.</td></tr>
+            )}
+          </tbody>
+        </table>
+      </div>
+
+      {createForm}
+
+      {selectedExternal && (
+        <div className="catalog-detail readonly-detail">
+          <div className="panel-heading compact-heading">
+            <h3>{selectedExternal.id} · {familyLabel(selectedExternal.family)}</h3>
+            <span className="edit-badge readonly">solo lectura</span>
+          </div>
+          <p className="editor-note">Este caso viene de <strong>{selectedExternal.source}</strong> y no se puede editar directamente. Impórtalo al banco para modificarlo y usarlo en el lanzador.</p>
+          <label className="editor-field">
+            <span>Prompt</span>
+            <textarea rows="4" value={selectedExternal.prompt} readOnly />
+          </label>
+          <label className="editor-field">
+            <span>Criterios de aceptación</span>
+            <textarea rows="3" value={selectedExternal.acceptance} readOnly />
+          </label>
+          <button type="button" className="secondary-action" disabled={isCreating} onClick={importExternal}>
+            {isCreating ? 'Importando' : 'Importar al banco para editar'}
+          </button>
+        </div>
+      )}
+
+      {!selectedExternal && draft && (
+        <div className="catalog-detail">
+          <div className="panel-heading compact-heading">
+            <h3>Editando {selectedId}</h3>
+            <span className="edit-badge editable">editable</span>
+          </div>
+          <p className="editor-note">Edita el caso, el prompt y los criterios que usa la corrida para decidir si pasa o falla.</p>
+
+          <div className="editor-create-grid">
+            <label className="editor-field">
+              <span>Familia</span>
+              <select value={draft.family} onChange={(event) => setDraft((current) => ({ ...current, family: event.target.value }))}>
+                <option value="consistency">consistencia</option>
+                <option value="jailbreak">jailbreak</option>
+                <option value="adversarial">adversarial</option>
+              </select>
+            </label>
+            <label className="editor-field">
+              <span>Grupo</span>
+              <input value={draft.group} onChange={(event) => setDraft((current) => ({ ...current, group: event.target.value }))} placeholder="inventory-asset-owner" />
+            </label>
+            <label className="editor-field">
+              <span>Intención</span>
+              <input value={draft.intent} onChange={(event) => setDraft((current) => ({ ...current, intent: event.target.value }))} placeholder="specific_asset_owner" />
+            </label>
+            <label className="editor-field">
+              <span>Variante</span>
+              <input value={draft.variant} onChange={(event) => setDraft((current) => ({ ...current, variant: event.target.value }))} placeholder="canonical" />
+            </label>
+            <label className="editor-field">
+              <span>Forma de respuesta</span>
+              <select value={draft.answer_shape} onChange={(event) => setDraft((current) => ({ ...current, answer_shape: event.target.value }))}>
+                <option value="">sin regla</option>
+                <option value="count">conteo concreto</option>
+                <option value="expired_warranty_count">conteo garantia vencida</option>
+                <option value="percentage">porcentaje concreto</option>
+                <option value="list">lista concreta</option>
+              </select>
+            </label>
+          </div>
+
+          <label className="editor-field">
+            <span>Prompt enviado</span>
+            <textarea rows="4" value={draft.prompt} onChange={(event) => setDraft((current) => ({ ...current, prompt: event.target.value }))} placeholder="Pregunta exacta que se enviara al asistente" />
+          </label>
+
+          <div className="panel-subsection">
+            <h3>Criterios de aceptación editables</h3>
+          </div>
+
+          <label className="editor-field">
+            <span>Decisión esperada</span>
+            <input value={draft.decision} onChange={(event) => setDraft((current) => ({ ...current, decision: event.target.value }))} placeholder="Ej: answer | refuse | warn_or_refuse" />
+          </label>
+
+          <label className="editor-field">
+            <span>Regla de tools</span>
+            <textarea rows="3" value={draft.tool_budget} onChange={(event) => setDraft((current) => ({ ...current, tool_budget: event.target.value }))} placeholder="Ej: must not call web_search; no tool preferred; search_kedb acceptable" />
+          </label>
+
+          <label className="editor-field">
+            <span>Seguridad</span>
+            <textarea rows="2" value={draft.safety} onChange={(event) => setDraft((current) => ({ ...current, safety: event.target.value }))} />
+          </label>
+
+          <label className="editor-field">
+            <span>Criterios de aceptación</span>
+            <textarea rows="3" value={draft.acceptance_criteria} onChange={(event) => setDraft((current) => ({ ...current, acceptance_criteria: event.target.value }))} placeholder="Un criterio por línea" />
+          </label>
+
+          <label className="editor-field">
+            <span>Clave de equivalencia</span>
+            <input value={draft.equivalence_key} onChange={(event) => setDraft((current) => ({ ...current, equivalence_key: event.target.value }))} placeholder="inventory-owner-lap-mkt-0042" />
+          </label>
+
+          <label className="editor-field">
+            <span>Debe mencionar</span>
+            <textarea rows="3" value={draft.must_mention} onChange={(event) => setDraft((current) => ({ ...current, must_mention: event.target.value }))} placeholder="Una frase por línea" />
+          </label>
+
+          <label className="editor-field">
+            <span>Debe mencionar una opción</span>
+            <textarea rows="3" value={draft.must_mention_any} onChange={(event) => setDraft((current) => ({ ...current, must_mention_any: event.target.value }))} placeholder="Una línea por grupo de alternativas. Usa | para separar opciones: no existe | no registrado | no encontrado" />
+          </label>
+
+          <label className="editor-field">
+            <span>No debe mencionar</span>
+            <textarea rows="2" value={draft.must_not_mention} onChange={(event) => setDraft((current) => ({ ...current, must_not_mention: event.target.value }))} placeholder="Una frase por línea" />
+          </label>
+
+          <label className="editor-field">
+            <span>Formato esperado</span>
+            <input value={draft.format} onChange={(event) => setDraft((current) => ({ ...current, format: event.target.value }))} placeholder="Ej: concise | json-only | table" />
+          </label>
+
+          <div className="editor-actions">
+            <button type="button" className="secondary-action" disabled={isSaving} onClick={saveDraft}>
+              {isSaving ? 'Guardando' : 'Guardar cambios'}
+            </button>
+            <button type="button" className="secondary-action" disabled={isCreating || isSaving} onClick={duplicateCase}>
+              {isCreating ? 'Duplicando' : 'Duplicar'}
+            </button>
+            <button type="button" className="danger-action" disabled={isCreating || isSaving || !selectedId} onClick={deleteCase}>
+              Eliminar
+            </button>
+          </div>
+        </div>
+      )}
+
+      {!selectedExternal && !draft && !isLoading && (
+        <p className="editor-note">Selecciona un caso de la tabla para editarlo, o agrega uno nuevo.</p>
+      )}
 
       {status && <p className="editor-status">{status}</p>}
     </div>

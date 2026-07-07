@@ -15,6 +15,7 @@
     "e2e:auth": "node scripts/cloudflare_access_login.js",
     "e2e:install": "playwright install chromium",
     "e2e:report": "node scripts/run_e2e.js",
+    "judge:review": "python3 scripts/run_judge_review.py",
     "agentic:evals": "python3 scripts/run_agentic_evals.py --rules-only",
     "agentic:evals:deepeval": "python3 scripts/run_agentic_evals.py --use-deepeval",
     "ragas:evals": "python3 scripts/run_ragas_evals.py",

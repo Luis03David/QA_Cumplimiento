@@ -59,10 +59,66 @@ function normalizeState(state) {
   return state;
 }
 
-function readLog(logPath) {
-  if (!logPath || !fs.existsSync(path.join(ROOT, logPath))) return '';
+function readLogLines(logPath) {
+  if (!logPath || !fs.existsSync(path.join(ROOT, logPath))) return [];
   const value = fs.readFileSync(path.join(ROOT, logPath), 'utf8');
-  return value.split('\n').slice(-80).join('\n').trim();
+  return value.split('\n').map((line) => line.trim()).filter(Boolean);
+}
+
+function readLog(logPath) {
+  return readLogLines(logPath).slice(-80).join('\n');
+}
+
+// Convierte las lineas del log del capturador en progreso estructurado:
+// "SEM-SYS-001 run 1/3: 200 5302ms"  |  "SEM-SYS-002 run 2/3: ERROR"
+function buildProgress(state) {
+  if (!state) return null;
+  const lines = readLogLines(state.log_path);
+  const repeats = Number(state.repeats || 1) || 1;
+  const totalCases = Number(state.prompt_count || 0) || 0;
+  const totalRuns = totalCases * repeats;
+
+  const events = [];
+  const runRegex = /^(\S+)\s+run\s+(\d+)\/(\d+):\s+(.+)$/;
+  for (const line of lines) {
+    const match = line.match(runRegex);
+    if (!match) continue;
+    const [, caseId, repeat, , outcome] = match;
+    const ok = /^\d{3}\b/.test(outcome) && !outcome.startsWith('4') && !outcome.startsWith('5');
+    events.push({
+      caseId,
+      repeat: Number(repeat),
+      outcome,
+      ok,
+      error: /error/i.test(outcome),
+    });
+  }
+
+  const completedRuns = events.length;
+  const currentCaseId = events.length ? events[events.length - 1].caseId : null;
+  const casesSeen = [];
+  const seen = new Set();
+  for (const event of events) {
+    if (!seen.has(event.caseId)) {
+      seen.add(event.caseId);
+      casesSeen.push(event.caseId);
+    }
+  }
+  const okRuns = events.filter((event) => event.ok).length;
+  const errorRuns = events.filter((event) => event.error).length;
+
+  return {
+    total_runs: totalRuns,
+    total_cases: totalCases,
+    repeats,
+    completed_runs: completedRuns,
+    completed_cases: casesSeen.length,
+    current_case_id: state.status === 'running' ? currentCaseId : null,
+    ok_runs: okRuns,
+    error_runs: errorRuns,
+    percent: totalRuns ? Math.min(100, Math.round((completedRuns / totalRuns) * 100)) : 0,
+    recent: events.slice(-12),
+  };
 }
 
 function stateResponse(state, status = 200) {
@@ -70,6 +126,7 @@ function stateResponse(state, status = 200) {
   return NextResponse.json({
     state: normalized,
     log_tail: readLog(normalized?.log_path),
+    progress: buildProgress(normalized),
   }, { status });
 }
 

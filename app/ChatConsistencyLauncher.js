@@ -34,7 +34,10 @@ export default function ChatConsistencyLauncher() {
   const [caseQuery, setCaseQuery] = useState('');
   const [familyFilter, setFamilyFilter] = useState('consistency');
   const [job, setJob] = useState(null);
+  const [progress, setProgress] = useState(null);
   const [logTail, setLogTail] = useState('');
+  const [nowTick, setNowTick] = useState(Date.now());
+  const [showLog, setShowLog] = useState(false);
   const [error, setError] = useState('');
   const [isLaunching, setIsLaunching] = useState(false);
   const previousStatus = useRef(null);
@@ -46,6 +49,7 @@ export default function ChatConsistencyLauncher() {
       throw new Error(payload.error || `HTTP ${response.status}`);
     }
     setJob(payload.state);
+    setProgress(payload.progress || null);
     setLogTail(payload.log_tail || '');
     return payload.state;
   }
@@ -73,9 +77,17 @@ export default function ChatConsistencyLauncher() {
     if (job.status !== 'running') return undefined;
     const timer = window.setInterval(() => {
       refreshStatus().catch((statusError) => setError(String(statusError.message || statusError)));
-    }, 5000);
+    }, 2000);
     return () => window.clearInterval(timer);
   }, [job?.status, router]);
+
+  // Reloj en vivo: mantiene el tiempo transcurrido moviendose aunque el
+  // sondeo del log tarde, para que la vista nunca se sienta congelada.
+  useEffect(() => {
+    if (job?.status !== 'running') return undefined;
+    const ticker = window.setInterval(() => setNowTick(Date.now()), 1000);
+    return () => window.clearInterval(ticker);
+  }, [job?.status]);
 
   async function launchRun() {
     setError('');
@@ -95,7 +107,9 @@ export default function ChatConsistencyLauncher() {
         throw new Error(payload.error || `HTTP ${response.status}`);
       }
       setJob(payload.state);
+      setProgress(payload.progress || null);
       setLogTail(payload.log_tail || '');
+      setNowTick(Date.now());
       if (response.status === 409) {
         setError(payload.error || 'Ya hay una corrida activa.');
       } else if (!response.ok) {
@@ -126,6 +140,21 @@ export default function ChatConsistencyLauncher() {
   });
   const selectedSet = new Set(selectedIds);
   const canLaunch = selectedIds.length > 0;
+  const selectedCases = cases.filter((item) => selectedSet.has(item.id));
+
+  const elapsedMs = job?.started_at
+    ? (job.status === 'running'
+        ? nowTick - new Date(job.started_at).getTime()
+        : new Date(job.finished_at || job.started_at).getTime() - new Date(job.started_at).getTime())
+    : 0;
+  const elapsedLabel = Number.isFinite(elapsedMs) && elapsedMs >= 0
+    ? `${Math.floor(elapsedMs / 60000)}m ${Math.floor((elapsedMs % 60000) / 1000)}s`
+    : 'sin dato';
+  const statusLabels = {
+    running: 'Corriendo',
+    finished: 'Terminada',
+    failed: 'Fallo',
+  };
 
   function toggleCase(id) {
     setSelectedIds((current) => (
@@ -244,16 +273,70 @@ export default function ChatConsistencyLauncher() {
 
       {!canLaunch && <p className="launcher-error">Selecciona al menos un caso de consistencia, jailbreak o adversarial.</p>}
 
+      <details className="launcher-selected">
+        <summary>Qué se va a ejecutar · {selectedCases.length} casos × {form.repeats} reps = {selectedCases.length * form.repeats} solicitudes</summary>
+        <ul className="launcher-selected-list">
+          {selectedCases.slice(0, 40).map((item) => (
+            <li key={item.id}>
+              <strong>{item.id}</strong>
+              <em>{item.prompt}</em>
+            </li>
+          ))}
+          {selectedCases.length > 40 && <li className="editor-note">…y {selectedCases.length - 40} más.</li>}
+          {selectedCases.length === 0 && <li className="editor-note">Aún no hay casos seleccionados.</li>}
+        </ul>
+      </details>
+
       {job && (
         <div className={`launcher-state ${job.status}`}>
-          <strong>{job.id}</strong>
-          <span>{job.status}</span>
-          <small>{job.prompt_path} · {job.prompt_count || '?'} casos · reps {job.repeats}</small>
+          <div className="launcher-state-head">
+            <strong className="mono">{job.id}</strong>
+            <span className={`launcher-pill ${job.status}`}>{statusLabels[job.status] || job.status}</span>
+          </div>
+
+          {progress && progress.total_runs > 0 && (
+            <div className="launcher-progress">
+              <div className="launcher-progress-bar">
+                <span style={{ width: `${progress.percent}%` }} />
+              </div>
+              <div className="launcher-progress-stats">
+                <span><strong>{progress.completed_runs}</strong>/{progress.total_runs} solicitudes ({progress.percent}%)</span>
+                <span>caso <strong>{progress.completed_cases}</strong>/{progress.total_cases}</span>
+                <span>OK {progress.ok_runs} · errores {progress.error_runs}</span>
+                <span>⏱ {elapsedLabel}</span>
+              </div>
+              {isRunning && progress.current_case_id && (
+                <p className="launcher-current">Ejecutando ahora: <strong>{progress.current_case_id}</strong></p>
+              )}
+            </div>
+          )}
+
+          {(!progress || progress.total_runs === 0) && (
+            <small>{job.prompt_path} · {job.prompt_count || '?'} casos · reps {job.repeats} · ⏱ {elapsedLabel}</small>
+          )}
+
+          {progress?.recent?.length > 0 && (
+            <ul className="launcher-recent">
+              {progress.recent.slice().reverse().map((event, index) => (
+                <li key={`${event.caseId}-${event.repeat}-${index}`} className={event.error ? 'err' : event.ok ? 'ok' : ''}>
+                  <span className="mono">{event.caseId}</span>
+                  <span>#{event.repeat}</span>
+                  <span>{event.outcome}</span>
+                </li>
+              ))}
+            </ul>
+          )}
         </div>
       )}
 
       {error && <p className="launcher-error">{error}</p>}
-      {logTail && <pre className="launcher-log">{logTail}</pre>}
+
+      {logTail && (
+        <details className="launcher-log-wrap" open={showLog} onToggle={(event) => setShowLog(event.target.open)}>
+          <summary>Ver log crudo</summary>
+          <pre className="launcher-log">{logTail}</pre>
+        </details>
+      )}
     </div>
   );
 }
