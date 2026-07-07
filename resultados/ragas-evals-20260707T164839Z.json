@@ -1,0 +1,209 @@
+{
+  "schema_version": "1.0",
+  "run_id": "ragas-evals-20260707T164839Z",
+  "tool": "ragas-evals",
+  "category": "compliance",
+  "status": "pass",
+  "started_at": "2026-07-07T16:48:39Z",
+  "finished_at": "2026-07-07T16:48:39Z",
+  "summary": "RAGAS/RAG evals completados.",
+  "checks": [
+    {
+      "name": "RAGAS-Q001 faithfulness",
+      "status": "pass",
+      "message": "faithfulness=1.0; threshold=0.5",
+      "details": {
+        "case_id": "RAGAS-Q001",
+        "eval_theme": "rag",
+        "metric": "faithfulness",
+        "score": 1.0,
+        "threshold": 0.5
+      }
+    },
+    {
+      "name": "RAGAS-Q001 context_precision",
+      "status": "pass",
+      "message": "context_precision=0.5; threshold=0.5",
+      "details": {
+        "case_id": "RAGAS-Q001",
+        "eval_theme": "rag",
+        "metric": "context_precision",
+        "score": 0.5,
+        "threshold": 0.5
+      }
+    },
+    {
+      "name": "RAGAS-Q001 context_recall",
+      "status": "pass",
+      "message": "context_recall=1.0; threshold=0.5",
+      "details": {
+        "case_id": "RAGAS-Q001",
+        "eval_theme": "rag",
+        "metric": "context_recall",
+        "score": 1.0,
+        "threshold": 0.5
+      }
+    },
+    {
+      "name": "RAGAS-Q001 answer_relevancy",
+      "status": "pass",
+      "message": "answer_relevancy=0.85; threshold=0.5",
+      "details": {
+        "case_id": "RAGAS-Q001",
+        "eval_theme": "rag",
+        "metric": "answer_relevancy",
+        "score": 0.85,
+        "threshold": 0.5
+      }
+    },
+    {
+      "name": "RAGAS-Q003 faithfulness",
+      "status": "pass",
+      "message": "faithfulness=1.0; threshold=0.5",
+      "details": {
+        "case_id": "RAGAS-Q003",
+        "eval_theme": "rag",
+        "metric": "faithfulness",
+        "score": 1.0,
+        "threshold": 0.5
+      }
+    },
+    {
+      "name": "RAGAS-Q003 context_precision",
+      "status": "pass",
+      "message": "context_precision=0.5; threshold=0.5",
+      "details": {
+        "case_id": "RAGAS-Q003",
+        "eval_theme": "rag",
+        "metric": "context_precision",
+        "score": 0.5,
+        "threshold": 0.5
+      }
+    },
+    {
+      "name": "RAGAS-Q003 context_recall",
+      "status": "pass",
+      "message": "context_recall=1.0; threshold=0.5",
+      "details": {
+        "case_id": "RAGAS-Q003",
+        "eval_theme": "rag",
+        "metric": "context_recall",
+        "score": 1.0,
+        "threshold": 0.5
+      }
+    },
+    {
+      "name": "RAGAS-Q003 answer_relevancy",
+      "status": "pass",
+      "message": "answer_relevancy=0.85; threshold=0.5",
+      "details": {
+        "case_id": "RAGAS-Q003",
+        "eval_theme": "rag",
+        "metric": "answer_relevancy",
+        "score": 0.85,
+        "threshold": 0.5
+      }
+    },
+    {
+      "name": "RAGAS-Q006 faithfulness",
+      "status": "pass",
+      "message": "faithfulness=1.0; threshold=0.5",
+      "details": {
+        "case_id": "RAGAS-Q006",
+        "eval_theme": "rag",
+        "metric": "faithfulness",
+        "score": 1.0,
+        "threshold": 0.5
+      }
+    },
+    {
+      "name": "RAGAS-Q006 context_precision",
+      "status": "pass",
+      "message": "context_precision=0.5; threshold=0.5",
+      "details": {
+        "case_id": "RAGAS-Q006",
+        "eval_theme": "rag",
+        "metric": "context_precision",
+        "score": 0.5,
+        "threshold": 0.5
+      }
+    },
+    {
+      "name": "RAGAS-Q006 context_recall",
+      "status": "pass",
+      "message": "context_recall=1.0; threshold=0.5",
+      "details": {
+        "case_id": "RAGAS-Q006",
+        "eval_theme": "rag",
+        "metric": "context_recall",
+        "score": 1.0,
+        "threshold": 0.5
+      }
+    },
+    {
+      "name": "RAGAS-Q006 answer_relevancy",
+      "status": "pass",
+      "message": "answer_relevancy=0.85; threshold=0.5",
+      "details": {
+        "case_id": "RAGAS-Q006",
+        "eval_theme": "rag",
+        "metric": "answer_relevancy",
+        "score": 0.85,
+        "threshold": 0.5
+      }
+    }
+  ],
+  "metrics_summary": {
+    "answer_relevancy": {
+      "metric": "answer_relevancy",
+      "total": 3,
+      "pass": 3,
+      "fail": 0,
+      "skipped": 0,
+      "pass_rate": 1.0,
+      "avg_score": 0.85,
+      "min_score": 0.85,
+      "max_score": 0.85,
+      "avg_latency_ms": null
+    },
+    "context_precision": {
+      "metric": "context_precision",
+      "total": 3,
+      "pass": 3,
+      "fail": 0,
+      "skipped": 0,
+      "pass_rate": 1.0,
+      "avg_score": 0.5,
+      "min_score": 0.5,
+      "max_score": 0.5,
+      "avg_latency_ms": null
+    },
+    "context_recall": {
+      "metric": "context_recall",
+      "total": 3,
+      "pass": 3,
+      "fail": 0,
+      "skipped": 0,
+      "pass_rate": 1.0,
+      "avg_score": 1.0,
+      "min_score": 1.0,
+      "max_score": 1.0,
+      "avg_latency_ms": null
+    },
+    "faithfulness": {
+      "metric": "faithfulness",
+      "total": 3,
+      "pass": 3,
+      "fail": 0,
+      "skipped": 0,
+      "pass_rate": 1.0,
+      "avg_score": 1.0,
+      "min_score": 1.0,
+      "max_score": 1.0,
+      "avg_latency_ms": null
+    }
+  },
+  "artifacts": [
+    "tests/ragas/fixtures/ragas_eval_cases.json"
+  ]
+}

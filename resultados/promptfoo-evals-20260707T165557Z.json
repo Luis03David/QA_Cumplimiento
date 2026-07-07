@@ -1,0 +1,58 @@
+{
+  "schema_version": "1.0",
+  "run_id": "promptfoo-evals-20260707T165557Z",
+  "tool": "promptfoo-evals",
+  "category": "compliance",
+  "status": "pass",
+  "started_at": "2026-07-07T16:55:57Z",
+  "finished_at": "2026-07-07T16:55:58Z",
+  "summary": "Promptfoo config/eval preparado.",
+  "checks": [
+    {
+      "name": "promptfoo-config-generated",
+      "status": "pass",
+      "message": "Config Promptfoo generada con 10 tests.",
+      "details": {
+        "metric": "config",
+        "tests": 10
+      }
+    },
+    {
+      "name": "promptfoo-cli",
+      "status": "skipped",
+      "message": "Promptfoo CLI no instalado. Instala con npm install -D promptfoo o usa npx promptfoo.",
+      "details": {
+        "metric": "runner"
+      }
+    }
+  ],
+  "metrics_summary": {
+    "config": {
+      "metric": "config",
+      "total": 1,
+      "pass": 1,
+      "fail": 0,
+      "skipped": 0,
+      "pass_rate": 1.0,
+      "avg_score": null,
+      "min_score": null,
+      "max_score": null,
+      "avg_latency_ms": null
+    },
+    "runner": {
+      "metric": "runner",
+      "total": 1,
+      "pass": 0,
+      "fail": 0,
+      "skipped": 1,
+      "pass_rate": 0.0,
+      "avg_score": null,
+      "min_score": null,
+      "max_score": null,
+      "avg_latency_ms": null
+    }
+  },
+  "artifacts": [
+    "resultados/promptfooconfig-20260707T165557Z.yaml"
+  ]
+}

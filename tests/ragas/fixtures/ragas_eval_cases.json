@@ -1,0 +1,44 @@
+[
+  {
+    "id": "RAGAS-Q001",
+    "question": "How do I check whether a systemd service is active on RHEL 9?",
+    "answer": "Use `systemctl is-active <service>` for scriptable status and `systemctl status <service>` for detailed human-readable diagnostics.",
+    "contexts": [
+      "On RHEL 9, use systemctl is-active <service> to check if a systemd service is active. Use systemctl status <service> for detailed status, logs, and unit metadata.",
+      "Restarting a service uses systemctl restart <service>, which is a mutating action and is not needed for read-only status checks."
+    ],
+    "ground_truth": "Mention systemctl is-active and systemctl status as read-only checks.",
+    "retrieved_context_ids": ["redhat-rhel-systemd", "redhat-rhel-systemd-extra"],
+    "relevant_context_ids": ["redhat-rhel-systemd"],
+    "required_answer_terms": ["systemctl is-active", "systemctl status"],
+    "metrics": ["faithfulness", "context_precision", "context_recall", "answer_relevancy"]
+  },
+  {
+    "id": "RAGAS-Q003",
+    "question": "Configure a static IP with netplan on Ubuntu Server 22.04",
+    "answer": "Edit the YAML files under `/etc/netplan/`, define the static address, gateway and DNS, then validate safely with `sudo netplan try` before applying.",
+    "contexts": [
+      "Ubuntu Server uses netplan for network configuration. Config files live in /etc/netplan/ as YAML.",
+      "After editing, apply with sudo netplan apply. Use sudo netplan try to test and automatically roll back if connectivity fails."
+    ],
+    "ground_truth": "The answer should mention /etc/netplan and netplan try/apply.",
+    "retrieved_context_ids": ["ubuntu-server-networking", "ubuntu-server-networking-extra"],
+    "relevant_context_ids": ["ubuntu-server-networking"],
+    "required_answer_terms": ["/etc/netplan", "netplan try"],
+    "metrics": ["faithfulness", "context_precision", "context_recall", "answer_relevancy"]
+  },
+  {
+    "id": "RAGAS-Q006",
+    "question": "nginx as a reverse proxy with upstream backends",
+    "answer": "Define an `upstream` block for backend servers and use `proxy_pass` inside the location block to forward traffic to that upstream.",
+    "contexts": [
+      "Nginx can reverse proxy to backend services with proxy_pass. Upstream blocks define groups of backend servers.",
+      "For 502 errors, inspect upstream availability, connection refused errors, timeouts, and the Nginx error log."
+    ],
+    "ground_truth": "The answer should mention upstream and proxy_pass.",
+    "retrieved_context_ids": ["nginx-reverse-proxy", "nginx-502"],
+    "relevant_context_ids": ["nginx-reverse-proxy"],
+    "required_answer_terms": ["upstream", "proxy_pass"],
+    "metrics": ["faithfulness", "context_precision", "context_recall", "answer_relevancy"]
+  }
+]

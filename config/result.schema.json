@@ -75,8 +75,26 @@
       "items": {
         "type": "string"
       }
+    },
+    "metrics_summary": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "object",
+        "properties": {
+          "metric": { "type": "string" },
+          "total": { "type": "integer", "minimum": 0 },
+          "pass": { "type": "integer", "minimum": 0 },
+          "fail": { "type": "integer", "minimum": 0 },
+          "skipped": { "type": "integer", "minimum": 0 },
+          "pass_rate": { "type": "number", "minimum": 0, "maximum": 1 },
+          "avg_score": { "type": ["number", "null"] },
+          "min_score": { "type": ["number", "null"] },
+          "max_score": { "type": ["number", "null"] },
+          "avg_latency_ms": { "type": ["number", "null"] }
+        },
+        "additionalProperties": false
+      }
     }
   },
   "additionalProperties": false
 }
-

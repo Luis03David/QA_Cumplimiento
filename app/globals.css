@@ -361,6 +361,163 @@ h2 {
   border-color: #edcf83;
 }
 
+.metric-summary-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 10px;
+  margin-top: 14px;
+}
+
+.metric-summary-card {
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 12px;
+  display: grid;
+  gap: 10px;
+  background: #fbfcfd;
+}
+
+.metric-summary-card.pass {
+  border-color: #a6d6c1;
+  background: var(--pass-soft);
+}
+
+.metric-summary-card.fail {
+  border-color: #e1aaa4;
+  background: var(--fail-soft);
+}
+
+.eval-stack-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.eval-stack-card {
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 12px;
+  display: grid;
+  gap: 10px;
+  background: #fbfcfd;
+}
+
+.eval-stack-card.pass {
+  border-color: #a6d6c1;
+  background: var(--pass-soft);
+}
+
+.eval-stack-card.fail {
+  border-color: #e1aaa4;
+  background: var(--fail-soft);
+}
+
+.eval-stack-card.skipped {
+  border-color: #edcf83;
+  background: var(--skip-soft);
+}
+
+.eval-stack-top {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.eval-stack-top strong,
+.eval-stack-top span,
+.eval-stack-card small {
+  display: block;
+  overflow-wrap: anywhere;
+}
+
+.eval-stack-top span,
+.eval-stack-card small {
+  color: var(--muted);
+  font-size: 12px;
+}
+
+.eval-failure-list {
+  display: grid;
+  gap: 10px;
+  margin-top: 14px;
+}
+
+.eval-failure-heading {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  align-items: baseline;
+}
+
+.eval-failure-heading span,
+.eval-failure-row span,
+.eval-failure-more {
+  color: var(--muted);
+  font-size: 12px;
+}
+
+.eval-failure-row {
+  border-left: 3px solid #b74336;
+  padding: 10px 12px;
+  background: var(--fail-soft);
+  display: grid;
+  gap: 8px;
+}
+
+.eval-failure-top {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.eval-failure-top strong,
+.eval-failure-top span,
+.eval-failure-row p,
+.eval-failure-row li {
+  overflow-wrap: anywhere;
+}
+
+.eval-failure-row p {
+  margin: 0;
+  color: var(--text);
+  font-size: 13px;
+}
+
+.eval-failure-row ul {
+  margin: 0;
+  padding-left: 18px;
+  color: var(--text);
+  font-size: 13px;
+}
+
+.eval-failure-more {
+  display: block;
+}
+
+.metric-summary-card strong,
+.metric-summary-card span {
+  display: block;
+  overflow-wrap: anywhere;
+}
+
+.metric-summary-card > div:first-child span,
+.metric-score-line span {
+  color: var(--muted);
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.metric-score-line {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: baseline;
+  gap: 8px;
+}
+
+.metric-score-line strong {
+  font-size: 15px;
+}
+
 .run-summary-list {
   display: grid;
   gap: 10px;
@@ -1652,6 +1809,8 @@ th {
   .home-grid,
   .quick-actions,
   .surface-grid,
+  .metric-summary-grid,
+  .eval-stack-grid,
   .case-grid,
   .consistency-metrics,
   .finding-grid {

@@ -13,6 +13,7 @@ Campos obligatorios:
 - `summary`: resumen humano breve.
 - `checks`: lista de verificaciones individuales.
 - `artifacts`: rutas de artefactos asociados, si existen.
+- `metrics_summary`: resumen opcional por metrica agregada (`pass_rate`, scores y latencia promedio).
 
 Reglas:
 
@@ -42,4 +43,3 @@ Ejemplo:
   "artifacts": []
 }
 ```
-

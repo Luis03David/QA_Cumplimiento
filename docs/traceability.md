@@ -15,5 +15,6 @@ Esta matriz arranca con el mapeo declarado en el plan de referencia y debe conve
 | CP-09 | Gobernanza AIMS | ISO/IEC 42001 | Pendiente: Documentación de decisiones de IA y cambios de modelo |
 | CP-10 | Evidencia y mejora continua AIMS | ISO/IEC 42001 | Pendiente: Mecanismo de feedback y loop de mejora |
 | CP-11 | Consistencia RAG/chat, cache segura y eficiencia de tokens | ISO/IEC 42001, eficiencia operativa, seguridad multi-tenant | Planeado: Fase 2.5 definida en plan.md |
+| CP-12 | Agentic evals: alucinaciones, fairness, toxicidad, sensibilidad al prompt, regresion, model drift y privacidad | ISO/IEC 42001, GDPR, CCPA/CPRA, LFPDPPP pendiente, cumplimiento operativo | Planeado: Fase 2.6 definida en plan.md |
 
 Pendiente legal: validar requisitos especificos de LFPDPPP para derechos ARCO y aviso de privacidad antes de cerrar el mapeo nacional de Mexico.

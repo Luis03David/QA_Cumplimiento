@@ -91,6 +91,13 @@ export default async function Dashboard({ searchParams }) {
   const securityResults = results.filter((result) => matchesResult(result, ['secret', 'dependency', 'security', 'audit']));
   const loadResultsList = results.filter((result) => matchesResult(result, ['load', 'performance', 'perf', 'k6']));
   const chatResults = results.filter((result) => matchesResult(result, ['chat', 'consistency', 'jailbreak', 'adversarial']));
+  const agenticResults = results.filter((result) => result.tool === 'agentic-evals' || result.run_id?.startsWith('agentic-evals-'));
+  const latestAgentic = agenticResults[0] || null;
+  const evalStackResults = {
+    ragas: results.find((result) => result.tool === 'ragas-evals' || result.run_id?.startsWith('ragas-evals-')) || null,
+    agent: results.find((result) => result.tool === 'agent-workflow-evals' || result.run_id?.startsWith('agent-workflow-evals-')) || null,
+    promptfoo: results.find((result) => result.tool === 'promptfoo-evals' || result.run_id?.startsWith('promptfoo-evals-')) || null,
+  };
   const evidenceTab = selectedTab === 'corridas' ? 'corridas' : 'evidencia';
   const statusFilterBase = { tab: evidenceTab, category: selectedCategory };
   const categoryFilterBase = { tab: evidenceTab, status: selectedStatus };
@@ -226,6 +233,8 @@ export default async function Dashboard({ searchParams }) {
               <SurfaceCard title="Corridas chat" value={chatResults.length} detail="resultados historicos detectados" tone="pass" />
             </div>
           </section>
+          <AgenticEvalsSection result={latestAgentic} />
+          <EvalStackSection results={evalStackResults} />
           <ChatConsistencySection data={chatConsistency} />
           <section className="content-grid">
             <div className="panel wide">
@@ -929,6 +938,213 @@ function ChatConsistencySection({ data }) {
   );
 }
 
+function AgenticEvalsSection({ result }) {
+  if (!result) {
+    return (
+      <section className="content-grid">
+        <div className="panel wide">
+          <div className="panel-heading">
+            <div>
+              <p className="eyebrow">CP-12</p>
+              <h2>Agentic evals</h2>
+            </div>
+            <StatusBadge status="skipped" />
+          </div>
+          <EmptyState
+            title="Sin corridas CP-12"
+            detail="Ejecuta npm run agentic:evals o npm run qa:agent:deepeval para generar métricas."
+          />
+        </div>
+      </section>
+    );
+  }
+
+  const metrics = agenticMetricRows(result);
+  const passMetrics = metrics.filter((item) => item.fail === 0 && item.total > 0).length;
+  const failedMetrics = metrics.filter((item) => item.fail > 0).length;
+  const deepevalChecks = (result.checks || []).filter((check) => check.details?.metric && check.details.metric !== 'rules').length;
+  const ruleChecks = (result.checks || []).filter((check) => check.details?.metric === 'rules' || String(check.name || '').endsWith('rule assertions')).length;
+
+  return (
+    <section className="content-grid">
+      <div className="panel wide">
+        <div className="panel-heading">
+          <div>
+            <p className="eyebrow">CP-12</p>
+            <h2>Agentic evals y métricas LLM</h2>
+          </div>
+          <StatusBadge status={result.status} />
+        </div>
+
+        <div className="consistency-metrics">
+          <MiniMetric label="Métricas" value={metrics.length} />
+          <MiniMetric label="Métricas OK" value={passMetrics} tone={failedMetrics ? 'neutral' : 'pass'} />
+          <MiniMetric label="Métricas fail" value={failedMetrics} tone={failedMetrics ? 'fail' : 'pass'} />
+          <MiniMetric label="LLM judge" value={deepevalChecks} tone={deepevalChecks ? 'pass' : 'skipped'} />
+          <MiniMetric label="Reglas" value={ruleChecks} />
+          <MiniMetric label="Run" value={shortRunId(result.run_id)} />
+        </div>
+
+        {metrics.length === 0 ? (
+          <EmptyState title="Sin resumen por métrica" detail="La corrida existe, pero aún no contiene metrics_summary." />
+        ) : (
+          <div className="metric-summary-grid">
+            {metrics.map((metric) => (
+              <article className={`metric-summary-card ${metric.fail ? 'fail' : 'pass'}`} key={metric.metric}>
+                <div>
+                  <strong>{metricLabel(metric.metric)}</strong>
+                  <span>{metric.pass}/{metric.total} pass</span>
+                </div>
+                <div className="metric-score-line">
+                  <span>pass-rate</span>
+                  <strong>{percent(metric.pass_rate)}</strong>
+                </div>
+                <div className="metric-score-line">
+                  <span>score avg</span>
+                  <strong>{metric.avg_score === null || metric.avg_score === undefined ? '-' : metric.avg_score}</strong>
+                </div>
+                <div className="metric-score-line">
+                  <span>latencia avg</span>
+                  <strong>{metric.avg_latency_ms === null || metric.avg_latency_ms === undefined ? '-' : `${Math.round(metric.avg_latency_ms)} ms`}</strong>
+                </div>
+              </article>
+            ))}
+          </div>
+        )}
+      </div>
+
+      <div className="panel">
+        <div className="panel-heading">
+          <h2>Última corrida CP-12</h2>
+          <span>{formatDate(result.finished_at)}</span>
+        </div>
+        <div className="access-box">
+          <strong className="mono">{result.run_id}</strong>
+          <span>{result.summary}</span>
+          <span>{(result.checks || []).length} checks</span>
+          {(result.artifacts || []).map((artifact) => (
+            <span className="artifact-line" key={artifact}>{artifact}</span>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function EvalStackSection({ results }) {
+  const cards = [
+    {
+      key: 'ragas',
+      title: 'RAGAS / RAG',
+      detail: 'faithfulness, context precision, context recall, answer relevancy',
+      result: results.ragas,
+    },
+    {
+      key: 'agent',
+      title: 'Agentes IA',
+      detail: 'task completion, tools, argumentos, turnos y conversación',
+      result: results.agent,
+    },
+    {
+      key: 'promptfoo',
+      title: 'Promptfoo',
+      detail: 'regresión, YAML assertions, outputs y safety prompts',
+      result: results.promptfoo,
+    },
+  ];
+  const failedChecks = cards.flatMap((card) => (
+    (card.result?.checks || [])
+      .filter((check) => check.status === 'fail')
+      .map((check) => ({
+        stack: card.title,
+        runId: card.result?.run_id,
+        name: check.name,
+        message: check.message,
+        metric: check.details?.metric,
+        caseId: check.details?.case_id,
+        violations: check.details?.violations || check.details?.rule_failures || [],
+      }))
+  ));
+  const visibleFailures = failedChecks.slice(0, 8);
+
+  return (
+    <section className="section-band">
+      <div className="section-heading">
+        <div>
+          <p className="eyebrow">Evals complementarios</p>
+          <h2>RAG, agentes y regresión de prompts</h2>
+        </div>
+        <FileJson size={20} aria-hidden="true" />
+      </div>
+      <div className="eval-stack-grid">
+        {cards.map((card) => {
+          const metrics = agenticMetricRows(card.result);
+          const failed = metrics.filter((item) => item.fail > 0).length;
+          const evaluatedMetrics = metrics.filter((item) => Number(item.pass || 0) + Number(item.fail || 0) > 0);
+          const passRate = evaluatedMetrics.length
+            ? evaluatedMetrics.reduce((sum, item) => sum + Number(item.pass_rate || 0), 0) / evaluatedMetrics.length
+            : null;
+          return (
+            <article className={`eval-stack-card ${card.result?.status || 'skipped'}`} key={card.key}>
+              <div className="eval-stack-top">
+                <div>
+                  <strong>{card.title}</strong>
+                  <span>{card.detail}</span>
+                </div>
+                <StatusBadge status={card.result?.status || 'skipped'} />
+              </div>
+              <div className="metric-score-line">
+                <span>métricas</span>
+                <strong>{metrics.length || '-'}</strong>
+              </div>
+              <div className="metric-score-line">
+                <span>pass-rate promedio</span>
+                <strong>{passRate === null ? '-' : percent(passRate)}</strong>
+              </div>
+              <div className="metric-score-line">
+                <span>métricas con fail</span>
+                <strong>{failed}</strong>
+              </div>
+              <small>{card.result ? shortRunId(card.result.run_id) : 'sin evidencia'}</small>
+            </article>
+          );
+        })}
+      </div>
+      {failedChecks.length > 0 && (
+        <div className="eval-failure-list">
+          <div className="eval-failure-heading">
+            <strong>Fallas detectadas</strong>
+            <span>{failedChecks.length} checks fallidos</span>
+          </div>
+          {visibleFailures.map((failure) => {
+            const causes = unique((failure.violations || []).map((item) => explainViolation(String(item))));
+            return (
+              <article className="eval-failure-row" key={`${failure.runId}-${failure.name}`}>
+                <div className="eval-failure-top">
+                  <div>
+                    <strong>{failure.caseId || failure.name}</strong>
+                    <span>{failure.stack} · {metricLabel(failure.metric)}</span>
+                  </div>
+                  <StatusBadge status="fail" />
+                </div>
+                <p>{failure.message}</p>
+                {causes.length > 0 && (
+                  <ul>
+                    {causes.map((cause) => <li key={cause}>{cause}</li>)}
+                  </ul>
+                )}
+              </article>
+            );
+          })}
+          {failedChecks.length > visibleFailures.length && (
+            <span className="eval-failure-more">+{failedChecks.length - visibleFailures.length} fallas adicionales en el JSON de evidencia</span>
+          )}
+        </div>
+      )}
+    </section>
+  );
+}
+
 function MiniMetric({ label, value, tone = 'neutral' }) {
   return (
     <article className={`mini-metric ${tone}`}>
@@ -936,6 +1152,63 @@ function MiniMetric({ label, value, tone = 'neutral' }) {
       <strong>{value}</strong>
     </article>
   );
+}
+
+function agenticMetricRows(result) {
+  const summary = result?.metrics_summary || {};
+  const rows = Object.values(summary);
+  if (rows.length) {
+    return rows.sort((a, b) => String(a.metric).localeCompare(String(b.metric)));
+  }
+
+  const buckets = {};
+  for (const check of result?.checks || []) {
+    const metric = check.details?.metric || (String(check.name || '').endsWith('rule assertions') ? 'rules' : null);
+    if (!metric) continue;
+    buckets[metric] ||= { metric, total: 0, pass: 0, fail: 0, skipped: 0, pass_rate: 0, avg_score: null, avg_latency_ms: null };
+    buckets[metric].total += 1;
+    if (check.status === 'pass') buckets[metric].pass += 1;
+    else if (check.status === 'skipped') buckets[metric].skipped += 1;
+    else buckets[metric].fail += 1;
+  }
+  return Object.values(buckets).map((item) => ({
+    ...item,
+    pass_rate: item.total ? item.pass / item.total : 0,
+  })).sort((a, b) => String(a.metric).localeCompare(String(b.metric)));
+}
+
+function metricLabel(metric) {
+  const labels = {
+    rules: 'Reglas',
+    latency: 'Latencia',
+    AnswerRelevancyMetric: 'Relevancia',
+    FaithfulnessMetric: 'Faithfulness',
+    ToxicityMetric: 'Toxicidad',
+    BiasMetric: 'Bias/Fairness',
+    HallucinationMetric: 'Hallucination',
+    'CP12 Correctness and Safety': 'Correctness/Safety',
+    task_completion: 'Task completion',
+    tool_correctness: 'Tool correctness',
+    argument_correctness: 'Argument correctness',
+    turn_relevancy: 'Turn relevancy',
+    conversation_completeness: 'Conversation completeness',
+    context_precision: 'Context precision',
+    context_recall: 'Context recall',
+    answer_relevancy: 'Answer relevancy',
+    faithfulness: 'Faithfulness',
+    config: 'Config',
+    runner: 'Runner',
+  };
+  return labels[metric] || metric;
+}
+
+function percent(value) {
+  if (value === null || value === undefined || Number.isNaN(Number(value))) return '-';
+  return `${Math.round(Number(value) * 100)}%`;
+}
+
+function shortRunId(value) {
+  return String(value || '-').replace(/^agentic-evals-/, '');
 }
 
 function SurfaceCard({ title, value, detail, tone = 'neutral' }) {

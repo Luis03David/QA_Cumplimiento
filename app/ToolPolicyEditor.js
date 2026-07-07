@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useMemo, useState } from 'react';
+import { useSearchParams } from 'next/navigation';
 
 function lines(value) {
   return Array.isArray(value) ? value.join('\n') : String(value || '');
@@ -31,6 +32,8 @@ function familyLabel(family) {
 }
 
 export default function ToolPolicyEditor() {
+  const searchParams = useSearchParams();
+  const requestedCaseId = searchParams.get('caseId') || '';
   const [cases, setCases] = useState([]);
   const [selectedId, setSelectedId] = useState('');
   const [draft, setDraft] = useState(null);
@@ -89,8 +92,14 @@ export default function ToolPolicyEditor() {
       if (!response.ok) throw new Error(payload.error || `HTTP ${response.status}`);
       const nextCases = payload.cases || [];
       setCases(nextCases);
-      const nextId = selectedId || nextCases[0]?.id || '';
+      const requested = nextCases.find((item) => item.id === requestedCaseId);
+      const nextId = selectedId || requested?.id || nextCases[0]?.id || '';
       setSelectedId(nextId);
+      if (requested?.id) {
+        setCaseQuery(requested.id);
+        setFamilyFilter('all');
+        setGroupFilter('all');
+      }
     } catch (error) {
       setLoadError(String(error.message || error));
     } finally {
@@ -101,6 +110,19 @@ export default function ToolPolicyEditor() {
   useEffect(() => {
     loadCases();
   }, []);
+
+  useEffect(() => {
+    if (!requestedCaseId || cases.length === 0) return;
+    const requested = cases.find((item) => item.id === requestedCaseId);
+    if (!requested) {
+      setStatus(`El caso ${requestedCaseId} no esta en el banco editable.`);
+      return;
+    }
+    setSelectedId(requested.id);
+    setCaseQuery(requested.id);
+    setFamilyFilter('all');
+    setGroupFilter('all');
+  }, [requestedCaseId, cases]);
 
   useEffect(() => {
     if (!selected) {

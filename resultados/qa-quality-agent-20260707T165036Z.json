@@ -1,0 +1,167 @@
+{
+  "schema_version": "1.0",
+  "run_id": "qa-quality-agent-20260707T165036Z",
+  "tool": "qa-quality-microagent",
+  "category": "compliance",
+  "status": "fail",
+  "started_at": "2026-07-07T16:50:36Z",
+  "finished_at": "2026-07-07T16:50:48Z",
+  "summary": "Microagente QA Calidad encontro fallas.",
+  "checks": [
+    {
+      "name": "environment-preflight",
+      "status": "pass",
+      "message": "Variables requeridas inspeccionadas sin exponer secretos.",
+      "details": {
+        "env": {
+          "AITOPS_BASE_URL": "set",
+          "AITOPS_USER_EMAIL": "set",
+          "ICS_LLM_MODEL_NAME": "set",
+          "ICS_LLM_RUNPOD_POD_NAME": "set",
+          "RUNPOD_API_KEY": "set",
+          "ICS_EMBEDDINGS_RUNPOD_POD_NAME": "set"
+        }
+      }
+    },
+    {
+      "name": "aitops-session",
+      "status": "pass",
+      "message": "Sesion local disponible.",
+      "details": {
+        "auth_file": "present",
+        "origins": [
+          "https://missioncontrol.qa.aitops.ai"
+        ],
+        "has_access_token": true
+      }
+    },
+    {
+      "name": "deepeval-installed",
+      "status": "pass",
+      "message": "DeepEval instalado: 4.0.7",
+      "details": {
+        "version": "4.0.7"
+      }
+    },
+    {
+      "name": "agentic-evals-run",
+      "status": "pass",
+      "message": "Agentic evals ejecutados.",
+      "details": {
+        "args": [
+          "/cum/.venv/bin/python",
+          "scripts/run_agentic_evals.py",
+          "--use-deepeval",
+          "--case",
+          "CP12-RELEVANCE-001"
+        ],
+        "exit_code": 0,
+        "status": "pass",
+        "stdout_tail": "wrote /cum/resultados/agentic-evals-20260707T165039Z.json\n",
+        "stderr_tail": "\n\n"
+      }
+    },
+    {
+      "name": "ragas-evals-run",
+      "status": "pass",
+      "message": "ragas-evals ejecutado.",
+      "details": {
+        "args": [
+          "/cum/.venv/bin/python",
+          "scripts/run_ragas_evals.py"
+        ],
+        "exit_code": 0,
+        "status": "pass",
+        "stdout_tail": "wrote /cum/resultados/ragas-evals-20260707T165047Z.json\n",
+        "stderr_tail": ""
+      }
+    },
+    {
+      "name": "agent-workflow-evals-run",
+      "status": "fail",
+      "message": "agent-workflow-evals reporto fallas.",
+      "details": {
+        "args": [
+          "/cum/.venv/bin/python",
+          "scripts/run_agent_workflow_evals.py"
+        ],
+        "exit_code": 1,
+        "status": "fail",
+        "stdout_tail": "wrote /cum/resultados/agent-workflow-evals-20260707T165047Z.json\n",
+        "stderr_tail": ""
+      }
+    },
+    {
+      "name": "promptfoo-evals-run",
+      "status": "pass",
+      "message": "promptfoo-evals ejecutado.",
+      "details": {
+        "args": [
+          "/cum/.venv/bin/python",
+          "scripts/run_promptfoo_eval.py"
+        ],
+        "exit_code": 0,
+        "status": "pass",
+        "stdout_tail": "wrote /cum/resultados/promptfoo-evals-20260707T165048Z.json\n",
+        "stderr_tail": ""
+      }
+    },
+    {
+      "name": "chat-consistency-history",
+      "status": "fail",
+      "message": "Ultimo chat-consistency: chat-consistency-20260706T215500Z-reviewed.json, status=fail, fallas=14.",
+      "details": {
+        "path": "resultados/chat-consistency-20260706T215500Z-reviewed.json",
+        "result_status": "fail",
+        "checks": 29,
+        "failed_checks": 14
+      }
+    },
+    {
+      "name": "schema agentic-evals-20260707T165039Z.json",
+      "status": "pass",
+      "message": "Resultado compatible con config/result.schema.json.",
+      "details": {
+        "path": "resultados/agentic-evals-20260707T165039Z.json",
+        "result_status": "pass",
+        "tool": "agentic-evals"
+      }
+    },
+    {
+      "name": "schema ragas-evals-20260707T165047Z.json",
+      "status": "pass",
+      "message": "Resultado compatible con config/result.schema.json.",
+      "details": {
+        "path": "resultados/ragas-evals-20260707T165047Z.json",
+        "result_status": "pass",
+        "tool": "ragas-evals"
+      }
+    },
+    {
+      "name": "schema agent-workflow-evals-20260707T165047Z.json",
+      "status": "pass",
+      "message": "Resultado compatible con config/result.schema.json.",
+      "details": {
+        "path": "resultados/agent-workflow-evals-20260707T165047Z.json",
+        "result_status": "fail",
+        "tool": "agent-workflow-evals"
+      }
+    },
+    {
+      "name": "schema promptfoo-evals-20260707T165048Z.json",
+      "status": "pass",
+      "message": "Resultado compatible con config/result.schema.json.",
+      "details": {
+        "path": "resultados/promptfoo-evals-20260707T165048Z.json",
+        "result_status": "pass",
+        "tool": "promptfoo-evals"
+      }
+    }
+  ],
+  "artifacts": [
+    "resultados/agentic-evals-20260707T165039Z.json",
+    "resultados/ragas-evals-20260707T165047Z.json",
+    "resultados/agent-workflow-evals-20260707T165047Z.json",
+    "resultados/promptfoo-evals-20260707T165048Z.json"
+  ]
+}

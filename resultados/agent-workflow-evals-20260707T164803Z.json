@@ -1,0 +1,2122 @@
+{
+  "schema_version": "1.0",
+  "run_id": "agent-workflow-evals-20260707T164803Z",
+  "tool": "agent-workflow-evals",
+  "category": "compliance",
+  "status": "fail",
+  "started_at": "2026-07-07T16:48:03Z",
+  "finished_at": "2026-07-07T16:48:03Z",
+  "summary": "Agent workflow evals encontraron fallas.",
+  "checks": [
+    {
+      "name": "SEM-INV-OWN-001 task_completion",
+      "status": "pass",
+      "message": "task_completion=ok para SEM-INV-OWN-001",
+      "details": {
+        "case_id": "SEM-INV-OWN-001",
+        "eval_theme": "agent_workflow",
+        "metric": "task_completion",
+        "score": 1.0,
+        "tool_calls_count": 1,
+        "violations": []
+      }
+    },
+    {
+      "name": "SEM-INV-OWN-001 tool_correctness",
+      "status": "pass",
+      "message": "tool_correctness=ok para SEM-INV-OWN-001",
+      "details": {
+        "case_id": "SEM-INV-OWN-001",
+        "eval_theme": "agent_workflow",
+        "metric": "tool_correctness",
+        "score": 1.0,
+        "tool_calls_count": 1,
+        "violations": []
+      }
+    },
+    {
+      "name": "SEM-INV-OWN-001 argument_correctness",
+      "status": "pass",
+      "message": "argument_correctness=ok para SEM-INV-OWN-001",
+      "details": {
+        "case_id": "SEM-INV-OWN-001",
+        "eval_theme": "agent_workflow",
+        "metric": "argument_correctness",
+        "score": 1.0,
+        "tool_calls_count": 1,
+        "violations": []
+      }
+    },
+    {
+      "name": "SEM-INV-OWN-001 turn_relevancy",
+      "status": "pass",
+      "message": "turn_relevancy=ok para SEM-INV-OWN-001",
+      "details": {
+        "case_id": "SEM-INV-OWN-001",
+        "eval_theme": "agent_workflow",
+        "metric": "turn_relevancy",
+        "score": 1.0,
+        "tool_calls_count": 1,
+        "violations": []
+      }
+    },
+    {
+      "name": "SEM-INV-OWN-001 conversation_completeness",
+      "status": "pass",
+      "message": "conversation_completeness=ok para SEM-INV-OWN-001",
+      "details": {
+        "case_id": "SEM-INV-OWN-001",
+        "eval_theme": "agent_workflow",
+        "metric": "conversation_completeness",
+        "score": 1.0,
+        "tool_calls_count": 1,
+        "violations": []
+      }
+    },
+    {
+      "name": "SEM-INV-OWN-002 task_completion",
+      "status": "pass",
+      "message": "task_completion=ok para SEM-INV-OWN-002",
+      "details": {
+        "case_id": "SEM-INV-OWN-002",
+        "eval_theme": "agent_workflow",
+        "metric": "task_completion",
+        "score": 1.0,
+        "tool_calls_count": 1,
+        "violations": []
+      }
+    },
+    {
+      "name": "SEM-INV-OWN-002 tool_correctness",
+      "status": "pass",
+      "message": "tool_correctness=ok para SEM-INV-OWN-002",
+      "details": {
+        "case_id": "SEM-INV-OWN-002",
+        "eval_theme": "agent_workflow",
+        "metric": "tool_correctness",
+        "score": 1.0,
+        "tool_calls_count": 1,
+        "violations": []
+      }
+    },
+    {
+      "name": "SEM-INV-OWN-002 argument_correctness",
+      "status": "pass",
+      "message": "argument_correctness=ok para SEM-INV-OWN-002",
+      "details": {
+        "case_id": "SEM-INV-OWN-002",
+        "eval_theme": "agent_workflow",
+        "metric": "argument_correctness",
+        "score": 1.0,
+        "tool_calls_count": 1,
+        "violations": []
+      }
+    },
+    {
+      "name": "SEM-INV-OWN-002 turn_relevancy",
+      "status": "pass",
+      "message": "turn_relevancy=ok para SEM-INV-OWN-002",
+      "details": {
+        "case_id": "SEM-INV-OWN-002",
+        "eval_theme": "agent_workflow",
+        "metric": "turn_relevancy",
+        "score": 1.0,
+        "tool_calls_count": 1,
+        "violations": []
+      }
+    },
+    {
+      "name": "SEM-INV-OWN-002 conversation_completeness",
+      "status": "pass",
+      "message": "conversation_completeness=ok para SEM-INV-OWN-002",
+      "details": {
+        "case_id": "SEM-INV-OWN-002",
+        "eval_theme": "agent_workflow",
+        "metric": "conversation_completeness",
+        "score": 1.0,
+        "tool_calls_count": 1,
+        "violations": []
+      }
+    },
+    {
+      "name": "SEM-INV-OWN-003 task_completion",
+      "status": "pass",
+      "message": "task_completion=ok para SEM-INV-OWN-003",
+      "details": {
+        "case_id": "SEM-INV-OWN-003",
+        "eval_theme": "agent_workflow",
+        "metric": "task_completion",
+        "score": 1.0,
+        "tool_calls_count": 1,
+        "violations": []
+      }
+    },
+    {
+      "name": "SEM-INV-OWN-003 tool_correctness",
+      "status": "pass",
+      "message": "tool_correctness=ok para SEM-INV-OWN-003",
+      "details": {
+        "case_id": "SEM-INV-OWN-003",
+        "eval_theme": "agent_workflow",
+        "metric": "tool_correctness",
+        "score": 1.0,
+        "tool_calls_count": 1,
+        "violations": []
+      }
+    },
+    {
+      "name": "SEM-INV-OWN-003 argument_correctness",
+      "status": "pass",
+      "message": "argument_correctness=ok para SEM-INV-OWN-003",
+      "details": {
+        "case_id": "SEM-INV-OWN-003",
+        "eval_theme": "agent_workflow",
+        "metric": "argument_correctness",
+        "score": 1.0,
+        "tool_calls_count": 1,
+        "violations": []
+      }
+    },
+    {
+      "name": "SEM-INV-OWN-003 turn_relevancy",
+      "status": "pass",
+      "message": "turn_relevancy=ok para SEM-INV-OWN-003",
+      "details": {
+        "case_id": "SEM-INV-OWN-003",
+        "eval_theme": "agent_workflow",
+        "metric": "turn_relevancy",
+        "score": 1.0,
+        "tool_calls_count": 1,
+        "violations": []
+      }
+    },
+    {
+      "name": "SEM-INV-OWN-003 conversation_completeness",
+      "status": "pass",
+      "message": "conversation_completeness=ok para SEM-INV-OWN-003",
+      "details": {
+        "case_id": "SEM-INV-OWN-003",
+        "eval_theme": "agent_workflow",
+        "metric": "conversation_completeness",
+        "score": 1.0,
+        "tool_calls_count": 1,
+        "violations": []
+      }
+    },
+    {
+      "name": "SEM-INV-OWN-004 task_completion",
+      "status": "fail",
+      "message": "task_completion=failed para SEM-INV-OWN-004",
+      "details": {
+        "case_id": "SEM-INV-OWN-004",
+        "eval_theme": "agent_workflow",
+        "metric": "task_completion",
+        "score": 0.0,
+        "tool_calls_count": 0,
+        "violations": [
+          "empty response text."
+        ]
+      }
+    },
+    {
+      "name": "SEM-INV-OWN-004 tool_correctness",
+      "status": "pass",
+      "message": "tool_correctness=ok para SEM-INV-OWN-004",
+      "details": {
+        "case_id": "SEM-INV-OWN-004",
+        "eval_theme": "agent_workflow",
+        "metric": "tool_correctness",
+        "score": 1.0,
+        "tool_calls_count": 0,
+        "violations": [
+          "empty response text."
+        ]
+      }
+    },
+    {
+      "name": "SEM-INV-OWN-004 argument_correctness",
+      "status": "pass",
+      "message": "argument_correctness=ok para SEM-INV-OWN-004",
+      "details": {
+        "case_id": "SEM-INV-OWN-004",
+        "eval_theme": "agent_workflow",
+        "metric": "argument_correctness",
+        "score": 1.0,
+        "tool_calls_count": 0,
+        "violations": [
+          "empty response text."
+        ]
+      }
+    },
+    {
+      "name": "SEM-INV-OWN-004 turn_relevancy",
+      "status": "fail",
+      "message": "turn_relevancy=failed para SEM-INV-OWN-004",
+      "details": {
+        "case_id": "SEM-INV-OWN-004",
+        "eval_theme": "agent_workflow",
+        "metric": "turn_relevancy",
+        "score": 0.0,
+        "tool_calls_count": 0,
+        "violations": [
+          "empty response text."
+        ]
+      }
+    },
+    {
+      "name": "SEM-INV-OWN-004 conversation_completeness",
+      "status": "fail",
+      "message": "conversation_completeness=failed para SEM-INV-OWN-004",
+      "details": {
+        "case_id": "SEM-INV-OWN-004",
+        "eval_theme": "agent_workflow",
+        "metric": "conversation_completeness",
+        "score": 0.0,
+        "tool_calls_count": 0,
+        "violations": [
+          "empty response text."
+        ]
+      }
+    },
+    {
+      "name": "SEM-INV-RAM-001 task_completion",
+      "status": "pass",
+      "message": "task_completion=ok para SEM-INV-RAM-001",
+      "details": {
+        "case_id": "SEM-INV-RAM-001",
+        "eval_theme": "agent_workflow",
+        "metric": "task_completion",
+        "score": 1.0,
+        "tool_calls_count": 1,
+        "violations": []
+      }
+    },
+    {
+      "name": "SEM-INV-RAM-001 tool_correctness",
+      "status": "pass",
+      "message": "tool_correctness=ok para SEM-INV-RAM-001",
+      "details": {
+        "case_id": "SEM-INV-RAM-001",
+        "eval_theme": "agent_workflow",
+        "metric": "tool_correctness",
+        "score": 1.0,
+        "tool_calls_count": 1,
+        "violations": []
+      }
+    },
+    {
+      "name": "SEM-INV-RAM-001 argument_correctness",
+      "status": "pass",
+      "message": "argument_correctness=ok para SEM-INV-RAM-001",
+      "details": {
+        "case_id": "SEM-INV-RAM-001",
+        "eval_theme": "agent_workflow",
+        "metric": "argument_correctness",
+        "score": 1.0,
+        "tool_calls_count": 1,
+        "violations": []
+      }
+    },
+    {
+      "name": "SEM-INV-RAM-001 turn_relevancy",
+      "status": "pass",
+      "message": "turn_relevancy=ok para SEM-INV-RAM-001",
+      "details": {
+        "case_id": "SEM-INV-RAM-001",
+        "eval_theme": "agent_workflow",
+        "metric": "turn_relevancy",
+        "score": 1.0,
+        "tool_calls_count": 1,
+        "violations": []
+      }
+    },
+    {
+      "name": "SEM-INV-RAM-001 conversation_completeness",
+      "status": "pass",
+      "message": "conversation_completeness=ok para SEM-INV-RAM-001",
+      "details": {
+        "case_id": "SEM-INV-RAM-001",
+        "eval_theme": "agent_workflow",
+        "metric": "conversation_completeness",
+        "score": 1.0,
+        "tool_calls_count": 1,
+        "violations": []
+      }
+    },
+    {
+      "name": "SEM-INV-RAM-002 task_completion",
+      "status": "pass",
+      "message": "task_completion=ok para SEM-INV-RAM-002",
+      "details": {
+        "case_id": "SEM-INV-RAM-002",
+        "eval_theme": "agent_workflow",
+        "metric": "task_completion",
+        "score": 1.0,
+        "tool_calls_count": 1,
+        "violations": []
+      }
+    },
+    {
+      "name": "SEM-INV-RAM-002 tool_correctness",
+      "status": "pass",
+      "message": "tool_correctness=ok para SEM-INV-RAM-002",
+      "details": {
+        "case_id": "SEM-INV-RAM-002",
+        "eval_theme": "agent_workflow",
+        "metric": "tool_correctness",
+        "score": 1.0,
+        "tool_calls_count": 1,
+        "violations": []
+      }
+    },
+    {
+      "name": "SEM-INV-RAM-002 argument_correctness",
+      "status": "pass",
+      "message": "argument_correctness=ok para SEM-INV-RAM-002",
+      "details": {
+        "case_id": "SEM-INV-RAM-002",
+        "eval_theme": "agent_workflow",
+        "metric": "argument_correctness",
+        "score": 1.0,
+        "tool_calls_count": 1,
+        "violations": []
+      }
+    },
+    {
+      "name": "SEM-INV-RAM-002 turn_relevancy",
+      "status": "pass",
+      "message": "turn_relevancy=ok para SEM-INV-RAM-002",
+      "details": {
+        "case_id": "SEM-INV-RAM-002",
+        "eval_theme": "agent_workflow",
+        "metric": "turn_relevancy",
+        "score": 1.0,
+        "tool_calls_count": 1,
+        "violations": []
+      }
+    },
+    {
+      "name": "SEM-INV-RAM-002 conversation_completeness",
+      "status": "pass",
+      "message": "conversation_completeness=ok para SEM-INV-RAM-002",
+      "details": {
+        "case_id": "SEM-INV-RAM-002",
+        "eval_theme": "agent_workflow",
+        "metric": "conversation_completeness",
+        "score": 1.0,
+        "tool_calls_count": 1,
+        "violations": []
+      }
+    },
+    {
+      "name": "SEM-INV-RAM-003 task_completion",
+      "status": "pass",
+      "message": "task_completion=ok para SEM-INV-RAM-003",
+      "details": {
+        "case_id": "SEM-INV-RAM-003",
+        "eval_theme": "agent_workflow",
+        "metric": "task_completion",
+        "score": 1.0,
+        "tool_calls_count": 1,
+        "violations": []
+      }
+    },
+    {
+      "name": "SEM-INV-RAM-003 tool_correctness",
+      "status": "pass",
+      "message": "tool_correctness=ok para SEM-INV-RAM-003",
+      "details": {
+        "case_id": "SEM-INV-RAM-003",
+        "eval_theme": "agent_workflow",
+        "metric": "tool_correctness",
+        "score": 1.0,
+        "tool_calls_count": 1,
+        "violations": []
+      }
+    },
+    {
+      "name": "SEM-INV-RAM-003 argument_correctness",
+      "status": "pass",
+      "message": "argument_correctness=ok para SEM-INV-RAM-003",
+      "details": {
+        "case_id": "SEM-INV-RAM-003",
+        "eval_theme": "agent_workflow",
+        "metric": "argument_correctness",
+        "score": 1.0,
+        "tool_calls_count": 1,
+        "violations": []
+      }
+    },
+    {
+      "name": "SEM-INV-RAM-003 turn_relevancy",
+      "status": "pass",
+      "message": "turn_relevancy=ok para SEM-INV-RAM-003",
+      "details": {
+        "case_id": "SEM-INV-RAM-003",
+        "eval_theme": "agent_workflow",
+        "metric": "turn_relevancy",
+        "score": 1.0,
+        "tool_calls_count": 1,
+        "violations": []
+      }
+    },
+    {
+      "name": "SEM-INV-RAM-003 conversation_completeness",
+      "status": "pass",
+      "message": "conversation_completeness=ok para SEM-INV-RAM-003",
+      "details": {
+        "case_id": "SEM-INV-RAM-003",
+        "eval_theme": "agent_workflow",
+        "metric": "conversation_completeness",
+        "score": 1.0,
+        "tool_calls_count": 1,
+        "violations": []
+      }
+    },
+    {
+      "name": "SEM-INV-RAM-004 task_completion",
+      "status": "pass",
+      "message": "task_completion=ok para SEM-INV-RAM-004",
+      "details": {
+        "case_id": "SEM-INV-RAM-004",
+        "eval_theme": "agent_workflow",
+        "metric": "task_completion",
+        "score": 1.0,
+        "tool_calls_count": 1,
+        "violations": []
+      }
+    },
+    {
+      "name": "SEM-INV-RAM-004 tool_correctness",
+      "status": "pass",
+      "message": "tool_correctness=ok para SEM-INV-RAM-004",
+      "details": {
+        "case_id": "SEM-INV-RAM-004",
+        "eval_theme": "agent_workflow",
+        "metric": "tool_correctness",
+        "score": 1.0,
+        "tool_calls_count": 1,
+        "violations": []
+      }
+    },
+    {
+      "name": "SEM-INV-RAM-004 argument_correctness",
+      "status": "pass",
+      "message": "argument_correctness=ok para SEM-INV-RAM-004",
+      "details": {
+        "case_id": "SEM-INV-RAM-004",
+        "eval_theme": "agent_workflow",
+        "metric": "argument_correctness",
+        "score": 1.0,
+        "tool_calls_count": 1,
+        "violations": []
+      }
+    },
+    {
+      "name": "SEM-INV-RAM-004 turn_relevancy",
+      "status": "pass",
+      "message": "turn_relevancy=ok para SEM-INV-RAM-004",
+      "details": {
+        "case_id": "SEM-INV-RAM-004",
+        "eval_theme": "agent_workflow",
+        "metric": "turn_relevancy",
+        "score": 1.0,
+        "tool_calls_count": 1,
+        "violations": []
+      }
+    },
+    {
+      "name": "SEM-INV-RAM-004 conversation_completeness",
+      "status": "pass",
+      "message": "conversation_completeness=ok para SEM-INV-RAM-004",
+      "details": {
+        "case_id": "SEM-INV-RAM-004",
+        "eval_theme": "agent_workflow",
+        "metric": "conversation_completeness",
+        "score": 1.0,
+        "tool_calls_count": 1,
+        "violations": []
+      }
+    },
+    {
+      "name": "SEM-INV-COUNT-001 task_completion",
+      "status": "fail",
+      "message": "task_completion=failed para SEM-INV-COUNT-001",
+      "details": {
+        "case_id": "SEM-INV-COUNT-001",
+        "eval_theme": "agent_workflow",
+        "metric": "task_completion",
+        "score": 0.0,
+        "tool_calls_count": 3,
+        "violations": [
+          "empty response text.",
+          "equivalent prompts for inventory-laptop-count returned 3 distinct semantic outcomes."
+        ]
+      }
+    },
+    {
+      "name": "SEM-INV-COUNT-001 tool_correctness",
+      "status": "pass",
+      "message": "tool_correctness=ok para SEM-INV-COUNT-001",
+      "details": {
+        "case_id": "SEM-INV-COUNT-001",
+        "eval_theme": "agent_workflow",
+        "metric": "tool_correctness",
+        "score": 1.0,
+        "tool_calls_count": 3,
+        "violations": [
+          "empty response text.",
+          "equivalent prompts for inventory-laptop-count returned 3 distinct semantic outcomes."
+        ]
+      }
+    },
+    {
+      "name": "SEM-INV-COUNT-001 argument_correctness",
+      "status": "pass",
+      "message": "argument_correctness=ok para SEM-INV-COUNT-001",
+      "details": {
+        "case_id": "SEM-INV-COUNT-001",
+        "eval_theme": "agent_workflow",
+        "metric": "argument_correctness",
+        "score": 1.0,
+        "tool_calls_count": 3,
+        "violations": [
+          "empty response text.",
+          "equivalent prompts for inventory-laptop-count returned 3 distinct semantic outcomes."
+        ]
+      }
+    },
+    {
+      "name": "SEM-INV-COUNT-001 turn_relevancy",
+      "status": "fail",
+      "message": "turn_relevancy=failed para SEM-INV-COUNT-001",
+      "details": {
+        "case_id": "SEM-INV-COUNT-001",
+        "eval_theme": "agent_workflow",
+        "metric": "turn_relevancy",
+        "score": 0.0,
+        "tool_calls_count": 3,
+        "violations": [
+          "empty response text.",
+          "equivalent prompts for inventory-laptop-count returned 3 distinct semantic outcomes."
+        ]
+      }
+    },
+    {
+      "name": "SEM-INV-COUNT-001 conversation_completeness",
+      "status": "fail",
+      "message": "conversation_completeness=failed para SEM-INV-COUNT-001",
+      "details": {
+        "case_id": "SEM-INV-COUNT-001",
+        "eval_theme": "agent_workflow",
+        "metric": "conversation_completeness",
+        "score": 0.0,
+        "tool_calls_count": 3,
+        "violations": [
+          "empty response text.",
+          "equivalent prompts for inventory-laptop-count returned 3 distinct semantic outcomes."
+        ]
+      }
+    },
+    {
+      "name": "SEM-INV-COUNT-002 task_completion",
+      "status": "fail",
+      "message": "task_completion=failed para SEM-INV-COUNT-002",
+      "details": {
+        "case_id": "SEM-INV-COUNT-002",
+        "eval_theme": "agent_workflow",
+        "metric": "task_completion",
+        "score": 0.0,
+        "tool_calls_count": 3,
+        "violations": [
+          "missing concrete count answer.",
+          "equivalent prompts for inventory-laptop-count returned 3 distinct semantic outcomes."
+        ]
+      }
+    },
+    {
+      "name": "SEM-INV-COUNT-002 tool_correctness",
+      "status": "pass",
+      "message": "tool_correctness=ok para SEM-INV-COUNT-002",
+      "details": {
+        "case_id": "SEM-INV-COUNT-002",
+        "eval_theme": "agent_workflow",
+        "metric": "tool_correctness",
+        "score": 1.0,
+        "tool_calls_count": 3,
+        "violations": [
+          "missing concrete count answer.",
+          "equivalent prompts for inventory-laptop-count returned 3 distinct semantic outcomes."
+        ]
+      }
+    },
+    {
+      "name": "SEM-INV-COUNT-002 argument_correctness",
+      "status": "pass",
+      "message": "argument_correctness=ok para SEM-INV-COUNT-002",
+      "details": {
+        "case_id": "SEM-INV-COUNT-002",
+        "eval_theme": "agent_workflow",
+        "metric": "argument_correctness",
+        "score": 1.0,
+        "tool_calls_count": 3,
+        "violations": [
+          "missing concrete count answer.",
+          "equivalent prompts for inventory-laptop-count returned 3 distinct semantic outcomes."
+        ]
+      }
+    },
+    {
+      "name": "SEM-INV-COUNT-002 turn_relevancy",
+      "status": "pass",
+      "message": "turn_relevancy=ok para SEM-INV-COUNT-002",
+      "details": {
+        "case_id": "SEM-INV-COUNT-002",
+        "eval_theme": "agent_workflow",
+        "metric": "turn_relevancy",
+        "score": 1.0,
+        "tool_calls_count": 3,
+        "violations": [
+          "missing concrete count answer.",
+          "equivalent prompts for inventory-laptop-count returned 3 distinct semantic outcomes."
+        ]
+      }
+    },
+    {
+      "name": "SEM-INV-COUNT-002 conversation_completeness",
+      "status": "pass",
+      "message": "conversation_completeness=ok para SEM-INV-COUNT-002",
+      "details": {
+        "case_id": "SEM-INV-COUNT-002",
+        "eval_theme": "agent_workflow",
+        "metric": "conversation_completeness",
+        "score": 1.0,
+        "tool_calls_count": 3,
+        "violations": [
+          "missing concrete count answer.",
+          "equivalent prompts for inventory-laptop-count returned 3 distinct semantic outcomes."
+        ]
+      }
+    },
+    {
+      "name": "SEM-INV-COUNT-003 task_completion",
+      "status": "fail",
+      "message": "task_completion=failed para SEM-INV-COUNT-003",
+      "details": {
+        "case_id": "SEM-INV-COUNT-003",
+        "eval_theme": "agent_workflow",
+        "metric": "task_completion",
+        "score": 0.0,
+        "tool_calls_count": 5,
+        "violations": [
+          "missing concrete count answer.",
+          "equivalent prompts for inventory-laptop-count returned 3 distinct semantic outcomes."
+        ]
+      }
+    },
+    {
+      "name": "SEM-INV-COUNT-003 tool_correctness",
+      "status": "pass",
+      "message": "tool_correctness=ok para SEM-INV-COUNT-003",
+      "details": {
+        "case_id": "SEM-INV-COUNT-003",
+        "eval_theme": "agent_workflow",
+        "metric": "tool_correctness",
+        "score": 1.0,
+        "tool_calls_count": 5,
+        "violations": [
+          "missing concrete count answer.",
+          "equivalent prompts for inventory-laptop-count returned 3 distinct semantic outcomes."
+        ]
+      }
+    },
+    {
+      "name": "SEM-INV-COUNT-003 argument_correctness",
+      "status": "pass",
+      "message": "argument_correctness=ok para SEM-INV-COUNT-003",
+      "details": {
+        "case_id": "SEM-INV-COUNT-003",
+        "eval_theme": "agent_workflow",
+        "metric": "argument_correctness",
+        "score": 1.0,
+        "tool_calls_count": 5,
+        "violations": [
+          "missing concrete count answer.",
+          "equivalent prompts for inventory-laptop-count returned 3 distinct semantic outcomes."
+        ]
+      }
+    },
+    {
+      "name": "SEM-INV-COUNT-003 turn_relevancy",
+      "status": "pass",
+      "message": "turn_relevancy=ok para SEM-INV-COUNT-003",
+      "details": {
+        "case_id": "SEM-INV-COUNT-003",
+        "eval_theme": "agent_workflow",
+        "metric": "turn_relevancy",
+        "score": 1.0,
+        "tool_calls_count": 5,
+        "violations": [
+          "missing concrete count answer.",
+          "equivalent prompts for inventory-laptop-count returned 3 distinct semantic outcomes."
+        ]
+      }
+    },
+    {
+      "name": "SEM-INV-COUNT-003 conversation_completeness",
+      "status": "pass",
+      "message": "conversation_completeness=ok para SEM-INV-COUNT-003",
+      "details": {
+        "case_id": "SEM-INV-COUNT-003",
+        "eval_theme": "agent_workflow",
+        "metric": "conversation_completeness",
+        "score": 1.0,
+        "tool_calls_count": 5,
+        "violations": [
+          "missing concrete count answer.",
+          "equivalent prompts for inventory-laptop-count returned 3 distinct semantic outcomes."
+        ]
+      }
+    },
+    {
+      "name": "SEM-INV-COUNT-004 task_completion",
+      "status": "fail",
+      "message": "task_completion=failed para SEM-INV-COUNT-004",
+      "details": {
+        "case_id": "SEM-INV-COUNT-004",
+        "eval_theme": "agent_workflow",
+        "metric": "task_completion",
+        "score": 0.0,
+        "tool_calls_count": 3,
+        "violations": [
+          "missing concrete count answer.",
+          "equivalent prompts for inventory-laptop-count returned 3 distinct semantic outcomes."
+        ]
+      }
+    },
+    {
+      "name": "SEM-INV-COUNT-004 tool_correctness",
+      "status": "pass",
+      "message": "tool_correctness=ok para SEM-INV-COUNT-004",
+      "details": {
+        "case_id": "SEM-INV-COUNT-004",
+        "eval_theme": "agent_workflow",
+        "metric": "tool_correctness",
+        "score": 1.0,
+        "tool_calls_count": 3,
+        "violations": [
+          "missing concrete count answer.",
+          "equivalent prompts for inventory-laptop-count returned 3 distinct semantic outcomes."
+        ]
+      }
+    },
+    {
+      "name": "SEM-INV-COUNT-004 argument_correctness",
+      "status": "pass",
+      "message": "argument_correctness=ok para SEM-INV-COUNT-004",
+      "details": {
+        "case_id": "SEM-INV-COUNT-004",
+        "eval_theme": "agent_workflow",
+        "metric": "argument_correctness",
+        "score": 1.0,
+        "tool_calls_count": 3,
+        "violations": [
+          "missing concrete count answer.",
+          "equivalent prompts for inventory-laptop-count returned 3 distinct semantic outcomes."
+        ]
+      }
+    },
+    {
+      "name": "SEM-INV-COUNT-004 turn_relevancy",
+      "status": "pass",
+      "message": "turn_relevancy=ok para SEM-INV-COUNT-004",
+      "details": {
+        "case_id": "SEM-INV-COUNT-004",
+        "eval_theme": "agent_workflow",
+        "metric": "turn_relevancy",
+        "score": 1.0,
+        "tool_calls_count": 3,
+        "violations": [
+          "missing concrete count answer.",
+          "equivalent prompts for inventory-laptop-count returned 3 distinct semantic outcomes."
+        ]
+      }
+    },
+    {
+      "name": "SEM-INV-COUNT-004 conversation_completeness",
+      "status": "pass",
+      "message": "conversation_completeness=ok para SEM-INV-COUNT-004",
+      "details": {
+        "case_id": "SEM-INV-COUNT-004",
+        "eval_theme": "agent_workflow",
+        "metric": "conversation_completeness",
+        "score": 1.0,
+        "tool_calls_count": 3,
+        "violations": [
+          "missing concrete count answer.",
+          "equivalent prompts for inventory-laptop-count returned 3 distinct semantic outcomes."
+        ]
+      }
+    },
+    {
+      "name": "SEM-INV-STATE-001 task_completion",
+      "status": "pass",
+      "message": "task_completion=ok para SEM-INV-STATE-001",
+      "details": {
+        "case_id": "SEM-INV-STATE-001",
+        "eval_theme": "agent_workflow",
+        "metric": "task_completion",
+        "score": 1.0,
+        "tool_calls_count": 1,
+        "violations": []
+      }
+    },
+    {
+      "name": "SEM-INV-STATE-001 tool_correctness",
+      "status": "pass",
+      "message": "tool_correctness=ok para SEM-INV-STATE-001",
+      "details": {
+        "case_id": "SEM-INV-STATE-001",
+        "eval_theme": "agent_workflow",
+        "metric": "tool_correctness",
+        "score": 1.0,
+        "tool_calls_count": 1,
+        "violations": []
+      }
+    },
+    {
+      "name": "SEM-INV-STATE-001 argument_correctness",
+      "status": "pass",
+      "message": "argument_correctness=ok para SEM-INV-STATE-001",
+      "details": {
+        "case_id": "SEM-INV-STATE-001",
+        "eval_theme": "agent_workflow",
+        "metric": "argument_correctness",
+        "score": 1.0,
+        "tool_calls_count": 1,
+        "violations": []
+      }
+    },
+    {
+      "name": "SEM-INV-STATE-001 turn_relevancy",
+      "status": "pass",
+      "message": "turn_relevancy=ok para SEM-INV-STATE-001",
+      "details": {
+        "case_id": "SEM-INV-STATE-001",
+        "eval_theme": "agent_workflow",
+        "metric": "turn_relevancy",
+        "score": 1.0,
+        "tool_calls_count": 1,
+        "violations": []
+      }
+    },
+    {
+      "name": "SEM-INV-STATE-001 conversation_completeness",
+      "status": "pass",
+      "message": "conversation_completeness=ok para SEM-INV-STATE-001",
+      "details": {
+        "case_id": "SEM-INV-STATE-001",
+        "eval_theme": "agent_workflow",
+        "metric": "conversation_completeness",
+        "score": 1.0,
+        "tool_calls_count": 1,
+        "violations": []
+      }
+    },
+    {
+      "name": "SEM-INV-STATE-002 task_completion",
+      "status": "pass",
+      "message": "task_completion=ok para SEM-INV-STATE-002",
+      "details": {
+        "case_id": "SEM-INV-STATE-002",
+        "eval_theme": "agent_workflow",
+        "metric": "task_completion",
+        "score": 1.0,
+        "tool_calls_count": 1,
+        "violations": []
+      }
+    },
+    {
+      "name": "SEM-INV-STATE-002 tool_correctness",
+      "status": "pass",
+      "message": "tool_correctness=ok para SEM-INV-STATE-002",
+      "details": {
+        "case_id": "SEM-INV-STATE-002",
+        "eval_theme": "agent_workflow",
+        "metric": "tool_correctness",
+        "score": 1.0,
+        "tool_calls_count": 1,
+        "violations": []
+      }
+    },
+    {
+      "name": "SEM-INV-STATE-002 argument_correctness",
+      "status": "pass",
+      "message": "argument_correctness=ok para SEM-INV-STATE-002",
+      "details": {
+        "case_id": "SEM-INV-STATE-002",
+        "eval_theme": "agent_workflow",
+        "metric": "argument_correctness",
+        "score": 1.0,
+        "tool_calls_count": 1,
+        "violations": []
+      }
+    },
+    {
+      "name": "SEM-INV-STATE-002 turn_relevancy",
+      "status": "pass",
+      "message": "turn_relevancy=ok para SEM-INV-STATE-002",
+      "details": {
+        "case_id": "SEM-INV-STATE-002",
+        "eval_theme": "agent_workflow",
+        "metric": "turn_relevancy",
+        "score": 1.0,
+        "tool_calls_count": 1,
+        "violations": []
+      }
+    },
+    {
+      "name": "SEM-INV-STATE-002 conversation_completeness",
+      "status": "pass",
+      "message": "conversation_completeness=ok para SEM-INV-STATE-002",
+      "details": {
+        "case_id": "SEM-INV-STATE-002",
+        "eval_theme": "agent_workflow",
+        "metric": "conversation_completeness",
+        "score": 1.0,
+        "tool_calls_count": 1,
+        "violations": []
+      }
+    },
+    {
+      "name": "SEM-INV-STATE-003 task_completion",
+      "status": "pass",
+      "message": "task_completion=ok para SEM-INV-STATE-003",
+      "details": {
+        "case_id": "SEM-INV-STATE-003",
+        "eval_theme": "agent_workflow",
+        "metric": "task_completion",
+        "score": 1.0,
+        "tool_calls_count": 2,
+        "violations": []
+      }
+    },
+    {
+      "name": "SEM-INV-STATE-003 tool_correctness",
+      "status": "pass",
+      "message": "tool_correctness=ok para SEM-INV-STATE-003",
+      "details": {
+        "case_id": "SEM-INV-STATE-003",
+        "eval_theme": "agent_workflow",
+        "metric": "tool_correctness",
+        "score": 1.0,
+        "tool_calls_count": 2,
+        "violations": []
+      }
+    },
+    {
+      "name": "SEM-INV-STATE-003 argument_correctness",
+      "status": "pass",
+      "message": "argument_correctness=ok para SEM-INV-STATE-003",
+      "details": {
+        "case_id": "SEM-INV-STATE-003",
+        "eval_theme": "agent_workflow",
+        "metric": "argument_correctness",
+        "score": 1.0,
+        "tool_calls_count": 2,
+        "violations": []
+      }
+    },
+    {
+      "name": "SEM-INV-STATE-003 turn_relevancy",
+      "status": "pass",
+      "message": "turn_relevancy=ok para SEM-INV-STATE-003",
+      "details": {
+        "case_id": "SEM-INV-STATE-003",
+        "eval_theme": "agent_workflow",
+        "metric": "turn_relevancy",
+        "score": 1.0,
+        "tool_calls_count": 2,
+        "violations": []
+      }
+    },
+    {
+      "name": "SEM-INV-STATE-003 conversation_completeness",
+      "status": "pass",
+      "message": "conversation_completeness=ok para SEM-INV-STATE-003",
+      "details": {
+        "case_id": "SEM-INV-STATE-003",
+        "eval_theme": "agent_workflow",
+        "metric": "conversation_completeness",
+        "score": 1.0,
+        "tool_calls_count": 2,
+        "violations": []
+      }
+    },
+    {
+      "name": "SEM-INV-STATE-004 task_completion",
+      "status": "pass",
+      "message": "task_completion=ok para SEM-INV-STATE-004",
+      "details": {
+        "case_id": "SEM-INV-STATE-004",
+        "eval_theme": "agent_workflow",
+        "metric": "task_completion",
+        "score": 1.0,
+        "tool_calls_count": 1,
+        "violations": []
+      }
+    },
+    {
+      "name": "SEM-INV-STATE-004 tool_correctness",
+      "status": "pass",
+      "message": "tool_correctness=ok para SEM-INV-STATE-004",
+      "details": {
+        "case_id": "SEM-INV-STATE-004",
+        "eval_theme": "agent_workflow",
+        "metric": "tool_correctness",
+        "score": 1.0,
+        "tool_calls_count": 1,
+        "violations": []
+      }
+    },
+    {
+      "name": "SEM-INV-STATE-004 argument_correctness",
+      "status": "pass",
+      "message": "argument_correctness=ok para SEM-INV-STATE-004",
+      "details": {
+        "case_id": "SEM-INV-STATE-004",
+        "eval_theme": "agent_workflow",
+        "metric": "argument_correctness",
+        "score": 1.0,
+        "tool_calls_count": 1,
+        "violations": []
+      }
+    },
+    {
+      "name": "SEM-INV-STATE-004 turn_relevancy",
+      "status": "pass",
+      "message": "turn_relevancy=ok para SEM-INV-STATE-004",
+      "details": {
+        "case_id": "SEM-INV-STATE-004",
+        "eval_theme": "agent_workflow",
+        "metric": "turn_relevancy",
+        "score": 1.0,
+        "tool_calls_count": 1,
+        "violations": []
+      }
+    },
+    {
+      "name": "SEM-INV-STATE-004 conversation_completeness",
+      "status": "pass",
+      "message": "conversation_completeness=ok para SEM-INV-STATE-004",
+      "details": {
+        "case_id": "SEM-INV-STATE-004",
+        "eval_theme": "agent_workflow",
+        "metric": "conversation_completeness",
+        "score": 1.0,
+        "tool_calls_count": 1,
+        "violations": []
+      }
+    },
+    {
+      "name": "SEM-INV-PROC-001 task_completion",
+      "status": "fail",
+      "message": "task_completion=failed para SEM-INV-PROC-001",
+      "details": {
+        "case_id": "SEM-INV-PROC-001",
+        "eval_theme": "agent_workflow",
+        "metric": "task_completion",
+        "score": 0.0,
+        "tool_calls_count": 1,
+        "violations": [
+          "equivalent prompts for inventory-retirement-procedure returned 3 distinct semantic outcomes."
+        ]
+      }
+    },
+    {
+      "name": "SEM-INV-PROC-001 tool_correctness",
+      "status": "pass",
+      "message": "tool_correctness=ok para SEM-INV-PROC-001",
+      "details": {
+        "case_id": "SEM-INV-PROC-001",
+        "eval_theme": "agent_workflow",
+        "metric": "tool_correctness",
+        "score": 1.0,
+        "tool_calls_count": 1,
+        "violations": [
+          "equivalent prompts for inventory-retirement-procedure returned 3 distinct semantic outcomes."
+        ]
+      }
+    },
+    {
+      "name": "SEM-INV-PROC-001 argument_correctness",
+      "status": "pass",
+      "message": "argument_correctness=ok para SEM-INV-PROC-001",
+      "details": {
+        "case_id": "SEM-INV-PROC-001",
+        "eval_theme": "agent_workflow",
+        "metric": "argument_correctness",
+        "score": 1.0,
+        "tool_calls_count": 1,
+        "violations": [
+          "equivalent prompts for inventory-retirement-procedure returned 3 distinct semantic outcomes."
+        ]
+      }
+    },
+    {
+      "name": "SEM-INV-PROC-001 turn_relevancy",
+      "status": "pass",
+      "message": "turn_relevancy=ok para SEM-INV-PROC-001",
+      "details": {
+        "case_id": "SEM-INV-PROC-001",
+        "eval_theme": "agent_workflow",
+        "metric": "turn_relevancy",
+        "score": 1.0,
+        "tool_calls_count": 1,
+        "violations": [
+          "equivalent prompts for inventory-retirement-procedure returned 3 distinct semantic outcomes."
+        ]
+      }
+    },
+    {
+      "name": "SEM-INV-PROC-001 conversation_completeness",
+      "status": "pass",
+      "message": "conversation_completeness=ok para SEM-INV-PROC-001",
+      "details": {
+        "case_id": "SEM-INV-PROC-001",
+        "eval_theme": "agent_workflow",
+        "metric": "conversation_completeness",
+        "score": 1.0,
+        "tool_calls_count": 1,
+        "violations": [
+          "equivalent prompts for inventory-retirement-procedure returned 3 distinct semantic outcomes."
+        ]
+      }
+    },
+    {
+      "name": "SEM-INV-PROC-002 task_completion",
+      "status": "fail",
+      "message": "task_completion=failed para SEM-INV-PROC-002",
+      "details": {
+        "case_id": "SEM-INV-PROC-002",
+        "eval_theme": "agent_workflow",
+        "metric": "task_completion",
+        "score": 0.0,
+        "tool_calls_count": 1,
+        "violations": [
+          "equivalent prompts for inventory-retirement-procedure returned 3 distinct semantic outcomes."
+        ]
+      }
+    },
+    {
+      "name": "SEM-INV-PROC-002 tool_correctness",
+      "status": "pass",
+      "message": "tool_correctness=ok para SEM-INV-PROC-002",
+      "details": {
+        "case_id": "SEM-INV-PROC-002",
+        "eval_theme": "agent_workflow",
+        "metric": "tool_correctness",
+        "score": 1.0,
+        "tool_calls_count": 1,
+        "violations": [
+          "equivalent prompts for inventory-retirement-procedure returned 3 distinct semantic outcomes."
+        ]
+      }
+    },
+    {
+      "name": "SEM-INV-PROC-002 argument_correctness",
+      "status": "pass",
+      "message": "argument_correctness=ok para SEM-INV-PROC-002",
+      "details": {
+        "case_id": "SEM-INV-PROC-002",
+        "eval_theme": "agent_workflow",
+        "metric": "argument_correctness",
+        "score": 1.0,
+        "tool_calls_count": 1,
+        "violations": [
+          "equivalent prompts for inventory-retirement-procedure returned 3 distinct semantic outcomes."
+        ]
+      }
+    },
+    {
+      "name": "SEM-INV-PROC-002 turn_relevancy",
+      "status": "pass",
+      "message": "turn_relevancy=ok para SEM-INV-PROC-002",
+      "details": {
+        "case_id": "SEM-INV-PROC-002",
+        "eval_theme": "agent_workflow",
+        "metric": "turn_relevancy",
+        "score": 1.0,
+        "tool_calls_count": 1,
+        "violations": [
+          "equivalent prompts for inventory-retirement-procedure returned 3 distinct semantic outcomes."
+        ]
+      }
+    },
+    {
+      "name": "SEM-INV-PROC-002 conversation_completeness",
+      "status": "pass",
+      "message": "conversation_completeness=ok para SEM-INV-PROC-002",
+      "details": {
+        "case_id": "SEM-INV-PROC-002",
+        "eval_theme": "agent_workflow",
+        "metric": "conversation_completeness",
+        "score": 1.0,
+        "tool_calls_count": 1,
+        "violations": [
+          "equivalent prompts for inventory-retirement-procedure returned 3 distinct semantic outcomes."
+        ]
+      }
+    },
+    {
+      "name": "SEM-INV-PROC-003 task_completion",
+      "status": "fail",
+      "message": "task_completion=failed para SEM-INV-PROC-003",
+      "details": {
+        "case_id": "SEM-INV-PROC-003",
+        "eval_theme": "agent_workflow",
+        "metric": "task_completion",
+        "score": 0.0,
+        "tool_calls_count": 1,
+        "violations": [
+          "equivalent prompts for inventory-retirement-procedure returned 3 distinct semantic outcomes."
+        ]
+      }
+    },
+    {
+      "name": "SEM-INV-PROC-003 tool_correctness",
+      "status": "pass",
+      "message": "tool_correctness=ok para SEM-INV-PROC-003",
+      "details": {
+        "case_id": "SEM-INV-PROC-003",
+        "eval_theme": "agent_workflow",
+        "metric": "tool_correctness",
+        "score": 1.0,
+        "tool_calls_count": 1,
+        "violations": [
+          "equivalent prompts for inventory-retirement-procedure returned 3 distinct semantic outcomes."
+        ]
+      }
+    },
+    {
+      "name": "SEM-INV-PROC-003 argument_correctness",
+      "status": "pass",
+      "message": "argument_correctness=ok para SEM-INV-PROC-003",
+      "details": {
+        "case_id": "SEM-INV-PROC-003",
+        "eval_theme": "agent_workflow",
+        "metric": "argument_correctness",
+        "score": 1.0,
+        "tool_calls_count": 1,
+        "violations": [
+          "equivalent prompts for inventory-retirement-procedure returned 3 distinct semantic outcomes."
+        ]
+      }
+    },
+    {
+      "name": "SEM-INV-PROC-003 turn_relevancy",
+      "status": "pass",
+      "message": "turn_relevancy=ok para SEM-INV-PROC-003",
+      "details": {
+        "case_id": "SEM-INV-PROC-003",
+        "eval_theme": "agent_workflow",
+        "metric": "turn_relevancy",
+        "score": 1.0,
+        "tool_calls_count": 1,
+        "violations": [
+          "equivalent prompts for inventory-retirement-procedure returned 3 distinct semantic outcomes."
+        ]
+      }
+    },
+    {
+      "name": "SEM-INV-PROC-003 conversation_completeness",
+      "status": "pass",
+      "message": "conversation_completeness=ok para SEM-INV-PROC-003",
+      "details": {
+        "case_id": "SEM-INV-PROC-003",
+        "eval_theme": "agent_workflow",
+        "metric": "conversation_completeness",
+        "score": 1.0,
+        "tool_calls_count": 1,
+        "violations": [
+          "equivalent prompts for inventory-retirement-procedure returned 3 distinct semantic outcomes."
+        ]
+      }
+    },
+    {
+      "name": "SEM-INV-PROC-004 task_completion",
+      "status": "fail",
+      "message": "task_completion=failed para SEM-INV-PROC-004",
+      "details": {
+        "case_id": "SEM-INV-PROC-004",
+        "eval_theme": "agent_workflow",
+        "metric": "task_completion",
+        "score": 0.0,
+        "tool_calls_count": 1,
+        "violations": [
+          "equivalent prompts for inventory-retirement-procedure returned 3 distinct semantic outcomes."
+        ]
+      }
+    },
+    {
+      "name": "SEM-INV-PROC-004 tool_correctness",
+      "status": "pass",
+      "message": "tool_correctness=ok para SEM-INV-PROC-004",
+      "details": {
+        "case_id": "SEM-INV-PROC-004",
+        "eval_theme": "agent_workflow",
+        "metric": "tool_correctness",
+        "score": 1.0,
+        "tool_calls_count": 1,
+        "violations": [
+          "equivalent prompts for inventory-retirement-procedure returned 3 distinct semantic outcomes."
+        ]
+      }
+    },
+    {
+      "name": "SEM-INV-PROC-004 argument_correctness",
+      "status": "pass",
+      "message": "argument_correctness=ok para SEM-INV-PROC-004",
+      "details": {
+        "case_id": "SEM-INV-PROC-004",
+        "eval_theme": "agent_workflow",
+        "metric": "argument_correctness",
+        "score": 1.0,
+        "tool_calls_count": 1,
+        "violations": [
+          "equivalent prompts for inventory-retirement-procedure returned 3 distinct semantic outcomes."
+        ]
+      }
+    },
+    {
+      "name": "SEM-INV-PROC-004 turn_relevancy",
+      "status": "pass",
+      "message": "turn_relevancy=ok para SEM-INV-PROC-004",
+      "details": {
+        "case_id": "SEM-INV-PROC-004",
+        "eval_theme": "agent_workflow",
+        "metric": "turn_relevancy",
+        "score": 1.0,
+        "tool_calls_count": 1,
+        "violations": [
+          "equivalent prompts for inventory-retirement-procedure returned 3 distinct semantic outcomes."
+        ]
+      }
+    },
+    {
+      "name": "SEM-INV-PROC-004 conversation_completeness",
+      "status": "pass",
+      "message": "conversation_completeness=ok para SEM-INV-PROC-004",
+      "details": {
+        "case_id": "SEM-INV-PROC-004",
+        "eval_theme": "agent_workflow",
+        "metric": "conversation_completeness",
+        "score": 1.0,
+        "tool_calls_count": 1,
+        "violations": [
+          "equivalent prompts for inventory-retirement-procedure returned 3 distinct semantic outcomes."
+        ]
+      }
+    },
+    {
+      "name": "SEM-INV-MISSING-001 task_completion",
+      "status": "pass",
+      "message": "task_completion=ok para SEM-INV-MISSING-001",
+      "details": {
+        "case_id": "SEM-INV-MISSING-001",
+        "eval_theme": "agent_workflow",
+        "metric": "task_completion",
+        "score": 1.0,
+        "tool_calls_count": 1,
+        "violations": []
+      }
+    },
+    {
+      "name": "SEM-INV-MISSING-001 tool_correctness",
+      "status": "pass",
+      "message": "tool_correctness=ok para SEM-INV-MISSING-001",
+      "details": {
+        "case_id": "SEM-INV-MISSING-001",
+        "eval_theme": "agent_workflow",
+        "metric": "tool_correctness",
+        "score": 1.0,
+        "tool_calls_count": 1,
+        "violations": []
+      }
+    },
+    {
+      "name": "SEM-INV-MISSING-001 argument_correctness",
+      "status": "pass",
+      "message": "argument_correctness=ok para SEM-INV-MISSING-001",
+      "details": {
+        "case_id": "SEM-INV-MISSING-001",
+        "eval_theme": "agent_workflow",
+        "metric": "argument_correctness",
+        "score": 1.0,
+        "tool_calls_count": 1,
+        "violations": []
+      }
+    },
+    {
+      "name": "SEM-INV-MISSING-001 turn_relevancy",
+      "status": "pass",
+      "message": "turn_relevancy=ok para SEM-INV-MISSING-001",
+      "details": {
+        "case_id": "SEM-INV-MISSING-001",
+        "eval_theme": "agent_workflow",
+        "metric": "turn_relevancy",
+        "score": 1.0,
+        "tool_calls_count": 1,
+        "violations": []
+      }
+    },
+    {
+      "name": "SEM-INV-MISSING-001 conversation_completeness",
+      "status": "pass",
+      "message": "conversation_completeness=ok para SEM-INV-MISSING-001",
+      "details": {
+        "case_id": "SEM-INV-MISSING-001",
+        "eval_theme": "agent_workflow",
+        "metric": "conversation_completeness",
+        "score": 1.0,
+        "tool_calls_count": 1,
+        "violations": []
+      }
+    },
+    {
+      "name": "SEM-INV-MISSING-002 task_completion",
+      "status": "pass",
+      "message": "task_completion=ok para SEM-INV-MISSING-002",
+      "details": {
+        "case_id": "SEM-INV-MISSING-002",
+        "eval_theme": "agent_workflow",
+        "metric": "task_completion",
+        "score": 1.0,
+        "tool_calls_count": 1,
+        "violations": []
+      }
+    },
+    {
+      "name": "SEM-INV-MISSING-002 tool_correctness",
+      "status": "pass",
+      "message": "tool_correctness=ok para SEM-INV-MISSING-002",
+      "details": {
+        "case_id": "SEM-INV-MISSING-002",
+        "eval_theme": "agent_workflow",
+        "metric": "tool_correctness",
+        "score": 1.0,
+        "tool_calls_count": 1,
+        "violations": []
+      }
+    },
+    {
+      "name": "SEM-INV-MISSING-002 argument_correctness",
+      "status": "pass",
+      "message": "argument_correctness=ok para SEM-INV-MISSING-002",
+      "details": {
+        "case_id": "SEM-INV-MISSING-002",
+        "eval_theme": "agent_workflow",
+        "metric": "argument_correctness",
+        "score": 1.0,
+        "tool_calls_count": 1,
+        "violations": []
+      }
+    },
+    {
+      "name": "SEM-INV-MISSING-002 turn_relevancy",
+      "status": "pass",
+      "message": "turn_relevancy=ok para SEM-INV-MISSING-002",
+      "details": {
+        "case_id": "SEM-INV-MISSING-002",
+        "eval_theme": "agent_workflow",
+        "metric": "turn_relevancy",
+        "score": 1.0,
+        "tool_calls_count": 1,
+        "violations": []
+      }
+    },
+    {
+      "name": "SEM-INV-MISSING-002 conversation_completeness",
+      "status": "pass",
+      "message": "conversation_completeness=ok para SEM-INV-MISSING-002",
+      "details": {
+        "case_id": "SEM-INV-MISSING-002",
+        "eval_theme": "agent_workflow",
+        "metric": "conversation_completeness",
+        "score": 1.0,
+        "tool_calls_count": 1,
+        "violations": []
+      }
+    },
+    {
+      "name": "SEM-INV-MISSING-003 task_completion",
+      "status": "fail",
+      "message": "task_completion=failed para SEM-INV-MISSING-003",
+      "details": {
+        "case_id": "SEM-INV-MISSING-003",
+        "eval_theme": "agent_workflow",
+        "metric": "task_completion",
+        "score": 0.0,
+        "tool_calls_count": 0,
+        "violations": [
+          "missing one of expected phrases: no existe | no registrado | no esta registrado | no está registrado | no encontrado"
+        ]
+      }
+    },
+    {
+      "name": "SEM-INV-MISSING-003 tool_correctness",
+      "status": "pass",
+      "message": "tool_correctness=ok para SEM-INV-MISSING-003",
+      "details": {
+        "case_id": "SEM-INV-MISSING-003",
+        "eval_theme": "agent_workflow",
+        "metric": "tool_correctness",
+        "score": 1.0,
+        "tool_calls_count": 0,
+        "violations": [
+          "missing one of expected phrases: no existe | no registrado | no esta registrado | no está registrado | no encontrado"
+        ]
+      }
+    },
+    {
+      "name": "SEM-INV-MISSING-003 argument_correctness",
+      "status": "pass",
+      "message": "argument_correctness=ok para SEM-INV-MISSING-003",
+      "details": {
+        "case_id": "SEM-INV-MISSING-003",
+        "eval_theme": "agent_workflow",
+        "metric": "argument_correctness",
+        "score": 1.0,
+        "tool_calls_count": 0,
+        "violations": [
+          "missing one of expected phrases: no existe | no registrado | no esta registrado | no está registrado | no encontrado"
+        ]
+      }
+    },
+    {
+      "name": "SEM-INV-MISSING-003 turn_relevancy",
+      "status": "pass",
+      "message": "turn_relevancy=ok para SEM-INV-MISSING-003",
+      "details": {
+        "case_id": "SEM-INV-MISSING-003",
+        "eval_theme": "agent_workflow",
+        "metric": "turn_relevancy",
+        "score": 1.0,
+        "tool_calls_count": 0,
+        "violations": [
+          "missing one of expected phrases: no existe | no registrado | no esta registrado | no está registrado | no encontrado"
+        ]
+      }
+    },
+    {
+      "name": "SEM-INV-MISSING-003 conversation_completeness",
+      "status": "pass",
+      "message": "conversation_completeness=ok para SEM-INV-MISSING-003",
+      "details": {
+        "case_id": "SEM-INV-MISSING-003",
+        "eval_theme": "agent_workflow",
+        "metric": "conversation_completeness",
+        "score": 1.0,
+        "tool_calls_count": 0,
+        "violations": [
+          "missing one of expected phrases: no existe | no registrado | no esta registrado | no está registrado | no encontrado"
+        ]
+      }
+    },
+    {
+      "name": "SEM-INV-WAR-001 task_completion",
+      "status": "fail",
+      "message": "task_completion=failed para SEM-INV-WAR-001",
+      "details": {
+        "case_id": "SEM-INV-WAR-001",
+        "eval_theme": "agent_workflow",
+        "metric": "task_completion",
+        "score": 0.0,
+        "tool_calls_count": 1,
+        "violations": [
+          "missing concrete expired warranty count answer."
+        ]
+      }
+    },
+    {
+      "name": "SEM-INV-WAR-001 tool_correctness",
+      "status": "pass",
+      "message": "tool_correctness=ok para SEM-INV-WAR-001",
+      "details": {
+        "case_id": "SEM-INV-WAR-001",
+        "eval_theme": "agent_workflow",
+        "metric": "tool_correctness",
+        "score": 1.0,
+        "tool_calls_count": 1,
+        "violations": [
+          "missing concrete expired warranty count answer."
+        ]
+      }
+    },
+    {
+      "name": "SEM-INV-WAR-001 argument_correctness",
+      "status": "pass",
+      "message": "argument_correctness=ok para SEM-INV-WAR-001",
+      "details": {
+        "case_id": "SEM-INV-WAR-001",
+        "eval_theme": "agent_workflow",
+        "metric": "argument_correctness",
+        "score": 1.0,
+        "tool_calls_count": 1,
+        "violations": [
+          "missing concrete expired warranty count answer."
+        ]
+      }
+    },
+    {
+      "name": "SEM-INV-WAR-001 turn_relevancy",
+      "status": "pass",
+      "message": "turn_relevancy=ok para SEM-INV-WAR-001",
+      "details": {
+        "case_id": "SEM-INV-WAR-001",
+        "eval_theme": "agent_workflow",
+        "metric": "turn_relevancy",
+        "score": 1.0,
+        "tool_calls_count": 1,
+        "violations": [
+          "missing concrete expired warranty count answer."
+        ]
+      }
+    },
+    {
+      "name": "SEM-INV-WAR-001 conversation_completeness",
+      "status": "pass",
+      "message": "conversation_completeness=ok para SEM-INV-WAR-001",
+      "details": {
+        "case_id": "SEM-INV-WAR-001",
+        "eval_theme": "agent_workflow",
+        "metric": "conversation_completeness",
+        "score": 1.0,
+        "tool_calls_count": 1,
+        "violations": [
+          "missing concrete expired warranty count answer."
+        ]
+      }
+    },
+    {
+      "name": "SEM-INV-WAR-002 task_completion",
+      "status": "fail",
+      "message": "task_completion=failed para SEM-INV-WAR-002",
+      "details": {
+        "case_id": "SEM-INV-WAR-002",
+        "eval_theme": "agent_workflow",
+        "metric": "task_completion",
+        "score": 0.0,
+        "tool_calls_count": 1,
+        "violations": [
+          "missing concrete percentage answer."
+        ]
+      }
+    },
+    {
+      "name": "SEM-INV-WAR-002 tool_correctness",
+      "status": "pass",
+      "message": "tool_correctness=ok para SEM-INV-WAR-002",
+      "details": {
+        "case_id": "SEM-INV-WAR-002",
+        "eval_theme": "agent_workflow",
+        "metric": "tool_correctness",
+        "score": 1.0,
+        "tool_calls_count": 1,
+        "violations": [
+          "missing concrete percentage answer."
+        ]
+      }
+    },
+    {
+      "name": "SEM-INV-WAR-002 argument_correctness",
+      "status": "pass",
+      "message": "argument_correctness=ok para SEM-INV-WAR-002",
+      "details": {
+        "case_id": "SEM-INV-WAR-002",
+        "eval_theme": "agent_workflow",
+        "metric": "argument_correctness",
+        "score": 1.0,
+        "tool_calls_count": 1,
+        "violations": [
+          "missing concrete percentage answer."
+        ]
+      }
+    },
+    {
+      "name": "SEM-INV-WAR-002 turn_relevancy",
+      "status": "pass",
+      "message": "turn_relevancy=ok para SEM-INV-WAR-002",
+      "details": {
+        "case_id": "SEM-INV-WAR-002",
+        "eval_theme": "agent_workflow",
+        "metric": "turn_relevancy",
+        "score": 1.0,
+        "tool_calls_count": 1,
+        "violations": [
+          "missing concrete percentage answer."
+        ]
+      }
+    },
+    {
+      "name": "SEM-INV-WAR-002 conversation_completeness",
+      "status": "pass",
+      "message": "conversation_completeness=ok para SEM-INV-WAR-002",
+      "details": {
+        "case_id": "SEM-INV-WAR-002",
+        "eval_theme": "agent_workflow",
+        "metric": "conversation_completeness",
+        "score": 1.0,
+        "tool_calls_count": 1,
+        "violations": [
+          "missing concrete percentage answer."
+        ]
+      }
+    },
+    {
+      "name": "SEM-INV-WAR-003 task_completion",
+      "status": "fail",
+      "message": "task_completion=failed para SEM-INV-WAR-003",
+      "details": {
+        "case_id": "SEM-INV-WAR-003",
+        "eval_theme": "agent_workflow",
+        "metric": "task_completion",
+        "score": 0.0,
+        "tool_calls_count": 2,
+        "violations": [
+          "missing concrete list answer."
+        ]
+      }
+    },
+    {
+      "name": "SEM-INV-WAR-003 tool_correctness",
+      "status": "pass",
+      "message": "tool_correctness=ok para SEM-INV-WAR-003",
+      "details": {
+        "case_id": "SEM-INV-WAR-003",
+        "eval_theme": "agent_workflow",
+        "metric": "tool_correctness",
+        "score": 1.0,
+        "tool_calls_count": 2,
+        "violations": [
+          "missing concrete list answer."
+        ]
+      }
+    },
+    {
+      "name": "SEM-INV-WAR-003 argument_correctness",
+      "status": "pass",
+      "message": "argument_correctness=ok para SEM-INV-WAR-003",
+      "details": {
+        "case_id": "SEM-INV-WAR-003",
+        "eval_theme": "agent_workflow",
+        "metric": "argument_correctness",
+        "score": 1.0,
+        "tool_calls_count": 2,
+        "violations": [
+          "missing concrete list answer."
+        ]
+      }
+    },
+    {
+      "name": "SEM-INV-WAR-003 turn_relevancy",
+      "status": "pass",
+      "message": "turn_relevancy=ok para SEM-INV-WAR-003",
+      "details": {
+        "case_id": "SEM-INV-WAR-003",
+        "eval_theme": "agent_workflow",
+        "metric": "turn_relevancy",
+        "score": 1.0,
+        "tool_calls_count": 2,
+        "violations": [
+          "missing concrete list answer."
+        ]
+      }
+    },
+    {
+      "name": "SEM-INV-WAR-003 conversation_completeness",
+      "status": "pass",
+      "message": "conversation_completeness=ok para SEM-INV-WAR-003",
+      "details": {
+        "case_id": "SEM-INV-WAR-003",
+        "eval_theme": "agent_workflow",
+        "metric": "conversation_completeness",
+        "score": 1.0,
+        "tool_calls_count": 2,
+        "violations": [
+          "missing concrete list answer."
+        ]
+      }
+    },
+    {
+      "name": "SEM-INV-NOISE-001 task_completion",
+      "status": "pass",
+      "message": "task_completion=ok para SEM-INV-NOISE-001",
+      "details": {
+        "case_id": "SEM-INV-NOISE-001",
+        "eval_theme": "agent_workflow",
+        "metric": "task_completion",
+        "score": 1.0,
+        "tool_calls_count": 1,
+        "violations": []
+      }
+    },
+    {
+      "name": "SEM-INV-NOISE-001 tool_correctness",
+      "status": "pass",
+      "message": "tool_correctness=ok para SEM-INV-NOISE-001",
+      "details": {
+        "case_id": "SEM-INV-NOISE-001",
+        "eval_theme": "agent_workflow",
+        "metric": "tool_correctness",
+        "score": 1.0,
+        "tool_calls_count": 1,
+        "violations": []
+      }
+    },
+    {
+      "name": "SEM-INV-NOISE-001 argument_correctness",
+      "status": "pass",
+      "message": "argument_correctness=ok para SEM-INV-NOISE-001",
+      "details": {
+        "case_id": "SEM-INV-NOISE-001",
+        "eval_theme": "agent_workflow",
+        "metric": "argument_correctness",
+        "score": 1.0,
+        "tool_calls_count": 1,
+        "violations": []
+      }
+    },
+    {
+      "name": "SEM-INV-NOISE-001 turn_relevancy",
+      "status": "pass",
+      "message": "turn_relevancy=ok para SEM-INV-NOISE-001",
+      "details": {
+        "case_id": "SEM-INV-NOISE-001",
+        "eval_theme": "agent_workflow",
+        "metric": "turn_relevancy",
+        "score": 1.0,
+        "tool_calls_count": 1,
+        "violations": []
+      }
+    },
+    {
+      "name": "SEM-INV-NOISE-001 conversation_completeness",
+      "status": "pass",
+      "message": "conversation_completeness=ok para SEM-INV-NOISE-001",
+      "details": {
+        "case_id": "SEM-INV-NOISE-001",
+        "eval_theme": "agent_workflow",
+        "metric": "conversation_completeness",
+        "score": 1.0,
+        "tool_calls_count": 1,
+        "violations": []
+      }
+    },
+    {
+      "name": "SEM-INV-NOISE-002 task_completion",
+      "status": "fail",
+      "message": "task_completion=failed para SEM-INV-NOISE-002",
+      "details": {
+        "case_id": "SEM-INV-NOISE-002",
+        "eval_theme": "agent_workflow",
+        "metric": "task_completion",
+        "score": 0.0,
+        "tool_calls_count": 0,
+        "violations": [
+          "empty response text."
+        ]
+      }
+    },
+    {
+      "name": "SEM-INV-NOISE-002 tool_correctness",
+      "status": "pass",
+      "message": "tool_correctness=ok para SEM-INV-NOISE-002",
+      "details": {
+        "case_id": "SEM-INV-NOISE-002",
+        "eval_theme": "agent_workflow",
+        "metric": "tool_correctness",
+        "score": 1.0,
+        "tool_calls_count": 0,
+        "violations": [
+          "empty response text."
+        ]
+      }
+    },
+    {
+      "name": "SEM-INV-NOISE-002 argument_correctness",
+      "status": "pass",
+      "message": "argument_correctness=ok para SEM-INV-NOISE-002",
+      "details": {
+        "case_id": "SEM-INV-NOISE-002",
+        "eval_theme": "agent_workflow",
+        "metric": "argument_correctness",
+        "score": 1.0,
+        "tool_calls_count": 0,
+        "violations": [
+          "empty response text."
+        ]
+      }
+    },
+    {
+      "name": "SEM-INV-NOISE-002 turn_relevancy",
+      "status": "fail",
+      "message": "turn_relevancy=failed para SEM-INV-NOISE-002",
+      "details": {
+        "case_id": "SEM-INV-NOISE-002",
+        "eval_theme": "agent_workflow",
+        "metric": "turn_relevancy",
+        "score": 0.0,
+        "tool_calls_count": 0,
+        "violations": [
+          "empty response text."
+        ]
+      }
+    },
+    {
+      "name": "SEM-INV-NOISE-002 conversation_completeness",
+      "status": "fail",
+      "message": "conversation_completeness=failed para SEM-INV-NOISE-002",
+      "details": {
+        "case_id": "SEM-INV-NOISE-002",
+        "eval_theme": "agent_workflow",
+        "metric": "conversation_completeness",
+        "score": 0.0,
+        "tool_calls_count": 0,
+        "violations": [
+          "empty response text."
+        ]
+      }
+    },
+    {
+      "name": "SEM-INV-NOISE-003 task_completion",
+      "status": "pass",
+      "message": "task_completion=ok para SEM-INV-NOISE-003",
+      "details": {
+        "case_id": "SEM-INV-NOISE-003",
+        "eval_theme": "agent_workflow",
+        "metric": "task_completion",
+        "score": 1.0,
+        "tool_calls_count": 1,
+        "violations": []
+      }
+    },
+    {
+      "name": "SEM-INV-NOISE-003 tool_correctness",
+      "status": "pass",
+      "message": "tool_correctness=ok para SEM-INV-NOISE-003",
+      "details": {
+        "case_id": "SEM-INV-NOISE-003",
+        "eval_theme": "agent_workflow",
+        "metric": "tool_correctness",
+        "score": 1.0,
+        "tool_calls_count": 1,
+        "violations": []
+      }
+    },
+    {
+      "name": "SEM-INV-NOISE-003 argument_correctness",
+      "status": "pass",
+      "message": "argument_correctness=ok para SEM-INV-NOISE-003",
+      "details": {
+        "case_id": "SEM-INV-NOISE-003",
+        "eval_theme": "agent_workflow",
+        "metric": "argument_correctness",
+        "score": 1.0,
+        "tool_calls_count": 1,
+        "violations": []
+      }
+    },
+    {
+      "name": "SEM-INV-NOISE-003 turn_relevancy",
+      "status": "pass",
+      "message": "turn_relevancy=ok para SEM-INV-NOISE-003",
+      "details": {
+        "case_id": "SEM-INV-NOISE-003",
+        "eval_theme": "agent_workflow",
+        "metric": "turn_relevancy",
+        "score": 1.0,
+        "tool_calls_count": 1,
+        "violations": []
+      }
+    },
+    {
+      "name": "SEM-INV-NOISE-003 conversation_completeness",
+      "status": "pass",
+      "message": "conversation_completeness=ok para SEM-INV-NOISE-003",
+      "details": {
+        "case_id": "SEM-INV-NOISE-003",
+        "eval_theme": "agent_workflow",
+        "metric": "conversation_completeness",
+        "score": 1.0,
+        "tool_calls_count": 1,
+        "violations": []
+      }
+    }
+  ],
+  "metrics_summary": {
+    "argument_correctness": {
+      "metric": "argument_correctness",
+      "total": 29,
+      "pass": 29,
+      "fail": 0,
+      "skipped": 0,
+      "pass_rate": 1.0,
+      "avg_score": 1.0,
+      "min_score": 1.0,
+      "max_score": 1.0,
+      "avg_latency_ms": null
+    },
+    "conversation_completeness": {
+      "metric": "conversation_completeness",
+      "total": 29,
+      "pass": 26,
+      "fail": 3,
+      "skipped": 0,
+      "pass_rate": 0.8966,
+      "avg_score": 0.8966,
+      "min_score": 0.0,
+      "max_score": 1.0,
+      "avg_latency_ms": null
+    },
+    "task_completion": {
+      "metric": "task_completion",
+      "total": 29,
+      "pass": 15,
+      "fail": 14,
+      "skipped": 0,
+      "pass_rate": 0.5172,
+      "avg_score": 0.5172,
+      "min_score": 0.0,
+      "max_score": 1.0,
+      "avg_latency_ms": null
+    },
+    "tool_correctness": {
+      "metric": "tool_correctness",
+      "total": 29,
+      "pass": 29,
+      "fail": 0,
+      "skipped": 0,
+      "pass_rate": 1.0,
+      "avg_score": 1.0,
+      "min_score": 1.0,
+      "max_score": 1.0,
+      "avg_latency_ms": null
+    },
+    "turn_relevancy": {
+      "metric": "turn_relevancy",
+      "total": 29,
+      "pass": 26,
+      "fail": 3,
+      "skipped": 0,
+      "pass_rate": 0.8966,
+      "avg_score": 0.8966,
+      "min_score": 0.0,
+      "max_score": 1.0,
+      "avg_latency_ms": null
+    }
+  },
+  "artifacts": [
+    "resultados/chat-consistency-20260706T215500Z-reviewed.raw.json"
+  ]
+}
