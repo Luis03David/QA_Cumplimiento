@@ -1,0 +1,15 @@
+{
+  "_comment": "Vulnerabilidades aceptadas como riesgo documentado para la auditoria de dependencias (pip-audit --ignore-vuln). Ver docs/accepted-risks.md para la justificacion. Revisar cuando upstream publique parche.",
+  "ignore": [
+    {
+      "id": "CVE-2026-6587",
+      "package": "ragas",
+      "reason": "Sin parche upstream disponible. ragas solo se usa en el stack opcional de evals (no en la ruta de producto ni del dashboard). Se re-evalua cuando exista fix."
+    },
+    {
+      "id": "CVE-2025-69872",
+      "package": "diskcache",
+      "reason": "Sin parche upstream disponible. diskcache es dependencia transitiva de ragas (solo evals). Se re-evalua cuando exista fix."
+    }
+  ]
+}

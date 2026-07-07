@@ -9,10 +9,50 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 RESULTS = ROOT / "resultados"
+IGNORE_CONFIG = ROOT / "config" / "dependency-audit-ignore.json"
 
 
 def utc_now():
     return datetime.now(timezone.utc).replace(microsecond=0).isoformat().replace("+00:00", "Z")
+
+
+def load_ignored_vulns():
+    """Lee los CVE aceptados como riesgo documentado (ver docs/accepted-risks.md)."""
+    if not IGNORE_CONFIG.exists():
+        return []
+    try:
+        data = json.loads(IGNORE_CONFIG.read_text(encoding="utf-8"))
+    except (ValueError, OSError):
+        return []
+    entries = data.get("ignore", []) if isinstance(data, dict) else []
+    return [str(item.get("id")).strip() for item in entries if isinstance(item, dict) and item.get("id")]
+
+
+def summarize_pip_audit(stdout):
+    """Extrae (paquete, version, CVE, fix) del JSON de pip-audit. None si no es JSON."""
+    try:
+        data = json.loads(stdout)
+    except (ValueError, TypeError):
+        return None
+    findings = []
+    for dep in (data.get("dependencies", []) if isinstance(data, dict) else []):
+        for vuln in dep.get("vulns", []) or []:
+            findings.append({
+                "package": dep.get("name"),
+                "version": dep.get("version"),
+                "id": vuln.get("id"),
+                "aliases": vuln.get("aliases", []),
+                "fix_versions": vuln.get("fix_versions", []),
+            })
+    return findings
+
+
+def describe_findings(findings):
+    parts = []
+    for finding in findings:
+        fix = ", ".join(finding.get("fix_versions") or []) or "sin fix"
+        parts.append(f"{finding['package']} {finding['version']} ({finding['id']}; fix: {fix})")
+    return "; ".join(parts)
 
 
 def run(command):
@@ -85,17 +125,45 @@ def main():
                 "details": {"requirements": [str(p.relative_to(ROOT)) for p in python_requirements]},
             })
         else:
+            ignored = load_ignored_vulns()
+            ignore_args = []
+            for vuln_id in ignored:
+                ignore_args += ["--ignore-vuln", vuln_id]
+            if ignored:
+                print(f"Riesgos aceptados (ignore-vuln): {', '.join(ignored)}")
             for req in python_requirements:
-                code, stdout, stderr = run([*pip_audit, "-r", str(req), "-f", "json"])
+                code, stdout, stderr = run([*pip_audit, "-r", str(req), "-f", "json", *ignore_args])
                 raw_path = RESULTS / f"{run_id}-{req.stem}.raw.json"
                 raw_path.write_text(stdout or stderr, encoding="utf-8")
                 artifacts.append(str(raw_path.relative_to(ROOT)))
+
+                findings = summarize_pip_audit(stdout)
                 status = "pass" if code == 0 else "fail"
+
+                if status == "pass":
+                    message = "pip-audit finalizo sin vulnerabilidades conocidas."
+                elif findings:
+                    # pip-audit completo y encontro vulnerabilidades reales (no ignoradas).
+                    message = f"pip-audit encontro vulnerabilidades en {req.name}: {describe_findings(findings)}"
+                else:
+                    # exit != 0 pero sin JSON de hallazgos: la herramienta no pudo completar.
+                    tool_error = (stderr or stdout or "").strip().splitlines()
+                    detail = tool_error[-1] if tool_error else "sin detalle"
+                    message = f"pip-audit no pudo completar {req.name}: {detail}"
+
+                if status == "fail":
+                    print(f"[FAIL] {message}")
+
+                check_details = {"exit_code": code, "requirements": str(req.relative_to(ROOT))}
+                if findings:
+                    check_details["vulnerabilities"] = findings
+                if ignored:
+                    check_details["ignored_vulns"] = ignored
                 checks.append({
                     "name": f"pip-audit:{req.name}",
                     "status": status,
-                    "message": "pip-audit finalizo sin vulnerabilidades conocidas." if status == "pass" else "pip-audit reporto vulnerabilidades o no pudo completar correctamente.",
-                    "details": {"exit_code": code, "requirements": str(req.relative_to(ROOT))},
+                    "message": message,
+                    "details": check_details,
                 })
 
     if not checks:
