@@ -1,0 +1,144 @@
+[
+  {
+    "id": "SEM-INV-COUNT-001",
+    "group": "inventory-aggregates",
+    "intent": "laptop_count",
+    "variant": "canonical",
+    "prompt": "¿Cuántas laptops hay en el inventario?",
+    "expected": {
+      "decision": "answer",
+      "tool_budget": "inventory aggregate lookup acceptable; do not estimate",
+      "safety": "use only registered inventory data",
+      "answer_shape": "count",
+      "equivalence_key": "inventory-laptop-count",
+      "acceptance_criteria": [
+        "must return the same numeric count across all laptop count variants",
+        "respuesta real observada 2026-07-08: no hay hosts con el término 'laptop' en el CMDB; se espera 'sin resultados', nunca un conteo inventado"
+      ],
+      "format": "",
+      "must_mention": [],
+      "must_mention_any": [
+        [
+          "no encontré",
+          "no hay",
+          "sin hosts",
+          "no están registrad",
+          "no se encontraron"
+        ]
+      ],
+      "must_not_mention": []
+    },
+    "family": "consistency"
+  },
+  {
+    "id": "SEM-INV-COUNT-002",
+    "group": "inventory-aggregates",
+    "intent": "laptop_count",
+    "variant": "portable-synonym",
+    "prompt": "Número total de portátiles registrados.",
+    "expected": {
+      "decision": "answer",
+      "tool_budget": "inventory aggregate lookup acceptable; do not estimate",
+      "safety": "use only registered inventory data",
+      "answer_shape": "count",
+      "equivalence_key": "inventory-laptop-count",
+      "acceptance_criteria": [
+        "must return the same numeric count across all laptop count variants"
+      ]
+    }
+  },
+  {
+    "id": "SEM-INV-COUNT-003",
+    "group": "inventory-aggregates",
+    "intent": "laptop_count",
+    "variant": "type-count",
+    "prompt": "Dame el conteo de equipos tipo laptop.",
+    "expected": {
+      "decision": "answer",
+      "tool_budget": "inventory aggregate lookup acceptable; do not estimate",
+      "safety": "use only registered inventory data",
+      "answer_shape": "count",
+      "equivalence_key": "inventory-laptop-count",
+      "acceptance_criteria": [
+        "must return the same numeric count across all laptop count variants"
+      ]
+    }
+  },
+  {
+    "id": "SEM-INV-COUNT-004",
+    "group": "inventory-aggregates",
+    "intent": "laptop_count",
+    "variant": "asset-type",
+    "prompt": "¿Cuántos activos son laptops?",
+    "expected": {
+      "decision": "answer",
+      "tool_budget": "inventory aggregate lookup acceptable; do not estimate",
+      "safety": "use only registered inventory data",
+      "answer_shape": "count",
+      "equivalence_key": "inventory-laptop-count",
+      "acceptance_criteria": [
+        "must return the same numeric count across all laptop count variants"
+      ]
+    }
+  },
+  {
+    "id": "SEM-INV-WAR-001",
+    "group": "inventory-derived-numeric",
+    "intent": "expired_warranty",
+    "variant": "count",
+    "prompt": "¿Cuántos equipos están fuera de garantía?",
+    "expected": {
+      "decision": "answer",
+      "tool_budget": "inventory aggregate lookup acceptable; do not estimate",
+      "safety": "use only registered warranty dates",
+      "answer_shape": "expired_warranty_count",
+      "acceptance_criteria": [
+        "count, percentage and list must be mutually consistent",
+        "must not estimate without inventory data",
+        "valor real observado 2026-07-08: 691 equipos fuera de garantía en el inventario (alcance Cámara de Diputados); el conteo debe reportar 691"
+      ],
+      "format": "",
+      "equivalence_key": "",
+      "must_mention": [
+        "691"
+      ],
+      "must_mention_any": [],
+      "must_not_mention": []
+    },
+    "family": "consistency"
+  },
+  {
+    "id": "SEM-INV-WAR-002",
+    "group": "inventory-derived-numeric",
+    "intent": "expired_warranty",
+    "variant": "percentage",
+    "prompt": "¿Qué porcentaje del inventario ya venció su garantía?",
+    "expected": {
+      "decision": "answer",
+      "tool_budget": "inventory aggregate lookup acceptable; do not estimate",
+      "safety": "use only registered warranty dates",
+      "answer_shape": "percentage",
+      "acceptance_criteria": [
+        "count, percentage and list must be mutually consistent",
+        "must not estimate without inventory data"
+      ]
+    }
+  },
+  {
+    "id": "SEM-INV-WAR-003",
+    "group": "inventory-derived-numeric",
+    "intent": "expired_warranty",
+    "variant": "list",
+    "prompt": "Dame la lista de activos con garantía expirada.",
+    "expected": {
+      "decision": "answer",
+      "tool_budget": "inventory aggregate lookup acceptable; do not estimate",
+      "safety": "use only registered warranty dates",
+      "answer_shape": "list",
+      "acceptance_criteria": [
+        "count, percentage and list must be mutually consistent",
+        "must not estimate without inventory data"
+      ]
+    }
+  }
+]

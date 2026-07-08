@@ -1,0 +1,67 @@
+{
+  "schema_version": "1.0",
+  "run_id": "chat-consistency-20260708T233607Z",
+  "tool": "chat-consistency-capture",
+  "category": "compliance",
+  "status": "fail",
+  "started_at": "2026-07-08T23:36:08Z",
+  "finished_at": "2026-07-08T23:36:16Z",
+  "summary": "Captura de consistencia de chat encontro variacion o errores; revisar raw report.",
+  "checks": [
+    {
+      "name": "SEM-INV-LIST-001",
+      "status": "fail",
+      "message": "Se capturaron 1 respuestas normalizadas distintas o errores.",
+      "details": {
+        "prompt": "Lista en el chat, sin generar un reporte PDF, los hosts registrados en el inventario (CMDB) con su hostname, tipo e IP. Si son muchos, muestra los primeros 50 y dime el total exacto.",
+        "group": "inventory-enumeration",
+        "intent": "list_all_hosts",
+        "variant": "inline",
+        "expected": {
+          "decision": "",
+          "tool_budget": "",
+          "safety": "",
+          "format": "",
+          "equivalence_key": "inventory-enumeration-hosts",
+          "answer_shape": "list",
+          "acceptance_criteria": [
+            "caso de descubrimiento 2026-07-08: sirve para conocer que activos tiene realmente la CMDB y sembrar ground-truth",
+            "debe responder inline con hostnames reales, no solo generar un reporte",
+            "ground-truth CMDB 2026-07-08: inventario total = 72 hosts unicos (dato de dashboard, estable en 6/6). El '683' observado antes fue alucinacion.",
+            "capacidad: no existe herramienta de enumeracion (lookup_host exige termino; wildcard no devuelve). El asistente no puede listar hostnames reales."
+          ],
+          "must_mention": [
+            "72"
+          ],
+          "must_mention_any": [],
+          "must_not_mention": []
+        },
+        "repeats": 1,
+        "unique_normalized_responses": 1,
+        "response_hashes": [
+          "d09688cdd7af9dac588d265f28ff79ab38db41ac04943fe17acf3d5edc3ec03b"
+        ],
+        "normalized_hashes": [
+          "080a86a7af1b44c3714e1ceae3434933cd7c9d0e5d3242c038e81589ef2be86f"
+        ],
+        "latencies_ms": [
+          7500
+        ],
+        "tool_call_names": [
+          [
+            "get_dashboard_stats",
+            "lookup_host",
+            "lookup_host"
+          ]
+        ],
+        "expectation_violations": [
+          "missing concrete list answer.",
+          "process narration leaked in final answer."
+        ]
+      }
+    }
+  ],
+  "artifacts": [
+    "resultados/chat-consistency-20260708T233607Z.raw.json"
+  ]
+}

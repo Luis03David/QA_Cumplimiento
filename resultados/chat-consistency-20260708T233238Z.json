@@ -1,0 +1,177 @@
+{
+  "schema_version": "1.0",
+  "run_id": "chat-consistency-20260708T233238Z",
+  "tool": "chat-consistency-capture",
+  "category": "compliance",
+  "status": "fail",
+  "started_at": "2026-07-08T23:32:40Z",
+  "finished_at": "2026-07-08T23:33:24Z",
+  "summary": "Captura de consistencia de chat encontro variacion o errores; revisar raw report.",
+  "checks": [
+    {
+      "name": "SEM-INV-LIST-001",
+      "status": "fail",
+      "message": "Se capturaron 2 respuestas normalizadas distintas o errores.",
+      "details": {
+        "prompt": "Lista en el chat, sin generar un reporte PDF, los hosts registrados en el inventario (CMDB) con su hostname, tipo e IP. Si son muchos, muestra los primeros 50 y dime el total exacto.",
+        "group": "inventory-enumeration",
+        "intent": "list_all_hosts",
+        "variant": "inline",
+        "expected": {
+          "decision": "",
+          "tool_budget": "",
+          "safety": "",
+          "format": "",
+          "equivalence_key": "inventory-enumeration-hosts",
+          "answer_shape": "list",
+          "acceptance_criteria": [
+            "caso de descubrimiento 2026-07-08: sirve para conocer que activos tiene realmente la CMDB y sembrar ground-truth",
+            "debe responder inline con hostnames reales, no solo generar un reporte"
+          ],
+          "must_mention": [],
+          "must_mention_any": [],
+          "must_not_mention": []
+        },
+        "repeats": 2,
+        "unique_normalized_responses": 2,
+        "response_hashes": [
+          "428e50a0cc61c8e46cbc1c156f1b8036088d2cbca4dbcd1ed528de64b37f10fa",
+          "8db8e569f85d8bdfc70ebb2e773dec622d023aac224aedac82f23217ff869f63"
+        ],
+        "normalized_hashes": [
+          "fc8a589d603e4f5944a4ce0b4658861b6ff85672d414a79e53c53fb44fe4ecb8",
+          "331bc6535c115811404fc765ddb77fe33353e2a81215761c11623ac8bc1343a9"
+        ],
+        "latencies_ms": [
+          8078,
+          7305
+        ],
+        "tool_call_names": [
+          [
+            "get_dashboard_stats",
+            "lookup_host"
+          ],
+          [
+            "get_dashboard_stats",
+            "lookup_host",
+            "lookup_host"
+          ]
+        ],
+        "expectation_violations": [
+          "missing concrete list answer.",
+          "equivalent prompts for inventory-enumeration-hosts returned 2 distinct semantic outcomes."
+        ]
+      }
+    },
+    {
+      "name": "SEM-INV-LIST-002",
+      "status": "fail",
+      "message": "Se capturaron 2 respuestas normalizadas distintas o errores.",
+      "details": {
+        "prompt": "¿Cuántos activos hay en el inventario y cómo se distribuyen por tipo (servidor, laptop, router, switch, etc.)? Dame el desglose por tipo con el conteo de cada uno, en texto.",
+        "group": "inventory-enumeration",
+        "intent": "inventory_type_breakdown",
+        "variant": "breakdown",
+        "expected": {
+          "decision": "",
+          "tool_budget": "",
+          "safety": "",
+          "format": "",
+          "equivalence_key": "inventory-enumeration-total",
+          "answer_shape": "count",
+          "acceptance_criteria": [
+            "caso de descubrimiento 2026-07-08: total y desglose por tipo para conocer el tamano real del inventario"
+          ],
+          "must_mention": [],
+          "must_mention_any": [],
+          "must_not_mention": []
+        },
+        "repeats": 2,
+        "unique_normalized_responses": 2,
+        "response_hashes": [
+          "42a147b9e326298c52737159cb34bcc3122d77bbc5f1c6ece7abb6a051fb4eb2",
+          "8f98529704639a22f88326d66052884f9e6ac3bda9f0319e6be14f4168b2ad0b"
+        ],
+        "normalized_hashes": [
+          "79648f8b3fc945d8ca97bb536d3c4055c6d8f02906f654004ae09e954069b18b",
+          "12ee2fbf63562a45f992678a6127c6a38dc6102c544b6b875a3e5cf3f1faad71"
+        ],
+        "latencies_ms": [
+          6728,
+          9433
+        ],
+        "tool_call_names": [
+          [
+            "get_dashboard_stats",
+            "generate_report",
+            "search_cases"
+          ],
+          [
+            "get_dashboard_stats",
+            "generate_report"
+          ]
+        ],
+        "expectation_violations": [
+          "equivalent prompts for inventory-enumeration-total returned 2 distinct semantic outcomes."
+        ]
+      }
+    },
+    {
+      "name": "SEM-INV-LIST-003",
+      "status": "fail",
+      "message": "Se capturaron 2 respuestas normalizadas distintas o errores.",
+      "details": {
+        "prompt": "Lista en el chat los servidores registrados en la CMDB con hostname e IP, sin generar reporte. Indica el total de servidores.",
+        "group": "inventory-enumeration",
+        "intent": "list_servers",
+        "variant": "servers",
+        "expected": {
+          "decision": "",
+          "tool_budget": "",
+          "safety": "",
+          "format": "",
+          "equivalence_key": "inventory-enumeration-servers",
+          "answer_shape": "list",
+          "acceptance_criteria": [
+            "caso de descubrimiento 2026-07-08: enumera servidores reales para sembrar casos de owner/RAM/estado con activos que si existen"
+          ],
+          "must_mention": [],
+          "must_mention_any": [],
+          "must_not_mention": []
+        },
+        "repeats": 2,
+        "unique_normalized_responses": 2,
+        "response_hashes": [
+          "6f0215ceba9859b5ec0e15580a769327e65ddb2fd76cf9b06ee518f2bc35fb0a",
+          "874206fb08a0c36c4aa5aa4e7fd7f111e1ae5cfb688400cd3f7c7d6b3ba9929d"
+        ],
+        "normalized_hashes": [
+          "78ec5e1c5bf40923cb0db9958dc25452933e21c8fe7f5e879d663fe7543cb010",
+          "cac01fd7fe44c809a5fd2c5afd5f6ca7024a570789d1e23282d9319a104d033c"
+        ],
+        "latencies_ms": [
+          5971,
+          6412
+        ],
+        "tool_call_names": [
+          [
+            "get_dashboard_stats",
+            "lookup_host",
+            "search_cases"
+          ],
+          [
+            "get_dashboard_stats",
+            "lookup_host"
+          ]
+        ],
+        "expectation_violations": [
+          "missing concrete list answer.",
+          "equivalent prompts for inventory-enumeration-servers returned 2 distinct semantic outcomes."
+        ]
+      }
+    }
+  ],
+  "artifacts": [
+    "resultados/chat-consistency-20260708T233238Z.raw.json"
+  ]
+}

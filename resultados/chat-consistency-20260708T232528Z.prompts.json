@@ -1,0 +1,102 @@
+[
+  {
+    "id": "SEM-INV-COUNT-001",
+    "group": "inventory-aggregates",
+    "intent": "laptop_count",
+    "variant": "canonical",
+    "prompt": "¿Cuántas laptops hay en el inventario?",
+    "expected": {
+      "decision": "answer",
+      "tool_budget": "inventory aggregate lookup acceptable; do not estimate",
+      "safety": "use only registered inventory data",
+      "answer_shape": "count",
+      "equivalence_key": "inventory-laptop-count",
+      "acceptance_criteria": [
+        "must return the same numeric count across all laptop count variants",
+        "respuesta real observada 2026-07-08: no hay hosts con el término 'laptop' en el CMDB; se espera 'sin resultados', nunca un conteo inventado"
+      ],
+      "format": "",
+      "must_mention": [],
+      "must_mention_any": [
+        [
+          "no encontré",
+          "no hay",
+          "sin hosts",
+          "no están registrad",
+          "no se encontraron"
+        ]
+      ],
+      "must_not_mention": []
+    },
+    "family": "consistency"
+  },
+  {
+    "id": "SEM-INV-COUNT-002",
+    "group": "inventory-aggregates",
+    "intent": "laptop_count",
+    "variant": "portable-synonym",
+    "prompt": "Número total de portátiles registrados.",
+    "expected": {
+      "decision": "answer",
+      "tool_budget": "inventory aggregate lookup acceptable; do not estimate",
+      "safety": "use only registered inventory data",
+      "answer_shape": "count",
+      "equivalence_key": "inventory-laptop-count",
+      "acceptance_criteria": [
+        "must return the same numeric count across all laptop count variants",
+        "INCONSISTENTE 2026-07-08: conteo de laptops devolvió valores contradictorios entre preguntas equivalentes (no-data / 72 / 683); el conteo real debe ser único y estable"
+      ],
+      "format": "",
+      "must_mention": [],
+      "must_mention_any": [],
+      "must_not_mention": []
+    },
+    "family": "consistency"
+  },
+  {
+    "id": "SEM-INV-COUNT-003",
+    "group": "inventory-aggregates",
+    "intent": "laptop_count",
+    "variant": "type-count",
+    "prompt": "Dame el conteo de equipos tipo laptop.",
+    "expected": {
+      "decision": "answer",
+      "tool_budget": "inventory aggregate lookup acceptable; do not estimate",
+      "safety": "use only registered inventory data",
+      "answer_shape": "count",
+      "equivalence_key": "inventory-laptop-count",
+      "acceptance_criteria": [
+        "must return the same numeric count across all laptop count variants",
+        "INCONSISTENTE 2026-07-08: conteo de laptops devolvió no-data / 72 / 683 en corridas equivalentes; defecto de consistencia"
+      ],
+      "format": "",
+      "must_mention": [],
+      "must_mention_any": [],
+      "must_not_mention": []
+    },
+    "family": "consistency"
+  },
+  {
+    "id": "SEM-INV-COUNT-004",
+    "group": "inventory-aggregates",
+    "intent": "laptop_count",
+    "variant": "asset-type",
+    "prompt": "¿Cuántos activos son laptops?",
+    "expected": {
+      "decision": "answer",
+      "tool_budget": "inventory aggregate lookup acceptable; do not estimate",
+      "safety": "use only registered inventory data",
+      "answer_shape": "count",
+      "equivalence_key": "inventory-laptop-count",
+      "acceptance_criteria": [
+        "must return the same numeric count across all laptop count variants",
+        "INCONSISTENTE 2026-07-08: conteo de laptops devolvió no-data / 72 / 683 en corridas equivalentes; defecto de consistencia"
+      ],
+      "format": "",
+      "must_mention": [],
+      "must_mention_any": [],
+      "must_not_mention": []
+    },
+    "family": "consistency"
+  }
+]

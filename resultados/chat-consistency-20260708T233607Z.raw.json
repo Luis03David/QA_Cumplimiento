@@ -1,0 +1,162 @@
+{
+  "run_id": "chat-consistency-20260708T233607Z",
+  "started_at": "2026-07-08T23:36:08Z",
+  "finished_at": "2026-07-08T23:36:16Z",
+  "repeats": 1,
+  "endpoint": "/api/chat/v3/stream",
+  "cases": [
+    {
+      "id": "SEM-INV-LIST-001",
+      "group": "inventory-enumeration",
+      "intent": "list_all_hosts",
+      "variant": "inline",
+      "prompt": "Lista en el chat, sin generar un reporte PDF, los hosts registrados en el inventario (CMDB) con su hostname, tipo e IP. Si son muchos, muestra los primeros 50 y dime el total exacto.",
+      "expected": {
+        "decision": "",
+        "tool_budget": "",
+        "safety": "",
+        "format": "",
+        "equivalence_key": "inventory-enumeration-hosts",
+        "answer_shape": "list",
+        "acceptance_criteria": [
+          "caso de descubrimiento 2026-07-08: sirve para conocer que activos tiene realmente la CMDB y sembrar ground-truth",
+          "debe responder inline con hostnames reales, no solo generar un reporte",
+          "ground-truth CMDB 2026-07-08: inventario total = 72 hosts unicos (dato de dashboard, estable en 6/6). El '683' observado antes fue alucinacion.",
+          "capacidad: no existe herramienta de enumeracion (lookup_host exige termino; wildcard no devuelve). El asistente no puede listar hostnames reales."
+        ],
+        "must_mention": [
+          "72"
+        ],
+        "must_mention_any": [],
+        "must_not_mention": []
+      },
+      "status": "fail",
+      "unique_normalized_responses": 1,
+      "expectation_violations": [
+        "missing concrete list answer.",
+        "process narration leaked in final answer."
+      ],
+      "runs": [
+        {
+          "repeat": 1,
+          "status": "ok",
+          "http_status": 200,
+          "latency_ms": 7500,
+          "response_text": "El dashboard indica que hay **72 hosts únicos** registrados en el inventario. Para listarlos con sus detalles (hostname, tipo, IP), necesito consultar el CMDB. Como no hay una herramienta directa para listar todos los hosts de una vez, voy a buscar hosts con una consulta amplia para obtener el inventario completo.Entiendo, necesito proporcionar un término de búsqueda. Voy a intentar con una búsqueda genérica que capture la mayoría de los hosts.La búsqueda con `*` no funcionó. Voy a intentar con una búsqueda vacía o con un patrón común. Dado que el dashboard muestra 72 hosts únicos, intentaré buscar con un patrón que capture nombres de host típicos.",
+          "response_hash": "d09688cdd7af9dac588d265f28ff79ab38db41ac04943fe17acf3d5edc3ec03b",
+          "normalized_hash": "080a86a7af1b44c3714e1ceae3434933cd7c9d0e5d3242c038e81589ef2be86f",
+          "tool_calls": [
+            {
+              "type": "input",
+              "toolCallId": "call_9579886c2bba42d7852f1cd5",
+              "toolName": "get_dashboard_stats",
+              "input": {}
+            },
+            {
+              "type": "output",
+              "toolCallId": "call_9579886c2bba42d7852f1cd5",
+              "output": {
+                "total_cases": 319,
+                "cases_24h": 0,
+                "unique_hosts": 72,
+                "pending_approvals": 0,
+                "by_status": {
+                  "ANALYZED": 1,
+                  "CANCELLED": 19,
+                  "ESCALATED": 3,
+                  "RESOLVED": 296
+                },
+                "by_priority": {
+                  "critical": 235,
+                  "normal": 84
+                }
+              }
+            },
+            {
+              "type": "input",
+              "toolCallId": "call_3b591c56e5814ae6b0049110",
+              "toolName": "lookup_host",
+              "input": {
+                "query": "*"
+              }
+            },
+            {
+              "type": "output",
+              "toolCallId": "call_3b591c56e5814ae6b0049110",
+              "output": {
+                "hosts": [],
+                "message": "No hosts found matching '*' (or not in your scope)"
+              }
+            },
+            {
+              "type": "input",
+              "toolCallId": "tc-3f96c10b",
+              "toolName": "lookup_host",
+              "input": {
+                "query": "a"
+              }
+            },
+            {
+              "type": "output",
+              "toolCallId": "tc-3f96c10b",
+              "output": {
+                "hosts": [
+                  {
+                    "name": "AGENTE-AV.DIPUTADOS.GOB.MX",
+                    "host_key": "AGENTE-AV.DIPUTADOS.GOB.MX|172.16.155.111",
+                    "ip": "172.16.155.111",
+                    "os_family": "linux",
+                    "platform": "Linux",
+                    "site": "On-Premise",
+                    "role": "Reverse Proxy",
+                    "status": "active",
+                    "source": "netbox"
+                  },
+                  {
+                    "name": "AGILEOPS",
+                    "host_key": "AGILEOPS|172.16.155.41",
+                    "ip": "172.16.155.41",
+                    "os_family": "linux",
+                    "platform": "Linux VM",
+                    "site": "On-Premise",
+                    "role": "AppServer",
+                    "status": "active",
+                    "source": "netbox"
+                  },
+                  {
+                    "name": "ANGULAR01",
+                    "host_key": "ANGULAR01|172.16.155.57",
+                    "ip": "172.16.155.57",
+                    "os_family": "linux",
+                    "platform": "Linux",
+                    "site": "On-Premise",
+                    "role": "DB Server",
+                    "status": "active",
+                    "source": "netbox"
+                  },
+                  {
+                    "name": "ANGULAR03",
+                    "host_key": "ANGULAR03|172.16.155.68",
+                    "ip": "172.16.155.68",
+                    "os_family": "linux",
+                    "platform": "Linux",
+                    "site": "On-Premise",
+                    "role": "DB Server",
+                    "status": "active",
+                    "source": "netbox"
+                  }
+                ],
+                "total": 4
+              }
+            }
+          ],
+          "expectation_violations": [
+            "missing concrete list answer.",
+            "process narration leaked in final answer."
+          ],
+          "raw_stream": "data: {\"type\": \"start\", \"messageId\": \"50acb5ff-0194-44b1-899b-3462f0f0f76b\"}\n\ndata: {\"type\": \"tool-input-available\", \"toolCallId\": \"call_9579886c2bba42d7852f1cd5\", \"toolName\": \"get_dashboard_stats\", \"input\": {}, \"dynamic\": true}\n\ndata: {\"type\": \"tool-output-available\", \"toolCallId\": \"call_9579886c2bba42d7852f1cd5\", \"output\": {\"total_cases\": 319, \"cases_24h\": 0, \"unique_hosts\": 72, \"pending_approvals\": 0, \"by_status\": {\"ANALYZED\": 1, \"CANCELLED\": 19, \"ESCALATED\": 3, \"RESOLVED\": 296}, \"by_priority\": {\"critical\": 235, \"normal\": 84}}, \"dynamic\": true}\n\ndata: {\"type\": \"text-start\", \"id\": \"0b8bb31a-b566-49ff-8653-a7763a828c1a\"}\n\ndata: {\"type\": \"text-delta\", \"id\": \"0b8bb31a-b566-49ff-8653-a7763a828c1a\", \"delta\": \"El dashboard indica que hay **72 hosts únicos** registrados en el inventario. Para listarlos con sus detalles (hostname, tipo, IP), necesito consultar el CMDB. Como no hay una herramienta directa para listar todos los hosts de una vez, voy a buscar hosts con una consulta amplia para obtener el inventario completo.\"}\n\ndata: {\"type\": \"text-end\", \"id\": \"0b8bb31a-b566-49ff-8653-a7763a828c1a\"}\n\ndata: {\"type\": \"text-start\", \"id\": \"b6d58faa-e49b-4651-8196-af2c5137065c\"}\n\ndata: {\"type\": \"text-delta\", \"id\": \"b6d58faa-e49b-4651-8196-af2c5137065c\", \"delta\": \"Entiendo, necesito proporcionar un término de búsqueda. Voy a intentar con una búsqueda genérica que capture la mayoría de los hosts.\"}\n\ndata: {\"type\": \"text-end\", \"id\": \"b6d58faa-e49b-4651-8196-af2c5137065c\"}\n\ndata: {\"type\": \"tool-input-available\", \"toolCallId\": \"call_3b591c56e5814ae6b0049110\", \"toolName\": \"lookup_host\", \"input\": {\"query\": \"*\"}, \"dynamic\": true}\n\ndata: {\"type\": \"tool-output-available\", \"toolCallId\": \"call_3b591c56e5814ae6b0049110\", \"output\": {\"hosts\": [], \"message\": \"No hosts found matching '*' (or not in your scope)\"}, \"dynamic\": true}\n\ndata: {\"type\": \"text-start\", \"id\": \"1a59ac01-30a2-4d85-93dd-80bbb66e1f27\"}\n\ndata: {\"type\": \"text-delta\", \"id\": \"1a59ac01-30a2-4d85-93dd-80bbb66e1f27\", \"delta\": \"La búsqueda con `*` no funcionó. Voy a intentar con una búsqueda vacía o con un patrón común. Dado que el dashboard muestra 72 hosts únicos, intentaré buscar con un patrón que capture nombres de host típicos.\"}\n\ndata: {\"type\": \"text-end\", \"id\": \"1a59ac01-30a2-4d85-93dd-80bbb66e1f27\"}\n\ndata: {\"type\": \"tool-input-available\", \"toolCallId\": \"tc-3f96c10b\", \"toolName\": \"lookup_host\", \"input\": {\"query\": \"a\"}, \"dynamic\": true}\n\ndata: {\"type\": \"tool-output-available\", \"toolCallId\": \"tc-3f96c10b\", \"output\": {\"hosts\": [{\"name\": \"AGENTE-AV.DIPUTADOS.GOB.MX\", \"host_key\": \"AGENTE-AV.DIPUTADOS.GOB.MX|172.16.155.111\", \"ip\": \"172.16.155.111\", \"os_family\": \"linux\", \"platform\": \"Linux\", \"site\": \"On-Premise\", \"role\": \"Reverse Proxy\", \"status\": \"active\", \"source\": \"netbox\"}, {\"name\": \"AGILEOPS\", \"host_key\": \"AGILEOPS|172.16.155.41\", \"ip\": \"172.16.155.41\", \"os_family\": \"linux\", \"platform\": \"Linux VM\", \"site\": \"On-Premise\", \"role\": \"AppServer\", \"status\": \"active\", \"source\": \"netbox\"}, {\"name\": \"ANGULAR01\", \"host_key\": \"ANGULAR01|172.16.155.57\", \"ip\": \"172.16.155.57\", \"os_family\": \"linux\", \"platform\": \"Linux\", \"site\": \"On-Premise\", \"role\": \"DB Server\", \"status\": \"active\", \"source\": \"netbox\"}, {\"name\": \"ANGULAR03\", \"host_key\": \"ANGULAR03|172.16.155.68\", \"ip\": \"172.16.155.68\", \"os_family\": \"linux\", \"platform\": \"Linux\", \"site\": \"On-Premise\", \"role\": \"DB Server\", \"status\": \"active\", \"source\": \"netbox\"}], \"total\": 4}, \"dynamic\": true}\n\ndata: {\"type\": \"finish\", \"finishReason\": \"stop\"}\n\ndata: [DONE]\n\n"
+        }
+      ]
+    }
+  ]
+}

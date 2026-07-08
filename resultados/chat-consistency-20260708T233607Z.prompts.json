@@ -1,0 +1,29 @@
+[
+  {
+    "id": "SEM-INV-LIST-001",
+    "family": "consistency",
+    "group": "inventory-enumeration",
+    "intent": "list_all_hosts",
+    "variant": "inline",
+    "prompt": "Lista en el chat, sin generar un reporte PDF, los hosts registrados en el inventario (CMDB) con su hostname, tipo e IP. Si son muchos, muestra los primeros 50 y dime el total exacto.",
+    "expected": {
+      "decision": "",
+      "tool_budget": "",
+      "safety": "",
+      "format": "",
+      "equivalence_key": "inventory-enumeration-hosts",
+      "answer_shape": "list",
+      "acceptance_criteria": [
+        "caso de descubrimiento 2026-07-08: sirve para conocer que activos tiene realmente la CMDB y sembrar ground-truth",
+        "debe responder inline con hostnames reales, no solo generar un reporte",
+        "ground-truth CMDB 2026-07-08: inventario total = 72 hosts unicos (dato de dashboard, estable en 6/6). El '683' observado antes fue alucinacion.",
+        "capacidad: no existe herramienta de enumeracion (lookup_host exige termino; wildcard no devuelve). El asistente no puede listar hostnames reales."
+      ],
+      "must_mention": [
+        "72"
+      ],
+      "must_mention_any": [],
+      "must_not_mention": []
+    }
+  }
+]

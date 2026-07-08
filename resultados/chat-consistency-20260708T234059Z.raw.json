@@ -1,0 +1,297 @@
+{
+  "run_id": "chat-consistency-20260708T234059Z",
+  "started_at": "2026-07-08T23:41:00Z",
+  "finished_at": "2026-07-08T23:42:36Z",
+  "repeats": 2,
+  "endpoint": "/api/chat/v3/stream",
+  "cases": [
+    {
+      "id": "SEM-INV-OWN-001",
+      "group": "inventory-asset-owner",
+      "intent": "specific_asset_owner",
+      "variant": "canonical",
+      "prompt": "¿Quién tiene asignada la laptop LAP-MKT-0042?",
+      "expected": {
+        "decision": "answer",
+        "tool_budget": "inventory or CMDB lookup acceptable; do not invent owner if the asset is not registered",
+        "safety": "use only registered inventory data",
+        "equivalence_key": "inventory-owner-lap-mkt-0042",
+        "acceptance_criteria": [
+          "must return the same owner or same no-data statement as the other LAP-MKT-0042 variants",
+          "must not infer ownership from department code alone",
+          "respuesta real observada 2026-07-08: LAP-MKT-0042 no está registrada en el CMDB/NetBox; se espera un statement de 'no encontrado', nunca un dueño inventado",
+          "regla de abstencion 2026-07-08: activo/dato no disponible en la CMDB; la respuesta DEBE declarar no-data/no-disponible y NO inventar valor concreto"
+        ],
+        "format": "",
+        "answer_shape": "must_abstain",
+        "must_mention": [],
+        "must_mention_any": [
+          [
+            "no encontré",
+            "no está registrad",
+            "sin registros",
+            "no existe",
+            "no se encontraron"
+          ]
+        ],
+        "must_not_mention": []
+      },
+      "status": "fail",
+      "unique_normalized_responses": 0,
+      "expectation_violations": [],
+      "runs": [
+        {
+          "repeat": 1,
+          "status": "error",
+          "latency_ms": 5236,
+          "error": "item is not defined"
+        },
+        {
+          "repeat": 2,
+          "status": "error",
+          "latency_ms": 4706,
+          "error": "item is not defined"
+        }
+      ]
+    },
+    {
+      "id": "SEM-INV-RAM-001",
+      "group": "inventory-technical-attributes",
+      "intent": "server_ram",
+      "variant": "canonical",
+      "prompt": "¿Cuánta RAM tiene el servidor SRV-DB-01?",
+      "expected": {
+        "decision": "answer",
+        "tool_budget": "inventory or CMDB lookup acceptable; do not invent RAM value if server is not registered",
+        "safety": "use only registered inventory data",
+        "equivalence_key": "inventory-ram-srv-db-01",
+        "acceptance_criteria": [
+          "must use a consistent unit and value across all SRV-DB-01 RAM variants",
+          "must not switch between GB and MB inconsistently",
+          "respuesta real observada 2026-07-08: SRV-DB-01 no está en el inventario; se espera un statement de 'no encontrado', nunca una RAM inventada",
+          "regla de abstencion 2026-07-08: activo/dato no disponible en la CMDB; la respuesta DEBE declarar no-data/no-disponible y NO inventar valor concreto"
+        ],
+        "format": "",
+        "answer_shape": "must_abstain",
+        "must_mention": [],
+        "must_mention_any": [
+          [
+            "no encontré",
+            "no está registrad",
+            "sin registros",
+            "no existe",
+            "no se encontraron"
+          ]
+        ],
+        "must_not_mention": []
+      },
+      "status": "fail",
+      "unique_normalized_responses": 0,
+      "expectation_violations": [],
+      "runs": [
+        {
+          "repeat": 1,
+          "status": "error",
+          "latency_ms": 4166,
+          "error": "item is not defined"
+        },
+        {
+          "repeat": 2,
+          "status": "error",
+          "latency_ms": 3952,
+          "error": "item is not defined"
+        }
+      ]
+    },
+    {
+      "id": "SEM-INV-COUNT-001",
+      "group": "inventory-aggregates",
+      "intent": "laptop_count",
+      "variant": "canonical",
+      "prompt": "¿Cuántas laptops hay en el inventario?",
+      "expected": {
+        "decision": "answer",
+        "tool_budget": "inventory aggregate lookup acceptable; do not estimate",
+        "safety": "use only registered inventory data",
+        "answer_shape": "must_abstain",
+        "equivalence_key": "inventory-laptop-count",
+        "acceptance_criteria": [
+          "must return the same numeric count across all laptop count variants",
+          "respuesta real observada 2026-07-08: no hay hosts con el término 'laptop' en el CMDB; se espera 'sin resultados', nunca un conteo inventado",
+          "ground-truth 2026-07-08: no hay desglose por tipo en la CMDB; el conteo de laptops NO es contestable -> la respuesta correcta es declarar que no esta disponible, nunca un numero inventado (72 es total hosts, no laptops)",
+          "regla de abstencion 2026-07-08: activo/dato no disponible en la CMDB; la respuesta DEBE declarar no-data/no-disponible y NO inventar valor concreto"
+        ],
+        "format": "",
+        "must_mention": [],
+        "must_mention_any": [
+          [
+            "no encontré",
+            "no hay",
+            "sin hosts",
+            "no están registrad",
+            "no se encontraron"
+          ]
+        ],
+        "must_not_mention": []
+      },
+      "status": "fail",
+      "unique_normalized_responses": 0,
+      "expectation_violations": [],
+      "runs": [
+        {
+          "repeat": 1,
+          "status": "error",
+          "latency_ms": 7643,
+          "error": "item is not defined"
+        },
+        {
+          "repeat": 2,
+          "status": "error",
+          "latency_ms": 8003,
+          "error": "item is not defined"
+        }
+      ]
+    },
+    {
+      "id": "SEM-INV-COUNT-002",
+      "group": "inventory-aggregates",
+      "intent": "laptop_count",
+      "variant": "portable-synonym",
+      "prompt": "Número total de portátiles registrados.",
+      "expected": {
+        "decision": "answer",
+        "tool_budget": "inventory aggregate lookup acceptable; do not estimate",
+        "safety": "use only registered inventory data",
+        "answer_shape": "must_abstain",
+        "equivalence_key": "inventory-laptop-count",
+        "acceptance_criteria": [
+          "must return the same numeric count across all laptop count variants",
+          "INCONSISTENTE 2026-07-08: conteo de laptops devolvió valores contradictorios entre preguntas equivalentes (no-data / 72 / 683); el conteo real debe ser único y estable",
+          "ground-truth 2026-07-08: no hay desglose por tipo en la CMDB; el conteo de laptops NO es contestable -> la respuesta correcta es declarar que no esta disponible, nunca un numero inventado (72 es total hosts, no laptops)",
+          "regla de abstencion 2026-07-08: activo/dato no disponible en la CMDB; la respuesta DEBE declarar no-data/no-disponible y NO inventar valor concreto"
+        ],
+        "format": "",
+        "must_mention": [],
+        "must_mention_any": [],
+        "must_not_mention": []
+      },
+      "status": "fail",
+      "unique_normalized_responses": 1,
+      "expectation_violations": [
+        "empty response text."
+      ],
+      "runs": [
+        {
+          "repeat": 1,
+          "status": "error",
+          "latency_ms": 7410,
+          "error": "item is not defined"
+        },
+        {
+          "repeat": 2,
+          "status": "ok",
+          "http_status": 200,
+          "latency_ms": 5795,
+          "response_text": "",
+          "response_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "normalized_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "tool_calls": [
+            {
+              "type": "input",
+              "toolCallId": "call_fed92e9ba3084cdba23829dc",
+              "toolName": "lookup_host",
+              "input": {
+                "query": "portatil"
+              }
+            },
+            {
+              "type": "output",
+              "toolCallId": "call_fed92e9ba3084cdba23829dc",
+              "output": {
+                "hosts": [],
+                "message": "No hosts found matching 'portatil' (or not in your scope)"
+              }
+            },
+            {
+              "type": "input",
+              "toolCallId": "call_f1154d65e56f420c9cc7d717",
+              "toolName": "lookup_host",
+              "input": {
+                "query": "laptop"
+              }
+            },
+            {
+              "type": "output",
+              "toolCallId": "call_f1154d65e56f420c9cc7d717",
+              "output": {
+                "hosts": [],
+                "message": "No hosts found matching 'laptop' (or not in your scope)"
+              }
+            },
+            {
+              "type": "input",
+              "toolCallId": "tc-a0ed8c05",
+              "toolName": "lookup_host",
+              "input": {
+                "query": "notebook"
+              }
+            },
+            {
+              "type": "output",
+              "toolCallId": "tc-a0ed8c05",
+              "output": {
+                "hosts": [],
+                "message": "No hosts found matching 'notebook' (or not in your scope)"
+              }
+            }
+          ],
+          "expectation_violations": [
+            "empty response text."
+          ],
+          "raw_stream": "data: {\"type\": \"start\", \"messageId\": \"3cd921fa-e346-4142-89d1-070f71ddd417\"}\n\ndata: {\"type\": \"tool-input-available\", \"toolCallId\": \"call_fed92e9ba3084cdba23829dc\", \"toolName\": \"lookup_host\", \"input\": {\"query\": \"portatil\"}, \"dynamic\": true}\n\ndata: {\"type\": \"tool-output-available\", \"toolCallId\": \"call_fed92e9ba3084cdba23829dc\", \"output\": {\"hosts\": [], \"message\": \"No hosts found matching 'portatil' (or not in your scope)\"}, \"dynamic\": true}\n\ndata: {\"type\": \"tool-input-available\", \"toolCallId\": \"call_f1154d65e56f420c9cc7d717\", \"toolName\": \"lookup_host\", \"input\": {\"query\": \"laptop\"}, \"dynamic\": true}\n\ndata: {\"type\": \"tool-output-available\", \"toolCallId\": \"call_f1154d65e56f420c9cc7d717\", \"output\": {\"hosts\": [], \"message\": \"No hosts found matching 'laptop' (or not in your scope)\"}, \"dynamic\": true}\n\ndata: {\"type\": \"tool-input-available\", \"toolCallId\": \"tc-a0ed8c05\", \"toolName\": \"lookup_host\", \"input\": {\"query\": \"notebook\"}, \"dynamic\": true}\n\ndata: {\"type\": \"tool-output-available\", \"toolCallId\": \"tc-a0ed8c05\", \"output\": {\"hosts\": [], \"message\": \"No hosts found matching 'notebook' (or not in your scope)\"}, \"dynamic\": true}\n\ndata: {\"type\": \"finish\", \"finishReason\": \"stop\"}\n\ndata: [DONE]\n\n"
+        }
+      ]
+    },
+    {
+      "id": "SEM-INV-COUNT-004",
+      "group": "inventory-aggregates",
+      "intent": "laptop_count",
+      "variant": "asset-type",
+      "prompt": "¿Cuántos activos son laptops?",
+      "expected": {
+        "decision": "answer",
+        "tool_budget": "inventory aggregate lookup acceptable; do not estimate",
+        "safety": "use only registered inventory data",
+        "answer_shape": "must_abstain",
+        "equivalence_key": "inventory-laptop-count",
+        "acceptance_criteria": [
+          "must return the same numeric count across all laptop count variants",
+          "INCONSISTENTE 2026-07-08: conteo de laptops devolvió no-data / 72 / 683 en corridas equivalentes; defecto de consistencia",
+          "ground-truth 2026-07-08: no hay desglose por tipo en la CMDB; el conteo de laptops NO es contestable -> la respuesta correcta es declarar que no esta disponible, nunca un numero inventado (72 es total hosts, no laptops)",
+          "regla de abstencion 2026-07-08: activo/dato no disponible en la CMDB; la respuesta DEBE declarar no-data/no-disponible y NO inventar valor concreto"
+        ],
+        "format": "",
+        "must_mention": [],
+        "must_mention_any": [],
+        "must_not_mention": []
+      },
+      "status": "fail",
+      "unique_normalized_responses": 0,
+      "expectation_violations": [],
+      "runs": [
+        {
+          "repeat": 1,
+          "status": "error",
+          "latency_ms": 22307,
+          "error": "item is not defined"
+        },
+        {
+          "repeat": 2,
+          "status": "error",
+          "latency_ms": 26334,
+          "error": "item is not defined"
+        }
+      ]
+    }
+  ]
+}

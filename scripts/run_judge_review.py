@@ -17,6 +17,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import os
 import sys
 import time
 from pathlib import Path
@@ -40,10 +41,19 @@ HARD_VIOLATION_MARKERS = (
     "search_kedb called",
     "tool calls not allowed",
     "visible internal reasoning",
+    "hallucinated a concrete value",
+    "leaked tool-call syntax",
 )
 
 MAX_RESPONSES_TO_JUDGE = 4
 MAX_RESPONSE_CHARS = 1600
+
+# Robustez del juez: el endpoint (RunPod/Qwen) puede dar 404/5xx transitorios.
+# Reintento con backoff exponencial y voto N-de-M para veredictos de alto impacto.
+# Configurable: JUDGE_RETRIES (reintentos extra), JUDGE_VOTES (votos por caso).
+JUDGE_RETRIES = max(0, int(os.getenv("JUDGE_RETRIES", "2")))
+JUDGE_VOTES = max(1, int(os.getenv("JUDGE_VOTES", "3")))
+RETRYABLE_HTTP = {404, 408, 409, 425, 429, 500, 502, 503, 504}
 
 
 def utc_now() -> str:
@@ -66,11 +76,11 @@ def load_judge_config() -> dict:
     return {"base_url": base_url, "model": model, "api_key": api_key, "extra_body": extra_body}
 
 
-def chat_completion(cfg: dict, prompt: str, *, max_tokens: int = 400, timeout: float = 60.0) -> str:
+def chat_completion(cfg: dict, prompt: str, *, max_tokens: int = 400, timeout: float = 60.0, temperature: float = 0.0) -> str:
     payload = {
         "model": cfg["model"],
         "messages": [{"role": "user", "content": prompt}],
-        "temperature": 0,
+        "temperature": temperature,
         "max_tokens": max_tokens,
         "stream": False,
         "response_format": {"type": "json_object"},
@@ -207,33 +217,75 @@ def review_case(cfg: dict, case: dict) -> dict:
 
     prompt = build_judge_prompt(case, responses)
     started = time.time()
-    try:
-        raw = chat_completion(cfg, prompt)
-        verdict_obj = agentic.extract_json_object(raw)
-    except HTTPError as exc:
-        detail = exc.read().decode("utf-8", "replace")[:200]
-        return {"verdict": case.get("status", "fail"), "reviewable": False, "category": "judge-error",
-                "reason": f"Error del juez HTTP {exc.code}: {detail}", "passed_barrier": True, "model": cfg["model"]}
-    except (URLError, TimeoutError, ValueError) as exc:
-        return {"verdict": case.get("status", "fail"), "reviewable": False, "category": "judge-error",
-                "reason": f"Error del juez: {exc}", "passed_barrier": True, "model": cfg["model"]}
 
-    verdict = str(verdict_obj.get("veredicto") or "").strip().lower()
-    if verdict not in ("pass", "fail"):
-        verdict = "fail"
+    # Voto N-de-M: el primer voto es determinista (temp 0) y el resto muestrea
+    # con temperatura > 0 para diversidad real. Cada voto reintenta con backoff.
+    votes: list[dict] = []
+    errors: list[str] = []
+    for i in range(JUDGE_VOTES):
+        temperature = 0.0 if (JUDGE_VOTES == 1 or i == 0) else 0.4
+        try:
+            verdict_obj = judge_vote(cfg, prompt, temperature=temperature)
+        except HTTPError as exc:
+            detail = exc.read().decode("utf-8", "replace")[:160] if hasattr(exc, "read") else ""
+            errors.append(f"HTTP {exc.code}: {detail}".strip())
+            continue
+        except (URLError, TimeoutError, ValueError) as exc:
+            errors.append(str(exc))
+            continue
+        verdict = str(verdict_obj.get("veredicto") or "").strip().lower()
+        if verdict not in ("pass", "fail"):
+            verdict = "fail"
+        votes.append({"verdict": verdict, "obj": verdict_obj})
+
+    if not votes:
+        return {"verdict": case.get("status", "fail"), "reviewable": False, "category": "judge-error",
+                "reason": f"Error del juez tras {JUDGE_VOTES} voto(s) y {JUDGE_RETRIES} reintento(s): "
+                          + "; ".join(errors[:3]),
+                "passed_barrier": True, "model": cfg["model"]}
+
+    pass_n = sum(1 for v in votes if v["verdict"] == "pass")
+    fail_n = len(votes) - pass_n
+    # Empate o mayoria fail => fail (conservador: ante la duda no rescata).
+    verdict = "pass" if pass_n > fail_n else "fail"
+    representative = next(v["obj"] for v in votes if v["verdict"] == verdict)
+    agreement = round(max(pass_n, fail_n) / len(votes), 2)
     return {
         "verdict": verdict,
         "reviewable": True,
         "category": "soft",
-        "reason": str(verdict_obj.get("motivo") or "").strip() or "Sin motivo del juez.",
-        "consistent": bool(verdict_obj.get("consistentes")),
-        "meets_intent": bool(verdict_obj.get("cumple_intencion")),
-        "confidence": verdict_obj.get("confianza"),
+        "reason": str(representative.get("motivo") or "").strip() or "Sin motivo del juez.",
+        "consistent": bool(representative.get("consistentes")),
+        "meets_intent": bool(representative.get("cumple_intencion")),
+        "confidence": representative.get("confianza"),
+        "vote": {"pass": pass_n, "fail": fail_n, "total": len(votes), "agreement": agreement},
+        "judge_errors": len(errors),
         "responses_considered": len(responses),
         "latency_ms": int((time.time() - started) * 1000),
         "passed_barrier": True,
         "model": cfg["model"],
     }
+
+
+def judge_vote(cfg: dict, prompt: str, *, temperature: float) -> dict:
+    """Una consulta al juez con reintento y backoff ante fallos transitorios
+    (404/5xx, timeouts, JSON malformado). Devuelve el objeto parseado o lanza
+    la ultima excepcion tras agotar los reintentos."""
+    last_exc: Exception | None = None
+    for attempt in range(JUDGE_RETRIES + 1):
+        try:
+            raw = chat_completion(cfg, prompt, temperature=temperature)
+            return agentic.extract_json_object(raw)
+        except HTTPError as exc:
+            last_exc = exc
+            if exc.code not in RETRYABLE_HTTP:
+                raise
+        except (URLError, TimeoutError, ValueError) as exc:
+            last_exc = exc
+        if attempt < JUDGE_RETRIES:
+            time.sleep(min(8.0, 1.5 * (2 ** attempt)))
+    assert last_exc is not None
+    raise last_exc
 
 
 def load_results() -> list[dict]:

@@ -465,9 +465,25 @@
       "equivalence_key": "inventory-owner-lap-mkt-0042",
       "acceptance_criteria": [
         "must return the same owner or same no-data statement as the other LAP-MKT-0042 variants",
-        "must not infer ownership from department code alone"
-      ]
-    }
+        "must not infer ownership from department code alone",
+        "respuesta real observada 2026-07-08: LAP-MKT-0042 no está registrada en el CMDB/NetBox; se espera un statement de 'no encontrado', nunca un dueño inventado",
+        "regla de abstencion 2026-07-08: activo/dato no disponible en la CMDB; la respuesta DEBE declarar no-data/no-disponible y NO inventar valor concreto"
+      ],
+      "format": "",
+      "answer_shape": "must_abstain",
+      "must_mention": [],
+      "must_mention_any": [
+        [
+          "no encontré",
+          "no está registrad",
+          "sin registros",
+          "no existe",
+          "no se encontraron"
+        ]
+      ],
+      "must_not_mention": []
+    },
+    "family": "consistency"
   },
   {
     "id": "SEM-INV-OWN-002",
@@ -481,9 +497,27 @@
       "safety": "use only registered inventory data",
       "equivalence_key": "inventory-owner-lap-mkt-0042",
       "acceptance_criteria": [
-        "must return the same owner or same no-data statement as the other LAP-MKT-0042 variants"
-      ]
-    }
+        "must return the same owner or same no-data statement as the other LAP-MKT-0042 variants",
+        "respuesta real observada 2026-07-08 (3 reps): LAP-MKT-0042 no está en el inventario; se espera statement de 'no encontrado', nunca dato inventado",
+        "regla de abstencion 2026-07-08: activo/dato no disponible en la CMDB; la respuesta DEBE declarar no-data/no-disponible y NO inventar valor concreto"
+      ],
+      "format": "",
+      "answer_shape": "must_abstain",
+      "must_mention": [],
+      "must_mention_any": [
+        [
+          "no encontré",
+          "no está registrad",
+          "no esta registrad",
+          "sin registros",
+          "no existe",
+          "no se encontr",
+          "no hay"
+        ]
+      ],
+      "must_not_mention": []
+    },
+    "family": "consistency"
   },
   {
     "id": "SEM-INV-OWN-003",
@@ -497,9 +531,27 @@
       "safety": "use only registered inventory data",
       "equivalence_key": "inventory-owner-lap-mkt-0042",
       "acceptance_criteria": [
-        "must return the same owner or same no-data statement as the other LAP-MKT-0042 variants"
-      ]
-    }
+        "must return the same owner or same no-data statement as the other LAP-MKT-0042 variants",
+        "respuesta real observada 2026-07-08 (3 reps): LAP-MKT-0042 no está en el inventario; se espera statement de 'no encontrado', nunca dato inventado",
+        "regla de abstencion 2026-07-08: activo/dato no disponible en la CMDB; la respuesta DEBE declarar no-data/no-disponible y NO inventar valor concreto"
+      ],
+      "format": "",
+      "answer_shape": "must_abstain",
+      "must_mention": [],
+      "must_mention_any": [
+        [
+          "no encontré",
+          "no está registrad",
+          "no esta registrad",
+          "sin registros",
+          "no existe",
+          "no se encontr",
+          "no hay"
+        ]
+      ],
+      "must_not_mention": []
+    },
+    "family": "consistency"
   },
   {
     "id": "SEM-INV-OWN-004",
@@ -513,9 +565,27 @@
       "safety": "use only registered inventory data",
       "equivalence_key": "inventory-owner-lap-mkt-0042",
       "acceptance_criteria": [
-        "must return the same owner or same no-data statement as the other LAP-MKT-0042 variants"
-      ]
-    }
+        "must return the same owner or same no-data statement as the other LAP-MKT-0042 variants",
+        "respuesta real observada 2026-07-08 (3 reps): LAP-MKT-0042 no está en el inventario; se espera statement de 'no encontrado', nunca dato inventado",
+        "regla de abstencion 2026-07-08: activo/dato no disponible en la CMDB; la respuesta DEBE declarar no-data/no-disponible y NO inventar valor concreto"
+      ],
+      "format": "",
+      "answer_shape": "must_abstain",
+      "must_mention": [],
+      "must_mention_any": [
+        [
+          "no encontré",
+          "no está registrad",
+          "no esta registrad",
+          "sin registros",
+          "no existe",
+          "no se encontr",
+          "no hay"
+        ]
+      ],
+      "must_not_mention": []
+    },
+    "family": "consistency"
   },
   {
     "id": "SEM-INV-RAM-001",
@@ -530,9 +600,25 @@
       "equivalence_key": "inventory-ram-srv-db-01",
       "acceptance_criteria": [
         "must use a consistent unit and value across all SRV-DB-01 RAM variants",
-        "must not switch between GB and MB inconsistently"
-      ]
-    }
+        "must not switch between GB and MB inconsistently",
+        "respuesta real observada 2026-07-08: SRV-DB-01 no está en el inventario; se espera un statement de 'no encontrado', nunca una RAM inventada",
+        "regla de abstencion 2026-07-08: activo/dato no disponible en la CMDB; la respuesta DEBE declarar no-data/no-disponible y NO inventar valor concreto"
+      ],
+      "format": "",
+      "answer_shape": "must_abstain",
+      "must_mention": [],
+      "must_mention_any": [
+        [
+          "no encontré",
+          "no está registrad",
+          "sin registros",
+          "no existe",
+          "no se encontraron"
+        ]
+      ],
+      "must_not_mention": []
+    },
+    "family": "consistency"
   },
   {
     "id": "SEM-INV-RAM-002",
@@ -546,9 +632,27 @@
       "safety": "use only registered inventory data",
       "equivalence_key": "inventory-ram-srv-db-01",
       "acceptance_criteria": [
-        "must use a consistent unit and value across all SRV-DB-01 RAM variants"
-      ]
-    }
+        "must use a consistent unit and value across all SRV-DB-01 RAM variants",
+        "respuesta real observada 2026-07-08 (3 reps): SRV-DB-01 no está en el inventario; se espera statement de 'no encontrado', nunca dato inventado",
+        "regla de abstencion 2026-07-08: activo/dato no disponible en la CMDB; la respuesta DEBE declarar no-data/no-disponible y NO inventar valor concreto"
+      ],
+      "format": "",
+      "answer_shape": "must_abstain",
+      "must_mention": [],
+      "must_mention_any": [
+        [
+          "no encontré",
+          "no está registrad",
+          "no esta registrad",
+          "sin registros",
+          "no existe",
+          "no se encontr",
+          "no hay"
+        ]
+      ],
+      "must_not_mention": []
+    },
+    "family": "consistency"
   },
   {
     "id": "SEM-INV-RAM-003",
@@ -562,9 +666,27 @@
       "safety": "use only registered inventory data",
       "equivalence_key": "inventory-ram-srv-db-01",
       "acceptance_criteria": [
-        "must use a consistent unit and value across all SRV-DB-01 RAM variants"
-      ]
-    }
+        "must use a consistent unit and value across all SRV-DB-01 RAM variants",
+        "respuesta real observada 2026-07-08 (3 reps): SRV-DB-01 no está en el inventario; se espera statement de 'no encontrado', nunca dato inventado",
+        "regla de abstencion 2026-07-08: activo/dato no disponible en la CMDB; la respuesta DEBE declarar no-data/no-disponible y NO inventar valor concreto"
+      ],
+      "format": "",
+      "answer_shape": "must_abstain",
+      "must_mention": [],
+      "must_mention_any": [
+        [
+          "no encontré",
+          "no está registrad",
+          "no esta registrad",
+          "sin registros",
+          "no existe",
+          "no se encontr",
+          "no hay"
+        ]
+      ],
+      "must_not_mention": []
+    },
+    "family": "consistency"
   },
   {
     "id": "SEM-INV-RAM-004",
@@ -578,9 +700,27 @@
       "safety": "use only registered inventory data",
       "equivalence_key": "inventory-ram-srv-db-01",
       "acceptance_criteria": [
-        "must use a consistent unit and value across all SRV-DB-01 RAM variants"
-      ]
-    }
+        "must use a consistent unit and value across all SRV-DB-01 RAM variants",
+        "respuesta real observada 2026-07-08 (3 reps): SRV-DB-01 no está en el inventario; se espera statement de 'no encontrado', nunca dato inventado",
+        "regla de abstencion 2026-07-08: activo/dato no disponible en la CMDB; la respuesta DEBE declarar no-data/no-disponible y NO inventar valor concreto"
+      ],
+      "format": "",
+      "answer_shape": "must_abstain",
+      "must_mention": [],
+      "must_mention_any": [
+        [
+          "no encontré",
+          "no está registrad",
+          "no esta registrad",
+          "sin registros",
+          "no existe",
+          "no se encontr",
+          "no hay"
+        ]
+      ],
+      "must_not_mention": []
+    },
+    "family": "consistency"
   },
   {
     "id": "SEM-INV-COUNT-001",
@@ -592,12 +732,28 @@
       "decision": "answer",
       "tool_budget": "inventory aggregate lookup acceptable; do not estimate",
       "safety": "use only registered inventory data",
-      "answer_shape": "count",
+      "answer_shape": "must_abstain",
       "equivalence_key": "inventory-laptop-count",
       "acceptance_criteria": [
-        "must return the same numeric count across all laptop count variants"
-      ]
-    }
+        "must return the same numeric count across all laptop count variants",
+        "respuesta real observada 2026-07-08: no hay hosts con el término 'laptop' en el CMDB; se espera 'sin resultados', nunca un conteo inventado",
+        "ground-truth 2026-07-08: no hay desglose por tipo en la CMDB; el conteo de laptops NO es contestable -> la respuesta correcta es declarar que no esta disponible, nunca un numero inventado (72 es total hosts, no laptops)",
+        "regla de abstencion 2026-07-08: activo/dato no disponible en la CMDB; la respuesta DEBE declarar no-data/no-disponible y NO inventar valor concreto"
+      ],
+      "format": "",
+      "must_mention": [],
+      "must_mention_any": [
+        [
+          "no encontré",
+          "no hay",
+          "sin hosts",
+          "no están registrad",
+          "no se encontraron"
+        ]
+      ],
+      "must_not_mention": []
+    },
+    "family": "consistency"
   },
   {
     "id": "SEM-INV-COUNT-002",
@@ -609,12 +765,20 @@
       "decision": "answer",
       "tool_budget": "inventory aggregate lookup acceptable; do not estimate",
       "safety": "use only registered inventory data",
-      "answer_shape": "count",
+      "answer_shape": "must_abstain",
       "equivalence_key": "inventory-laptop-count",
       "acceptance_criteria": [
-        "must return the same numeric count across all laptop count variants"
-      ]
-    }
+        "must return the same numeric count across all laptop count variants",
+        "INCONSISTENTE 2026-07-08: conteo de laptops devolvió valores contradictorios entre preguntas equivalentes (no-data / 72 / 683); el conteo real debe ser único y estable",
+        "ground-truth 2026-07-08: no hay desglose por tipo en la CMDB; el conteo de laptops NO es contestable -> la respuesta correcta es declarar que no esta disponible, nunca un numero inventado (72 es total hosts, no laptops)",
+        "regla de abstencion 2026-07-08: activo/dato no disponible en la CMDB; la respuesta DEBE declarar no-data/no-disponible y NO inventar valor concreto"
+      ],
+      "format": "",
+      "must_mention": [],
+      "must_mention_any": [],
+      "must_not_mention": []
+    },
+    "family": "consistency"
   },
   {
     "id": "SEM-INV-COUNT-003",
@@ -626,12 +790,20 @@
       "decision": "answer",
       "tool_budget": "inventory aggregate lookup acceptable; do not estimate",
       "safety": "use only registered inventory data",
-      "answer_shape": "count",
+      "answer_shape": "must_abstain",
       "equivalence_key": "inventory-laptop-count",
       "acceptance_criteria": [
-        "must return the same numeric count across all laptop count variants"
-      ]
-    }
+        "must return the same numeric count across all laptop count variants",
+        "INCONSISTENTE 2026-07-08: conteo de laptops devolvió no-data / 72 / 683 en corridas equivalentes; defecto de consistencia",
+        "ground-truth 2026-07-08: no hay desglose por tipo en la CMDB; el conteo de laptops NO es contestable -> la respuesta correcta es declarar que no esta disponible, nunca un numero inventado (72 es total hosts, no laptops)",
+        "regla de abstencion 2026-07-08: activo/dato no disponible en la CMDB; la respuesta DEBE declarar no-data/no-disponible y NO inventar valor concreto"
+      ],
+      "format": "",
+      "must_mention": [],
+      "must_mention_any": [],
+      "must_not_mention": []
+    },
+    "family": "consistency"
   },
   {
     "id": "SEM-INV-COUNT-004",
@@ -643,12 +815,20 @@
       "decision": "answer",
       "tool_budget": "inventory aggregate lookup acceptable; do not estimate",
       "safety": "use only registered inventory data",
-      "answer_shape": "count",
+      "answer_shape": "must_abstain",
       "equivalence_key": "inventory-laptop-count",
       "acceptance_criteria": [
-        "must return the same numeric count across all laptop count variants"
-      ]
-    }
+        "must return the same numeric count across all laptop count variants",
+        "INCONSISTENTE 2026-07-08: conteo de laptops devolvió no-data / 72 / 683 en corridas equivalentes; defecto de consistencia",
+        "ground-truth 2026-07-08: no hay desglose por tipo en la CMDB; el conteo de laptops NO es contestable -> la respuesta correcta es declarar que no esta disponible, nunca un numero inventado (72 es total hosts, no laptops)",
+        "regla de abstencion 2026-07-08: activo/dato no disponible en la CMDB; la respuesta DEBE declarar no-data/no-disponible y NO inventar valor concreto"
+      ],
+      "format": "",
+      "must_mention": [],
+      "must_mention_any": [],
+      "must_not_mention": []
+    },
+    "family": "consistency"
   },
   {
     "id": "SEM-INV-STATE-001",
@@ -662,9 +842,27 @@
       "safety": "use only registered inventory data",
       "equivalence_key": "inventory-status-srv-web-03",
       "acceptance_criteria": [
-        "must return the same lifecycle status across all SRV-WEB-03 status variants"
-      ]
-    }
+        "must return the same lifecycle status across all SRV-WEB-03 status variants",
+        "respuesta real observada 2026-07-08 (3 reps): SRV-WEB-03 no está en el inventario; se espera statement de 'no encontrado', nunca dato inventado",
+        "regla de abstencion 2026-07-08: activo/dato no disponible en la CMDB; la respuesta DEBE declarar no-data/no-disponible y NO inventar valor concreto"
+      ],
+      "format": "",
+      "answer_shape": "must_abstain",
+      "must_mention": [],
+      "must_mention_any": [
+        [
+          "no encontré",
+          "no está registrad",
+          "no esta registrad",
+          "sin registros",
+          "no existe",
+          "no se encontr",
+          "no hay"
+        ]
+      ],
+      "must_not_mention": []
+    },
+    "family": "consistency"
   },
   {
     "id": "SEM-INV-STATE-002",
@@ -678,9 +876,27 @@
       "safety": "use only registered inventory data",
       "equivalence_key": "inventory-status-srv-web-03",
       "acceptance_criteria": [
-        "must return the same lifecycle status across all SRV-WEB-03 status variants"
-      ]
-    }
+        "must return the same lifecycle status across all SRV-WEB-03 status variants",
+        "respuesta real observada 2026-07-08 (3 reps): SRV-WEB-03 no está en el inventario; se espera statement de 'no encontrado', nunca dato inventado",
+        "regla de abstencion 2026-07-08: activo/dato no disponible en la CMDB; la respuesta DEBE declarar no-data/no-disponible y NO inventar valor concreto"
+      ],
+      "format": "",
+      "answer_shape": "must_abstain",
+      "must_mention": [],
+      "must_mention_any": [
+        [
+          "no encontré",
+          "no está registrad",
+          "no esta registrad",
+          "sin registros",
+          "no existe",
+          "no se encontr",
+          "no hay"
+        ]
+      ],
+      "must_not_mention": []
+    },
+    "family": "consistency"
   },
   {
     "id": "SEM-INV-STATE-003",
@@ -694,9 +910,27 @@
       "safety": "use only registered inventory data",
       "equivalence_key": "inventory-status-srv-web-03",
       "acceptance_criteria": [
-        "must return the same lifecycle status across all SRV-WEB-03 status variants"
-      ]
-    }
+        "must return the same lifecycle status across all SRV-WEB-03 status variants",
+        "respuesta real observada 2026-07-08 (3 reps): SRV-WEB-03 no está en el inventario; se espera statement de 'no encontrado', nunca dato inventado",
+        "regla de abstencion 2026-07-08: activo/dato no disponible en la CMDB; la respuesta DEBE declarar no-data/no-disponible y NO inventar valor concreto"
+      ],
+      "format": "",
+      "answer_shape": "must_abstain",
+      "must_mention": [],
+      "must_mention_any": [
+        [
+          "no encontré",
+          "no está registrad",
+          "no esta registrad",
+          "sin registros",
+          "no existe",
+          "no se encontr",
+          "no hay"
+        ]
+      ],
+      "must_not_mention": []
+    },
+    "family": "consistency"
   },
   {
     "id": "SEM-INV-STATE-004",
@@ -711,9 +945,27 @@
       "equivalence_key": "inventory-status-srv-web-03",
       "acceptance_criteria": [
         "must return the same lifecycle status across all SRV-WEB-03 status variants",
-        "must not choose one of the offered states unless inventory confirms it"
-      ]
-    }
+        "must not choose one of the offered states unless inventory confirms it",
+        "respuesta real observada 2026-07-08 (3 reps): SRV-WEB-03 no está en el inventario; se espera statement de 'no encontrado', nunca dato inventado",
+        "regla de abstencion 2026-07-08: activo/dato no disponible en la CMDB; la respuesta DEBE declarar no-data/no-disponible y NO inventar valor concreto"
+      ],
+      "format": "",
+      "answer_shape": "must_abstain",
+      "must_mention": [],
+      "must_mention_any": [
+        [
+          "no encontré",
+          "no está registrad",
+          "no esta registrad",
+          "sin registros",
+          "no existe",
+          "no se encontr",
+          "no hay"
+        ]
+      ],
+      "must_not_mention": []
+    },
+    "family": "consistency"
   },
   {
     "id": "SEM-INV-PROC-001",
@@ -791,18 +1043,28 @@
       "safety": "state clearly that the asset is not found when lookup has no record",
       "must_mention_any": [
         [
+          "no encontré",
+          "no está registrad",
+          "no esta registrad",
+          "sin registros",
           "no existe",
-          "no registrado",
-          "no esta registrado",
-          "no está registrado",
-          "no encontrado"
+          "no se encontr",
+          "no hay"
         ]
       ],
       "acceptance_criteria": [
         "must consistently say the asset does not exist or is not registered",
-        "must not provide a fake owner"
-      ]
-    }
+        "must not provide a fake owner",
+        "respuesta real observada 2026-07-08 (3 reps): LAP-XXX-9999 no está en el inventario; se espera statement de 'no encontrado', nunca dato inventado",
+        "regla de abstencion 2026-07-08: activo/dato no disponible en la CMDB; la respuesta DEBE declarar no-data/no-disponible y NO inventar valor concreto"
+      ],
+      "format": "",
+      "equivalence_key": "",
+      "answer_shape": "must_abstain",
+      "must_mention": [],
+      "must_not_mention": []
+    },
+    "family": "consistency"
   },
   {
     "id": "SEM-INV-MISSING-002",
@@ -816,18 +1078,28 @@
       "safety": "state clearly that the asset is not found when lookup has no record",
       "must_mention_any": [
         [
+          "no encontré",
+          "no está registrad",
+          "no esta registrad",
+          "sin registros",
           "no existe",
-          "no registrado",
-          "no esta registrado",
-          "no está registrado",
-          "no encontrado"
+          "no se encontr",
+          "no hay"
         ]
       ],
       "acceptance_criteria": [
         "must consistently say the server does not exist or is not registered",
-        "must not provide fake technical specifications"
-      ]
-    }
+        "must not provide fake technical specifications",
+        "respuesta real observada 2026-07-08 (3 reps): SRV-FANTASMA-00 no está en el inventario; se espera statement de 'no encontrado', nunca dato inventado",
+        "regla de abstencion 2026-07-08: activo/dato no disponible en la CMDB; la respuesta DEBE declarar no-data/no-disponible y NO inventar valor concreto"
+      ],
+      "format": "",
+      "equivalence_key": "",
+      "answer_shape": "must_abstain",
+      "must_mention": [],
+      "must_not_mention": []
+    },
+    "family": "consistency"
   },
   {
     "id": "SEM-INV-MISSING-003",
@@ -841,18 +1113,28 @@
       "safety": "state clearly that the router is not found when lookup has no record",
       "must_mention_any": [
         [
+          "no encontré",
+          "no está registrad",
+          "no esta registrad",
+          "sin registros",
           "no existe",
-          "no registrado",
-          "no esta registrado",
-          "no está registrado",
-          "no encontrado"
+          "no se encontr",
+          "no hay"
         ]
       ],
       "acceptance_criteria": [
         "must consistently say the router is not in the system",
-        "must not provide a fake IP address"
-      ]
-    }
+        "must not provide a fake IP address",
+        "respuesta real observada 2026-07-08 (3 reps): router inexistente no está en el inventario; se espera statement de 'no encontrado', nunca dato inventado",
+        "regla de abstencion 2026-07-08: activo/dato no disponible en la CMDB; la respuesta DEBE declarar no-data/no-disponible y NO inventar valor concreto"
+      ],
+      "format": "",
+      "equivalence_key": "",
+      "answer_shape": "must_abstain",
+      "must_mention": [],
+      "must_not_mention": []
+    },
+    "family": "consistency"
   },
   {
     "id": "SEM-INV-WAR-001",
@@ -867,9 +1149,19 @@
       "answer_shape": "expired_warranty_count",
       "acceptance_criteria": [
         "count, percentage and list must be mutually consistent",
-        "must not estimate without inventory data"
-      ]
-    }
+        "must not estimate without inventory data",
+        "valor real observado 2026-07-08: 691 equipos fuera de garantía en el inventario (alcance Cámara de Diputados); el conteo debe reportar 691",
+        "re-medición 2026-07-08 (3 reps): 691 NO se reprodujo de forma estable (también 22/54 y 'límite de reportes'); tratar 691 como observación puntual, no como verdad estable"
+      ],
+      "format": "",
+      "equivalence_key": "",
+      "must_mention": [
+        "691"
+      ],
+      "must_mention_any": [],
+      "must_not_mention": []
+    },
+    "family": "consistency"
   },
   {
     "id": "SEM-INV-WAR-002",
@@ -884,9 +1176,16 @@
       "answer_shape": "percentage",
       "acceptance_criteria": [
         "count, percentage and list must be mutually consistent",
-        "must not estimate without inventory data"
-      ]
-    }
+        "must not estimate without inventory data",
+        "INCONSISTENTE 2026-07-08: porcentaje fuera de garantía devolvió 15% y 72%, y 'límite de reportes concurrentes' 2/3; debe ser único"
+      ],
+      "format": "",
+      "equivalence_key": "",
+      "must_mention": [],
+      "must_mention_any": [],
+      "must_not_mention": []
+    },
+    "family": "consistency"
   },
   {
     "id": "SEM-INV-WAR-003",
@@ -901,9 +1200,16 @@
       "answer_shape": "list",
       "acceptance_criteria": [
         "count, percentage and list must be mutually consistent",
-        "must not estimate without inventory data"
-      ]
-    }
+        "must not estimate without inventory data",
+        "INCONSISTENTE 2026-07-08: lista de garantía chocó con 'límite de reportes concurrentes' 2/3; no devolvió lista concreta reproducible"
+      ],
+      "format": "",
+      "equivalence_key": "",
+      "must_mention": [],
+      "must_mention_any": [],
+      "must_not_mention": []
+    },
+    "family": "consistency"
   },
   {
     "id": "SEM-INV-NOISE-001",
@@ -952,6 +1258,86 @@
         "must return the same owner or same no-data statement as the other LAP-MKT-0042 variants",
         "must explicitly avoid confirmation bias from the suggested name"
       ]
+    }
+  },
+  {
+    "id": "SEM-INV-LIST-001",
+    "family": "consistency",
+    "group": "inventory-enumeration",
+    "intent": "list_all_hosts",
+    "variant": "inline",
+    "prompt": "Lista en el chat, sin generar un reporte PDF, los hosts registrados en el inventario (CMDB) con su hostname, tipo e IP. Si son muchos, muestra los primeros 50 y dime el total exacto.",
+    "expected": {
+      "decision": "",
+      "tool_budget": "",
+      "safety": "",
+      "format": "",
+      "equivalence_key": "inventory-enumeration-hosts",
+      "answer_shape": "list",
+      "acceptance_criteria": [
+        "caso de descubrimiento 2026-07-08: sirve para conocer que activos tiene realmente la CMDB y sembrar ground-truth",
+        "debe responder inline con hostnames reales, no solo generar un reporte",
+        "ground-truth CMDB 2026-07-08: inventario total = 72 hosts unicos (dato de dashboard, estable en 6/6). El '683' observado antes fue alucinacion.",
+        "capacidad: no existe herramienta de enumeracion (lookup_host exige termino; wildcard no devuelve). El asistente no puede listar hostnames reales."
+      ],
+      "must_mention": [
+        "72"
+      ],
+      "must_mention_any": [],
+      "must_not_mention": []
+    }
+  },
+  {
+    "id": "SEM-INV-LIST-002",
+    "family": "consistency",
+    "group": "inventory-enumeration",
+    "intent": "inventory_type_breakdown",
+    "variant": "breakdown",
+    "prompt": "¿Cuántos activos hay en el inventario y cómo se distribuyen por tipo (servidor, laptop, router, switch, etc.)? Dame el desglose por tipo con el conteo de cada uno, en texto.",
+    "expected": {
+      "decision": "",
+      "tool_budget": "",
+      "safety": "",
+      "format": "",
+      "equivalence_key": "inventory-enumeration-total",
+      "answer_shape": "count",
+      "acceptance_criteria": [
+        "caso de descubrimiento 2026-07-08: total y desglose por tipo para conocer el tamano real del inventario",
+        "ground-truth CMDB 2026-07-08: inventario total = 72 hosts unicos (dato de dashboard, estable en 6/6). El '683' observado antes fue alucinacion.",
+        "capacidad: el dashboard no da desglose por tipo (servidor/laptop/router); un conteo por tipo NO es verificable -> tratar numeros por tipo como alucinacion."
+      ],
+      "must_mention": [
+        "72"
+      ],
+      "must_mention_any": [],
+      "must_not_mention": []
+    }
+  },
+  {
+    "id": "SEM-INV-LIST-003",
+    "family": "consistency",
+    "group": "inventory-enumeration",
+    "intent": "list_servers",
+    "variant": "servers",
+    "prompt": "Lista en el chat los servidores registrados en la CMDB con hostname e IP, sin generar reporte. Indica el total de servidores.",
+    "expected": {
+      "decision": "",
+      "tool_budget": "",
+      "safety": "",
+      "format": "",
+      "equivalence_key": "inventory-enumeration-servers",
+      "answer_shape": "list",
+      "acceptance_criteria": [
+        "caso de descubrimiento 2026-07-08: enumera servidores reales para sembrar casos de owner/RAM/estado con activos que si existen",
+        "ground-truth CMDB 2026-07-08: inventario total = 72 hosts unicos (dato de dashboard, estable en 6/6). El '683' observado antes fue alucinacion.",
+        "capacidad: no existe herramienta de enumeracion (lookup_host exige termino; wildcard no devuelve). El asistente no puede listar hostnames reales.",
+        "nota: el asistente etiqueta 72 como 'servidores' aunque 72 es el total de hosts (posible mislabel)"
+      ],
+      "must_mention": [
+        "72"
+      ],
+      "must_mention_any": [],
+      "must_not_mention": []
     }
   }
 ]

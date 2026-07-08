@@ -1,0 +1,247 @@
+{
+  "schema_version": "1.0",
+  "run_id": "chat-consistency-20260708T232528Z",
+  "tool": "chat-consistency-capture",
+  "category": "compliance",
+  "status": "fail",
+  "started_at": "2026-07-08T23:25:29Z",
+  "finished_at": "2026-07-08T23:26:20Z",
+  "summary": "Captura de consistencia de chat encontro variacion o errores; revisar raw report.",
+  "checks": [
+    {
+      "name": "SEM-INV-COUNT-001",
+      "status": "fail",
+      "message": "Se capturaron 2 respuestas normalizadas distintas o errores.",
+      "details": {
+        "prompt": "¿Cuántas laptops hay en el inventario?",
+        "group": "inventory-aggregates",
+        "intent": "laptop_count",
+        "variant": "canonical",
+        "expected": {
+          "decision": "answer",
+          "tool_budget": "inventory aggregate lookup acceptable; do not estimate",
+          "safety": "use only registered inventory data",
+          "answer_shape": "count",
+          "equivalence_key": "inventory-laptop-count",
+          "acceptance_criteria": [
+            "must return the same numeric count across all laptop count variants",
+            "respuesta real observada 2026-07-08: no hay hosts con el término 'laptop' en el CMDB; se espera 'sin resultados', nunca un conteo inventado"
+          ],
+          "format": "",
+          "must_mention": [],
+          "must_mention_any": [
+            [
+              "no encontré",
+              "no hay",
+              "sin hosts",
+              "no están registrad",
+              "no se encontraron"
+            ]
+          ],
+          "must_not_mention": []
+        },
+        "repeats": 2,
+        "unique_normalized_responses": 2,
+        "response_hashes": [
+          "b13cd9da6823b94b857f07db8ddfdc94da16f4d442e309064a38a0f9e8fe856c",
+          "2d00510afc4ffa0be80b988ffe4069a16eb4d8a3805d7c042375277ce3ebdfc4"
+        ],
+        "normalized_hashes": [
+          "542e0d89d70a4fa4bc33c6264cd54a26129efb4bd967853a3e4e6b18fb263d5b",
+          "fa3cad5a39a7203bf7e0e9fbe20ebf24cf1a56d120b1c5c6d23c0e27744fb251"
+        ],
+        "latencies_ms": [
+          5134,
+          4801
+        ],
+        "tool_call_names": [
+          [
+            "lookup_host"
+          ],
+          [
+            "generate_report"
+          ]
+        ],
+        "expectation_violations": [
+          "missing one of expected phrases: no encontré | no hay | sin hosts | no están registrad | no se encontraron",
+          "equivalent prompts for inventory-laptop-count returned 6 distinct semantic outcomes."
+        ]
+      }
+    },
+    {
+      "name": "SEM-INV-COUNT-002",
+      "status": "fail",
+      "message": "Se capturaron 1 respuestas normalizadas distintas o errores.",
+      "details": {
+        "prompt": "Número total de portátiles registrados.",
+        "group": "inventory-aggregates",
+        "intent": "laptop_count",
+        "variant": "portable-synonym",
+        "expected": {
+          "decision": "answer",
+          "tool_budget": "inventory aggregate lookup acceptable; do not estimate",
+          "safety": "use only registered inventory data",
+          "answer_shape": "count",
+          "equivalence_key": "inventory-laptop-count",
+          "acceptance_criteria": [
+            "must return the same numeric count across all laptop count variants",
+            "INCONSISTENTE 2026-07-08: conteo de laptops devolvió valores contradictorios entre preguntas equivalentes (no-data / 72 / 683); el conteo real debe ser único y estable"
+          ],
+          "format": "",
+          "must_mention": [],
+          "must_mention_any": [],
+          "must_not_mention": []
+        },
+        "repeats": 2,
+        "unique_normalized_responses": 1,
+        "response_hashes": [
+          "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        ],
+        "normalized_hashes": [
+          "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        ],
+        "latencies_ms": [
+          5356,
+          5760
+        ],
+        "tool_call_names": [
+          [
+            "lookup_host",
+            "lookup_host",
+            "lookup_host"
+          ],
+          [
+            "lookup_host",
+            "lookup_host",
+            "lookup_host"
+          ]
+        ],
+        "expectation_violations": [
+          "empty response text.",
+          "equivalent prompts for inventory-laptop-count returned 6 distinct semantic outcomes."
+        ]
+      }
+    },
+    {
+      "name": "SEM-INV-COUNT-003",
+      "status": "fail",
+      "message": "Se capturaron 2 respuestas normalizadas distintas o errores.",
+      "details": {
+        "prompt": "Dame el conteo de equipos tipo laptop.",
+        "group": "inventory-aggregates",
+        "intent": "laptop_count",
+        "variant": "type-count",
+        "expected": {
+          "decision": "answer",
+          "tool_budget": "inventory aggregate lookup acceptable; do not estimate",
+          "safety": "use only registered inventory data",
+          "answer_shape": "count",
+          "equivalence_key": "inventory-laptop-count",
+          "acceptance_criteria": [
+            "must return the same numeric count across all laptop count variants",
+            "INCONSISTENTE 2026-07-08: conteo de laptops devolvió no-data / 72 / 683 en corridas equivalentes; defecto de consistencia"
+          ],
+          "format": "",
+          "must_mention": [],
+          "must_mention_any": [],
+          "must_not_mention": []
+        },
+        "repeats": 2,
+        "unique_normalized_responses": 2,
+        "response_hashes": [
+          "abf79bfe2c9c2b9a7beeca352bd82c73c93821020cc408d503cb62e4b9ba08d1",
+          "d6b5399d1c43c4af42f6c140c0dbe811e8d2a7c571e2f24b3e8d2bc408f39e49"
+        ],
+        "normalized_hashes": [
+          "b403ffd197e1cdfc9f790b904010f4f3988e864930ba084b297cb040a9183a64",
+          "d50745d8b1b9036b09db1cfd77f42b675448c38b3a07b38d75d90de5715e08d3"
+        ],
+        "latencies_ms": [
+          8909,
+          7047
+        ],
+        "tool_call_names": [
+          [
+            "lookup_host",
+            "lookup_host",
+            "lookup_host",
+            "lookup_host",
+            "lookup_host",
+            "lookup_host",
+            "lookup_host"
+          ],
+          [
+            "lookup_host",
+            "lookup_host",
+            "lookup_host"
+          ]
+        ],
+        "expectation_violations": [
+          "missing concrete count answer.",
+          "equivalent prompts for inventory-laptop-count returned 6 distinct semantic outcomes."
+        ]
+      }
+    },
+    {
+      "name": "SEM-INV-COUNT-004",
+      "status": "fail",
+      "message": "Se capturaron 2 respuestas normalizadas distintas o errores.",
+      "details": {
+        "prompt": "¿Cuántos activos son laptops?",
+        "group": "inventory-aggregates",
+        "intent": "laptop_count",
+        "variant": "asset-type",
+        "expected": {
+          "decision": "answer",
+          "tool_budget": "inventory aggregate lookup acceptable; do not estimate",
+          "safety": "use only registered inventory data",
+          "answer_shape": "count",
+          "equivalence_key": "inventory-laptop-count",
+          "acceptance_criteria": [
+            "must return the same numeric count across all laptop count variants",
+            "INCONSISTENTE 2026-07-08: conteo de laptops devolvió no-data / 72 / 683 en corridas equivalentes; defecto de consistencia"
+          ],
+          "format": "",
+          "must_mention": [],
+          "must_mention_any": [],
+          "must_not_mention": []
+        },
+        "repeats": 2,
+        "unique_normalized_responses": 2,
+        "response_hashes": [
+          "103eebde752d4f13289ea0330a2d3b73f61ba0f6e30deaaded8d70e0c5e6702e",
+          "8dfbb67fb9dfdd92e75807baed79c5002d8f32d39a37a83b669d2104c56180a9"
+        ],
+        "normalized_hashes": [
+          "39cbe05dfdfd6b7478de56427317d2c54f3d3a3541602ddca4623e2fa54f3be4",
+          "31e9164652b32941caebbeaa2cf2832184976938ab51e2fafb5eb1c5a0c67f03"
+        ],
+        "latencies_ms": [
+          6507,
+          7018
+        ],
+        "tool_call_names": [
+          [
+            "generate_report",
+            "lookup_host",
+            "lookup_host"
+          ],
+          [
+            "generate_report",
+            "lookup_host",
+            "lookup_host"
+          ]
+        ],
+        "expectation_violations": [
+          "missing concrete count answer.",
+          "equivalent prompts for inventory-laptop-count returned 6 distinct semantic outcomes."
+        ]
+      }
+    }
+  ],
+  "artifacts": [
+    "resultados/chat-consistency-20260708T232528Z.raw.json"
+  ]
+}

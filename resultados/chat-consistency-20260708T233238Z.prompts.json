@@ -1,0 +1,69 @@
+[
+  {
+    "id": "SEM-INV-LIST-001",
+    "family": "consistency",
+    "group": "inventory-enumeration",
+    "intent": "list_all_hosts",
+    "variant": "inline",
+    "prompt": "Lista en el chat, sin generar un reporte PDF, los hosts registrados en el inventario (CMDB) con su hostname, tipo e IP. Si son muchos, muestra los primeros 50 y dime el total exacto.",
+    "expected": {
+      "decision": "",
+      "tool_budget": "",
+      "safety": "",
+      "format": "",
+      "equivalence_key": "inventory-enumeration-hosts",
+      "answer_shape": "list",
+      "acceptance_criteria": [
+        "caso de descubrimiento 2026-07-08: sirve para conocer que activos tiene realmente la CMDB y sembrar ground-truth",
+        "debe responder inline con hostnames reales, no solo generar un reporte"
+      ],
+      "must_mention": [],
+      "must_mention_any": [],
+      "must_not_mention": []
+    }
+  },
+  {
+    "id": "SEM-INV-LIST-002",
+    "family": "consistency",
+    "group": "inventory-enumeration",
+    "intent": "inventory_type_breakdown",
+    "variant": "breakdown",
+    "prompt": "¿Cuántos activos hay en el inventario y cómo se distribuyen por tipo (servidor, laptop, router, switch, etc.)? Dame el desglose por tipo con el conteo de cada uno, en texto.",
+    "expected": {
+      "decision": "",
+      "tool_budget": "",
+      "safety": "",
+      "format": "",
+      "equivalence_key": "inventory-enumeration-total",
+      "answer_shape": "count",
+      "acceptance_criteria": [
+        "caso de descubrimiento 2026-07-08: total y desglose por tipo para conocer el tamano real del inventario"
+      ],
+      "must_mention": [],
+      "must_mention_any": [],
+      "must_not_mention": []
+    }
+  },
+  {
+    "id": "SEM-INV-LIST-003",
+    "family": "consistency",
+    "group": "inventory-enumeration",
+    "intent": "list_servers",
+    "variant": "servers",
+    "prompt": "Lista en el chat los servidores registrados en la CMDB con hostname e IP, sin generar reporte. Indica el total de servidores.",
+    "expected": {
+      "decision": "",
+      "tool_budget": "",
+      "safety": "",
+      "format": "",
+      "equivalence_key": "inventory-enumeration-servers",
+      "answer_shape": "list",
+      "acceptance_criteria": [
+        "caso de descubrimiento 2026-07-08: enumera servidores reales para sembrar casos de owner/RAM/estado con activos que si existen"
+      ],
+      "must_mention": [],
+      "must_mention_any": [],
+      "must_not_mention": []
+    }
+  }
+]

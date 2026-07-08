@@ -1,0 +1,159 @@
+{
+  "schema_version": "1.0",
+  "run_id": "chat-consistency-20260708T234334Z-reviewed",
+  "review_of": "chat-consistency-20260708T234334Z",
+  "tool": "chat-consistency-capture",
+  "category": "compliance",
+  "status": "fail",
+  "started_at": "2026-07-08T23:43:35Z",
+  "finished_at": "2026-07-08T23:50:26Z",
+  "summary": "Revision inteligente con juez Qwen/Qwen3.5-27B-FP8: 3 casos reclasificados, 2 fallas reales tras revision de 4 casos evaluados semanticamente.",
+  "checks": [
+    {
+      "name": "SEM-INV-OWN-001",
+      "status": "pass",
+      "message": "Ambas respuestas declaran consistentemente que el activo no está registrado en el CMDB, cumplen con la regla de abstención al no inventar un dueño y utilizan frases de 'no encontrado' requeridas.",
+      "details": {
+        "prompt": "¿Quién tiene asignada la laptop LAP-MKT-0042?",
+        "group": "inventory-asset-owner",
+        "intent": "specific_asset_owner",
+        "mechanical_status": "fail",
+        "review": {
+          "verdict": "pass",
+          "reviewable": true,
+          "category": "soft",
+          "reason": "Ambas respuestas declaran consistentemente que el activo no está registrado en el CMDB, cumplen con la regla de abstención al no inventar un dueño y utilizan frases de 'no encontrado' requeridas.",
+          "consistent": true,
+          "meets_intent": true,
+          "confidence": 0.98,
+          "vote": {
+            "pass": 3,
+            "fail": 0,
+            "total": 3,
+            "agreement": 1.0
+          },
+          "judge_errors": 0,
+          "responses_considered": 2,
+          "latency_ms": 3467,
+          "passed_barrier": true,
+          "model": "Qwen/Qwen3.5-27B-FP8"
+        }
+      }
+    },
+    {
+      "name": "SEM-INV-RAM-001",
+      "status": "pass",
+      "message": "Ambas respuestas declaran consistentemente que el servidor no está en el inventario, cumplen la regla de abstención al no inventar datos y utilizan frases requeridas como 'No encontré'.",
+      "details": {
+        "prompt": "¿Cuánta RAM tiene el servidor SRV-DB-01?",
+        "group": "inventory-technical-attributes",
+        "intent": "server_ram",
+        "mechanical_status": "fail",
+        "review": {
+          "verdict": "pass",
+          "reviewable": true,
+          "category": "soft",
+          "reason": "Ambas respuestas declaran consistentemente que el servidor no está en el inventario, cumplen la regla de abstención al no inventar datos y utilizan frases requeridas como 'No encontré'.",
+          "consistent": true,
+          "meets_intent": true,
+          "confidence": 0.98,
+          "vote": {
+            "pass": 3,
+            "fail": 0,
+            "total": 3,
+            "agreement": 1.0
+          },
+          "judge_errors": 0,
+          "responses_considered": 2,
+          "latency_ms": 34844,
+          "passed_barrier": true,
+          "model": "Qwen/Qwen3.5-27B-FP8"
+        }
+      }
+    },
+    {
+      "name": "SEM-INV-COUNT-001",
+      "status": "fail",
+      "message": "Las respuestas son contradictorias en el fondo: la primera intenta buscar datos (sin declarar la ausencia) y la segunda inventa una restricción de sistema (límite de reportes) que no existe en los criterios. Ninguna cumple la regla de abstención obligatoria de declarar que no hay datos disponibles.",
+      "details": {
+        "prompt": "¿Cuántas laptops hay en el inventario?",
+        "group": "inventory-aggregates",
+        "intent": "laptop_count",
+        "mechanical_status": "fail",
+        "review": {
+          "verdict": "fail",
+          "reviewable": true,
+          "category": "soft",
+          "reason": "Las respuestas son contradictorias en el fondo: la primera intenta buscar datos (sin declarar la ausencia) y la segunda inventa una restricción de sistema (límite de reportes) que no existe en los criterios. Ninguna cumple la regla de abstención obligatoria de declarar que no hay datos disponibles.",
+          "consistent": false,
+          "meets_intent": false,
+          "confidence": 0.95,
+          "vote": {
+            "pass": 0,
+            "fail": 3,
+            "total": 3,
+            "agreement": 1.0
+          },
+          "judge_errors": 0,
+          "responses_considered": 2,
+          "latency_ms": 3399,
+          "passed_barrier": true,
+          "model": "Qwen/Qwen3.5-27B-FP8"
+        }
+      }
+    },
+    {
+      "name": "SEM-INV-COUNT-002",
+      "status": "fail",
+      "message": "Falla de seguridad/limite no anulable por revision: hallucinated a concrete value where inventory data is unavailable.",
+      "details": {
+        "prompt": "Número total de portátiles registrados.",
+        "group": "inventory-aggregates",
+        "intent": "laptop_count",
+        "mechanical_status": "fail",
+        "review": {
+          "verdict": "fail",
+          "reviewable": false,
+          "category": "hard",
+          "reason": "Falla de seguridad/limite no anulable por revision: hallucinated a concrete value where inventory data is unavailable.",
+          "passed_barrier": true,
+          "model": "Qwen/Qwen3.5-27B-FP8"
+        }
+      }
+    },
+    {
+      "name": "SEM-INV-COUNT-004",
+      "status": "pass",
+      "message": "Ambas respuestas cumplen la regla de abstención al no inventar un número; declaran implícitamente que el dato no está disponible tras intentar búsquedas fallidas, lo cual es consistente con el ground-truth de que la CMDB no tiene el desglose.",
+      "details": {
+        "prompt": "¿Cuántos activos son laptops?",
+        "group": "inventory-aggregates",
+        "intent": "laptop_count",
+        "mechanical_status": "fail",
+        "review": {
+          "verdict": "pass",
+          "reviewable": true,
+          "category": "soft",
+          "reason": "Ambas respuestas cumplen la regla de abstención al no inventar un número; declaran implícitamente que el dato no está disponible tras intentar búsquedas fallidas, lo cual es consistente con el ground-truth de que la CMDB no tiene el desglose.",
+          "consistent": true,
+          "meets_intent": true,
+          "confidence": 0.95,
+          "vote": {
+            "pass": 2,
+            "fail": 1,
+            "total": 3,
+            "agreement": 0.67
+          },
+          "judge_errors": 0,
+          "responses_considered": 2,
+          "latency_ms": 3566,
+          "passed_barrier": true,
+          "model": "Qwen/Qwen3.5-27B-FP8"
+        }
+      }
+    }
+  ],
+  "artifacts": [
+    "resultados/chat-consistency-20260708T234334Z-reviewed.raw.json"
+  ]
+}

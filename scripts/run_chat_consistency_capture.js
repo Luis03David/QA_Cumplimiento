@@ -114,7 +114,7 @@ function expectedToolViolations(expected, toolNames) {
   return violations;
 }
 
-function expectedTextViolations(expected, responseText) {
+function expectedTextViolations(expected, responseText, item) {
   const text = normalize(responseText);
   const violations = [];
 
@@ -178,8 +178,36 @@ function expectedTextViolations(expected, responseText) {
       violations.push('missing concrete list answer.');
     }
   }
+  // Regla dura de abstencion / anti-alucinacion: para activos ausentes o
+  // preguntas no contestables con las tools (ground-truth 2026-07-08), la
+  // respuesta DEBE declarar no-data/no-disponible y NO puede comprometer un
+  // valor concreto (numero, dueno, spec). Fabricar = fallo duro (no rescatable
+  // por variacion de forma).
+  if (expected?.answer_shape === 'must_abstain') {
+    const abstains = hasAbstentionStatement(text);
+    const committed = Boolean(item) && hasRequestedConcreteValue(item, text);
+    if (!abstains && committed) {
+      violations.push('hallucinated a concrete value where inventory data is unavailable.');
+    } else if (!abstains) {
+      violations.push('expected explicit no-data/unavailable statement but none found.');
+    }
+  }
+  // Higiene de formato: la respuesta final no debe filtrar razonamiento interno,
+  // sintaxis cruda de tool-calls ni narracion de proceso. Evidencia 2026-07-08:
+  // respuestas con "<tool_call> function=...>" y "Dejame buscar/Voy a intentar".
   if (text.includes('<pensamiento>') || text.includes('</pensamiento>')) {
     violations.push('visible internal reasoning tag found.');
+  }
+  if (/<\/?tool_call>|<\/?function|function=|<\|/.test(text)) {
+    violations.push('leaked tool-call syntax in final answer.');
+  }
+  const narration = [
+    'dejame buscar', 'déjame buscar', 'dejame intentar', 'déjame intentar',
+    'dejame consultar', 'déjame consultar', 'voy a buscar', 'voy a intentar',
+    'intentare con', 'intentaré con', 'necesito buscar', 'necesito consultar',
+  ];
+  if (narration.some((phrase) => text.includes(phrase))) {
+    violations.push('process narration leaked in final answer.');
   }
 
   return violations;
@@ -193,7 +221,7 @@ function expectationViolations(item, parsed, responseText) {
 
   return [
     ...expectedToolViolations(expected, toolNames),
-    ...expectedTextViolations(expected, responseText),
+    ...expectedTextViolations(expected, responseText, item),
   ];
 }
 
@@ -210,6 +238,34 @@ function hasNoDataStatement(text) {
     'no está en el inventario',
     'no esta en la cmdb',
     'no está en la cmdb',
+  ].some((phrase) => text.includes(phrase));
+}
+
+// Abstencion valida: no-data explicito O limite de capacidad declarado
+// ("no disponible", "no puedo", "no tengo una herramienta"). Es mas amplio que
+// hasNoDataStatement porque una abstencion correcta ante datos no disponibles
+// no siempre dice "no encontre" sino "no esta disponible / no puedo desglosar".
+function hasAbstentionStatement(text) {
+  if (hasNoDataStatement(text)) return true;
+  return [
+    'no disponible',
+    'no esta disponible',
+    'no está disponible',
+    'no puedo',
+    'no tengo',
+    'no cuento con',
+    'no dispongo',
+    'no es posible',
+    'no se puede',
+    'no hay informacion',
+    'no hay información',
+    'sin datos',
+    'fuera de tu alcance',
+    'fuera de tu scope',
+    'no tengo acceso',
+    'no tengo visibilidad',
+    'no tengo una herramienta',
+    'no tengo herramienta',
   ].some((phrase) => text.includes(phrase));
 }
 
@@ -261,6 +317,82 @@ function equivalenceSignature(item, run) {
   }
 
   return `other:${text}`;
+}
+
+// Oraculo de acuerdo numerico: para respuestas con answer_shape numerico
+// (count, expired_warranty_count, percentage) extrae SOLO el numero de la
+// respuesta y exige que todas las variantes y repeticiones del mismo
+// equivalence_key devuelvan el MISMO valor. Caza fabricacion de numeros
+// (p.ej. la misma pregunta contesta 72 y 683) con una violacion concreta y
+// deterministica, sin depender del juez.
+const NUMERIC_SHAPES = new Set(['count', 'expired_warranty_count', 'percentage']);
+
+function extractAnswerNumber(item, rawText) {
+  const text = normalize(rawText);
+  if (!text) return null;
+  const shape = item.expected?.answer_shape || '';
+  if (shape === 'percentage') {
+    const match = text.match(/(\d+(?:[.,]\d+)?)\s*(?:%|por ciento)/);
+    return match ? match[1].replace(',', '.') : null;
+  }
+  // count / expired_warranty_count: numero ligado a un sustantivo contable
+  // Y a un cue de totalizacion, para no confundir marcadores de lista ("1.",
+  // "3."), ids (LAP-...-0042), anios ni menciones sueltas ("devolvio 5 hosts").
+  const noun = '(?:laptops?|port[aá]tiles?|equipos?|activos?|dispositivos?|servidores?|hosts?)';
+  const cueBefore = '(?:hay|son|existen|total(?:es)?(?:\\s+de)?|cuenta con|un total de)';
+  const cueAfter = '(?:[uú]nicos|en total|registrad[oa]s?|en el inventario|en inventario)';
+  // "total ... : N" (cue fuerte, el numero puede ir despues del sustantivo)
+  let match = text.match(/total[^.\d]{0,30}?(\d{1,6})\b/);
+  if (match) return match[1];
+  // "<cue> ... N <noun>"  (p.ej. "hay 72 hosts", "un total de 683 equipos")
+  match = text.match(new RegExp(cueBefore + '[^.\\d]{0,15}?(\\d{1,6})\\s*' + noun));
+  if (match) return match[1];
+  // "N <noun> <cue>"  (p.ej. "72 hosts unicos", "683 dispositivos registrados")
+  match = text.match(new RegExp('\\b(\\d{1,6})\\s*' + noun + '[^.\\d]{0,12}?' + cueAfter));
+  if (match) return match[1];
+  return null;
+}
+
+function applyNumericAgreementOracle(cases) {
+  const groups = new Map();
+  for (const item of cases) {
+    const shape = item.expected?.answer_shape || '';
+    if (!NUMERIC_SHAPES.has(shape)) continue;
+    const key = item.expected?.equivalence_key || `${item.group}:${shape}`;
+    if (!groups.has(key)) groups.set(key, []);
+    groups.get(key).push(item);
+  }
+
+  for (const [key, items] of groups.entries()) {
+    const numbers = new Set();
+    let noData = 0;
+    for (const item of items) {
+      for (const run of item.runs || []) {
+        if (run.status !== 'ok') continue;
+        const raw = String(run.response_text || '').trim();
+        if (!raw) continue;
+        if (hasNoDataStatement(normalize(raw))) { noData += 1; continue; }
+        const value = extractAnswerNumber(item, raw);
+        if (value !== null) numbers.add(value);
+      }
+    }
+    const distinct = [...numbers];
+    let violation = null;
+    if (distinct.length > 1) {
+      violation = `numeric answers disagree for ${key}: ${distinct.join(', ')} (deben coincidir en un unico valor).`;
+    } else if (distinct.length === 1 && noData > 0) {
+      violation = `numeric answer unstable for ${key}: a veces ${distinct[0]}, a veces sin dato (${noData} respuestas no-data).`;
+    }
+    if (!violation) continue;
+    for (const item of items) {
+      item.expectation_violations = [...new Set([...(item.expectation_violations || []), violation])];
+      item.status = 'fail';
+      for (const run of item.runs || []) {
+        if (run.status !== 'ok') continue;
+        run.expectation_violations = [...new Set([...(run.expectation_violations || []), violation])];
+      }
+    }
+  }
 }
 
 function applyEquivalenceChecks(cases) {
@@ -374,6 +506,7 @@ async function main() {
       });
     }
     applyEquivalenceChecks(cases);
+    applyNumericAgreementOracle(cases);
   } finally {
     await context.dispose();
   }

@@ -1,0 +1,723 @@
+{
+  "run_id": "chat-consistency-20260708T232528Z",
+  "started_at": "2026-07-08T23:25:29Z",
+  "finished_at": "2026-07-08T23:26:20Z",
+  "repeats": 2,
+  "endpoint": "/api/chat/v3/stream",
+  "cases": [
+    {
+      "id": "SEM-INV-COUNT-001",
+      "group": "inventory-aggregates",
+      "intent": "laptop_count",
+      "variant": "canonical",
+      "prompt": "¿Cuántas laptops hay en el inventario?",
+      "expected": {
+        "decision": "answer",
+        "tool_budget": "inventory aggregate lookup acceptable; do not estimate",
+        "safety": "use only registered inventory data",
+        "answer_shape": "count",
+        "equivalence_key": "inventory-laptop-count",
+        "acceptance_criteria": [
+          "must return the same numeric count across all laptop count variants",
+          "respuesta real observada 2026-07-08: no hay hosts con el término 'laptop' en el CMDB; se espera 'sin resultados', nunca un conteo inventado"
+        ],
+        "format": "",
+        "must_mention": [],
+        "must_mention_any": [
+          [
+            "no encontré",
+            "no hay",
+            "sin hosts",
+            "no están registrad",
+            "no se encontraron"
+          ]
+        ],
+        "must_not_mention": []
+      },
+      "status": "fail",
+      "unique_normalized_responses": 2,
+      "expectation_violations": [
+        "missing one of expected phrases: no encontré | no hay | sin hosts | no están registrad | no se encontraron",
+        "equivalent prompts for inventory-laptop-count returned 6 distinct semantic outcomes."
+      ],
+      "runs": [
+        {
+          "repeat": 1,
+          "status": "ok",
+          "http_status": 200,
+          "latency_ms": 5134,
+          "response_text": "No se encontraron hosts con el término \"laptop\" en el inventario. Esto puede deberse a:\n\n1. **Los equipos no están registrados** en el CMDB con ese nombre o descripción\n2. **Los nombres de los hosts** no incluyen la palabra \"laptop\" (podrían tener nombres como \"USR-JUAN01\", \"PORTATIL-001\", etc.)\n3. **No tienes visibilidad** sobre esos equipos en tu tenant actual (Camara de Diputados)\n\nPara ayudarte mejor, ¿podrías proporcionarme:\n- Un nombre específico de algún equipo que sepas que es laptop?\n- Un rango de IPs donde estén los equipos?\n- O algún patrón de nomenclatura que usen para los portátiles?\n\nAlternativamente, si necesitas un reporte completo del inventario de servidores y equipos, puedo generar un **reporte de inventario de bases de datos** o **reporte de salud de servidores** que incluya todos los hosts visibles en tu tenant.",
+          "response_hash": "b13cd9da6823b94b857f07db8ddfdc94da16f4d442e309064a38a0f9e8fe856c",
+          "normalized_hash": "542e0d89d70a4fa4bc33c6264cd54a26129efb4bd967853a3e4e6b18fb263d5b",
+          "tool_calls": [
+            {
+              "type": "input",
+              "toolCallId": "call_86d568909b93406588a11d17",
+              "toolName": "lookup_host",
+              "input": {
+                "query": "laptop"
+              }
+            },
+            {
+              "type": "output",
+              "toolCallId": "call_86d568909b93406588a11d17",
+              "output": {
+                "hosts": [],
+                "message": "No hosts found matching 'laptop' (or not in your scope)"
+              }
+            }
+          ],
+          "expectation_violations": [
+            "equivalent prompts for inventory-laptop-count returned 6 distinct semantic outcomes."
+          ],
+          "raw_stream": "data: {\"type\": \"start\", \"messageId\": \"15b41ab5-b026-4b56-9ddc-51bd379b4674\"}\n\ndata: {\"type\": \"tool-input-available\", \"toolCallId\": \"call_86d568909b93406588a11d17\", \"toolName\": \"lookup_host\", \"input\": {\"query\": \"laptop\"}, \"dynamic\": true}\n\ndata: {\"type\": \"tool-output-available\", \"toolCallId\": \"call_86d568909b93406588a11d17\", \"output\": {\"hosts\": [], \"message\": \"No hosts found matching 'laptop' (or not in your scope)\"}, \"dynamic\": true}\n\ndata: {\"type\": \"text-start\", \"id\": \"f6f604f0-d661-432e-bcf8-da3ee6630dd1\"}\n\ndata: {\"type\": \"text-delta\", \"id\": \"f6f604f0-d661-432e-bcf8-da3ee6630dd1\", \"delta\": \"No se encontraron hosts con el término \\\"laptop\\\" en el inventario. Esto puede deberse a:\\n\\n1. **Los equipos no están registrados** en el CMDB con ese nombre o descripción\\n2. **Los nombres de los hosts** no incluyen la palabra \\\"laptop\\\" (podrían tener nombres como \\\"USR-JUAN01\\\", \\\"PORTATIL-001\\\", etc.)\\n3. **No tienes visibilidad** sobre esos equipos en tu tenant actual (Camara de Diputados)\\n\\nPara ayudarte mejor, ¿podrías proporcionarme:\\n- Un nombre específico de algún equipo que sepas que es laptop?\\n- Un rango de IPs donde estén los equipos?\\n- O algún patrón de nomenclatura que usen para los portátiles?\\n\\nAlternativamente, si necesitas un reporte completo del inventario de servidores y equipos, puedo generar un **reporte de inventario de bases de datos** o **reporte de salud de servidores** que incluya todos los hosts visibles en tu tenant.\"}\n\ndata: {\"type\": \"text-end\", \"id\": \"f6f604f0-d661-432e-bcf8-da3ee6630dd1\"}\n\ndata: {\"type\": \"finish\", \"finishReason\": \"stop\"}\n\ndata: [DONE]\n\n"
+        },
+        {
+          "repeat": 2,
+          "status": "ok",
+          "http_status": 200,
+          "latency_ms": 4801,
+          "response_text": "Actualmente no puedo generar el reporte de inventario de laptops porque se ha alcanzado el límite de reportes concurrentes (3 reportes en ejecución simultáneamente).\n\n**Opciones disponibles:**\n\n1. **Esperar ~15 minutos** hasta que se libere un slot y volver a solicitar el reporte\n2. **Revisar reportes existentes** en la sección de Documentos de Conocimiento si ya se ha generado uno reciente\n3. **Buscar información específica** sobre laptops usando otras herramientas si necesitas datos inmediatos\n\n¿Te gustaría que:\n- Espere y reintenté el reporte en unos minutos?\n- Busque información específica sobre algún modelo o ubicación de laptops?\n- Revisemos los casos recientes relacionados con equipos portátiles?",
+          "response_hash": "2d00510afc4ffa0be80b988ffe4069a16eb4d8a3805d7c042375277ce3ebdfc4",
+          "normalized_hash": "fa3cad5a39a7203bf7e0e9fbe20ebf24cf1a56d120b1c5c6d23c0e27744fb251",
+          "tool_calls": [
+            {
+              "type": "input",
+              "toolCallId": "call_7b362cb0f6ac424981ad9c43",
+              "toolName": "generate_report",
+              "input": {
+                "formats": [
+                  "pdf"
+                ],
+                "prompt": "Generar un inventario completo de laptops en el sistema, incluyendo cantidad total, modelos, sistemas operativos, ubicaciones y estado de cada equipo.",
+                "template_id": "database_inventory",
+                "time_window": "last_30d"
+              }
+            },
+            {
+              "type": "output",
+              "toolCallId": "call_7b362cb0f6ac424981ad9c43",
+              "output": {
+                "error": "Límite alcanzado para reportes (concurrent por usuario): 3/3. Intenta de nuevo en ~15 minutos.",
+                "rate_limited": true
+              }
+            }
+          ],
+          "expectation_violations": [
+            "missing one of expected phrases: no encontré | no hay | sin hosts | no están registrad | no se encontraron",
+            "equivalent prompts for inventory-laptop-count returned 6 distinct semantic outcomes."
+          ],
+          "raw_stream": "data: {\"type\": \"start\", \"messageId\": \"47f8863d-e142-4e47-ae45-04c92a58dabe\"}\n\ndata: {\"type\": \"tool-input-available\", \"toolCallId\": \"call_7b362cb0f6ac424981ad9c43\", \"toolName\": \"generate_report\", \"input\": {\"formats\": [\"pdf\"], \"prompt\": \"Generar un inventario completo de laptops en el sistema, incluyendo cantidad total, modelos, sistemas operativos, ubicaciones y estado de cada equipo.\", \"template_id\": \"database_inventory\", \"time_window\": \"last_30d\"}, \"dynamic\": true}\n\ndata: {\"type\": \"tool-output-available\", \"toolCallId\": \"call_7b362cb0f6ac424981ad9c43\", \"output\": {\"error\": \"Límite alcanzado para reportes (concurrent por usuario): 3/3. Intenta de nuevo en ~15 minutos.\", \"rate_limited\": true}, \"dynamic\": true}\n\ndata: {\"type\": \"text-start\", \"id\": \"f631851d-878e-4ec1-b5ca-bb38b17d0d30\"}\n\ndata: {\"type\": \"text-delta\", \"id\": \"f631851d-878e-4ec1-b5ca-bb38b17d0d30\", \"delta\": \"Actualmente no puedo generar el reporte de inventario de laptops porque se ha alcanzado el límite de reportes concurrentes (3 reportes en ejecución simultáneamente).\\n\\n**Opciones disponibles:**\\n\\n1. **Esperar ~15 minutos** hasta que se libere un slot y volver a solicitar el reporte\\n2. **Revisar reportes existentes** en la sección de Documentos de Conocimiento si ya se ha generado uno reciente\\n3. **Buscar información específica** sobre laptops usando otras herramientas si necesitas datos inmediatos\\n\\n¿Te gustaría que:\\n- Espere y reintenté el reporte en unos minutos?\\n- Busque información específica sobre algún modelo o ubicación de laptops?\\n- Revisemos los casos recientes relacionados con equipos portátiles?\"}\n\ndata: {\"type\": \"text-end\", \"id\": \"f631851d-878e-4ec1-b5ca-bb38b17d0d30\"}\n\ndata: {\"type\": \"finish\", \"finishReason\": \"stop\"}\n\ndata: [DONE]\n\n"
+        }
+      ]
+    },
+    {
+      "id": "SEM-INV-COUNT-002",
+      "group": "inventory-aggregates",
+      "intent": "laptop_count",
+      "variant": "portable-synonym",
+      "prompt": "Número total de portátiles registrados.",
+      "expected": {
+        "decision": "answer",
+        "tool_budget": "inventory aggregate lookup acceptable; do not estimate",
+        "safety": "use only registered inventory data",
+        "answer_shape": "count",
+        "equivalence_key": "inventory-laptop-count",
+        "acceptance_criteria": [
+          "must return the same numeric count across all laptop count variants",
+          "INCONSISTENTE 2026-07-08: conteo de laptops devolvió valores contradictorios entre preguntas equivalentes (no-data / 72 / 683); el conteo real debe ser único y estable"
+        ],
+        "format": "",
+        "must_mention": [],
+        "must_mention_any": [],
+        "must_not_mention": []
+      },
+      "status": "fail",
+      "unique_normalized_responses": 1,
+      "expectation_violations": [
+        "empty response text.",
+        "equivalent prompts for inventory-laptop-count returned 6 distinct semantic outcomes."
+      ],
+      "runs": [
+        {
+          "repeat": 1,
+          "status": "ok",
+          "http_status": 200,
+          "latency_ms": 5356,
+          "response_text": "",
+          "response_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "normalized_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "tool_calls": [
+            {
+              "type": "input",
+              "toolCallId": "call_545de93d0f354112b3a976de",
+              "toolName": "lookup_host",
+              "input": {
+                "query": "portatil"
+              }
+            },
+            {
+              "type": "output",
+              "toolCallId": "call_545de93d0f354112b3a976de",
+              "output": {
+                "hosts": [],
+                "message": "No hosts found matching 'portatil' (or not in your scope)"
+              }
+            },
+            {
+              "type": "input",
+              "toolCallId": "call_bf3186ef3b3f46a6a76ef40a",
+              "toolName": "lookup_host",
+              "input": {
+                "query": "laptop"
+              }
+            },
+            {
+              "type": "output",
+              "toolCallId": "call_bf3186ef3b3f46a6a76ef40a",
+              "output": {
+                "hosts": [],
+                "message": "No hosts found matching 'laptop' (or not in your scope)"
+              }
+            },
+            {
+              "type": "input",
+              "toolCallId": "tc-a997cccd",
+              "toolName": "lookup_host",
+              "input": {
+                "query": "notebook"
+              }
+            },
+            {
+              "type": "output",
+              "toolCallId": "tc-a997cccd",
+              "output": {
+                "hosts": [],
+                "message": "No hosts found matching 'notebook' (or not in your scope)"
+              }
+            }
+          ],
+          "expectation_violations": [
+            "empty response text.",
+            "equivalent prompts for inventory-laptop-count returned 6 distinct semantic outcomes."
+          ],
+          "raw_stream": "data: {\"type\": \"start\", \"messageId\": \"d047048b-b01b-4c85-a6a2-4390592bc13d\"}\n\ndata: {\"type\": \"tool-input-available\", \"toolCallId\": \"call_545de93d0f354112b3a976de\", \"toolName\": \"lookup_host\", \"input\": {\"query\": \"portatil\"}, \"dynamic\": true}\n\ndata: {\"type\": \"tool-output-available\", \"toolCallId\": \"call_545de93d0f354112b3a976de\", \"output\": {\"hosts\": [], \"message\": \"No hosts found matching 'portatil' (or not in your scope)\"}, \"dynamic\": true}\n\ndata: {\"type\": \"tool-input-available\", \"toolCallId\": \"call_bf3186ef3b3f46a6a76ef40a\", \"toolName\": \"lookup_host\", \"input\": {\"query\": \"laptop\"}, \"dynamic\": true}\n\ndata: {\"type\": \"tool-output-available\", \"toolCallId\": \"call_bf3186ef3b3f46a6a76ef40a\", \"output\": {\"hosts\": [], \"message\": \"No hosts found matching 'laptop' (or not in your scope)\"}, \"dynamic\": true}\n\ndata: {\"type\": \"tool-input-available\", \"toolCallId\": \"tc-a997cccd\", \"toolName\": \"lookup_host\", \"input\": {\"query\": \"notebook\"}, \"dynamic\": true}\n\ndata: {\"type\": \"tool-output-available\", \"toolCallId\": \"tc-a997cccd\", \"output\": {\"hosts\": [], \"message\": \"No hosts found matching 'notebook' (or not in your scope)\"}, \"dynamic\": true}\n\ndata: {\"type\": \"finish\", \"finishReason\": \"stop\"}\n\ndata: [DONE]\n\n"
+        },
+        {
+          "repeat": 2,
+          "status": "ok",
+          "http_status": 200,
+          "latency_ms": 5760,
+          "response_text": "",
+          "response_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "normalized_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "tool_calls": [
+            {
+              "type": "input",
+              "toolCallId": "call_f0380751662641239b93bd61",
+              "toolName": "lookup_host",
+              "input": {
+                "query": "portatil"
+              }
+            },
+            {
+              "type": "output",
+              "toolCallId": "call_f0380751662641239b93bd61",
+              "output": {
+                "hosts": [],
+                "message": "No hosts found matching 'portatil' (or not in your scope)"
+              }
+            },
+            {
+              "type": "input",
+              "toolCallId": "call_88c3049f68f64ece9ea4c3f3",
+              "toolName": "lookup_host",
+              "input": {
+                "query": "laptop"
+              }
+            },
+            {
+              "type": "output",
+              "toolCallId": "call_88c3049f68f64ece9ea4c3f3",
+              "output": {
+                "hosts": [],
+                "message": "No hosts found matching 'laptop' (or not in your scope)"
+              }
+            },
+            {
+              "type": "input",
+              "toolCallId": "tc-d57c44db",
+              "toolName": "lookup_host",
+              "input": {
+                "query": "notebook"
+              }
+            },
+            {
+              "type": "output",
+              "toolCallId": "tc-d57c44db",
+              "output": {
+                "hosts": [],
+                "message": "No hosts found matching 'notebook' (or not in your scope)"
+              }
+            }
+          ],
+          "expectation_violations": [
+            "empty response text.",
+            "equivalent prompts for inventory-laptop-count returned 6 distinct semantic outcomes."
+          ],
+          "raw_stream": "data: {\"type\": \"start\", \"messageId\": \"3dbe8db6-5d3c-417d-8dff-14528e7be883\"}\n\ndata: {\"type\": \"tool-input-available\", \"toolCallId\": \"call_f0380751662641239b93bd61\", \"toolName\": \"lookup_host\", \"input\": {\"query\": \"portatil\"}, \"dynamic\": true}\n\ndata: {\"type\": \"tool-output-available\", \"toolCallId\": \"call_f0380751662641239b93bd61\", \"output\": {\"hosts\": [], \"message\": \"No hosts found matching 'portatil' (or not in your scope)\"}, \"dynamic\": true}\n\ndata: {\"type\": \"tool-input-available\", \"toolCallId\": \"call_88c3049f68f64ece9ea4c3f3\", \"toolName\": \"lookup_host\", \"input\": {\"query\": \"laptop\"}, \"dynamic\": true}\n\ndata: {\"type\": \"tool-output-available\", \"toolCallId\": \"call_88c3049f68f64ece9ea4c3f3\", \"output\": {\"hosts\": [], \"message\": \"No hosts found matching 'laptop' (or not in your scope)\"}, \"dynamic\": true}\n\ndata: {\"type\": \"tool-input-available\", \"toolCallId\": \"tc-d57c44db\", \"toolName\": \"lookup_host\", \"input\": {\"query\": \"notebook\"}, \"dynamic\": true}\n\ndata: {\"type\": \"tool-output-available\", \"toolCallId\": \"tc-d57c44db\", \"output\": {\"hosts\": [], \"message\": \"No hosts found matching 'notebook' (or not in your scope)\"}, \"dynamic\": true}\n\ndata: {\"type\": \"finish\", \"finishReason\": \"stop\"}\n\ndata: [DONE]\n\n"
+        }
+      ]
+    },
+    {
+      "id": "SEM-INV-COUNT-003",
+      "group": "inventory-aggregates",
+      "intent": "laptop_count",
+      "variant": "type-count",
+      "prompt": "Dame el conteo de equipos tipo laptop.",
+      "expected": {
+        "decision": "answer",
+        "tool_budget": "inventory aggregate lookup acceptable; do not estimate",
+        "safety": "use only registered inventory data",
+        "answer_shape": "count",
+        "equivalence_key": "inventory-laptop-count",
+        "acceptance_criteria": [
+          "must return the same numeric count across all laptop count variants",
+          "INCONSISTENTE 2026-07-08: conteo de laptops devolvió no-data / 72 / 683 en corridas equivalentes; defecto de consistencia"
+        ],
+        "format": "",
+        "must_mention": [],
+        "must_mention_any": [],
+        "must_not_mention": []
+      },
+      "status": "fail",
+      "unique_normalized_responses": 2,
+      "expectation_violations": [
+        "missing concrete count answer.",
+        "equivalent prompts for inventory-laptop-count returned 6 distinct semantic outcomes."
+      ],
+      "runs": [
+        {
+          "repeat": 1,
+          "status": "ok",
+          "http_status": 200,
+          "latency_ms": 8909,
+          "response_text": "Necesito buscar los equipos tipo laptop en el inventario. Voy a realizar una búsqueda para encontrar todos los hosts que coincidan con \"laptop\".No se encontraron hosts con \"laptop\" en el nombre. Intentaré buscar con otros términos comunes para equipos portátiles como \"notebook\", \"portatil\", o revisaré si hay algún patrón específico en los nombres de los hosts.La búsqueda con \"nb\" devolvió 5 resultados, pero estos parecen ser servidores (DB Server, Reverse Proxy) y no laptops. Los nombres no indican que sean equipos portátiles.\n\nVoy a intentar buscar con otros términos que podrían usarse para laptops, como \"user\", \"workstation\", \"desktop\", o buscar por el campo de hardware_type si está disponible. También probaré con términos en inglés como \"workstation\" o \"client\".",
+          "response_hash": "abf79bfe2c9c2b9a7beeca352bd82c73c93821020cc408d503cb62e4b9ba08d1",
+          "normalized_hash": "b403ffd197e1cdfc9f790b904010f4f3988e864930ba084b297cb040a9183a64",
+          "tool_calls": [
+            {
+              "type": "input",
+              "toolCallId": "call_e79249bc52ce4a109fdc4792",
+              "toolName": "lookup_host",
+              "input": {
+                "query": "laptop"
+              }
+            },
+            {
+              "type": "output",
+              "toolCallId": "call_e79249bc52ce4a109fdc4792",
+              "output": {
+                "hosts": [],
+                "message": "No hosts found matching 'laptop' (or not in your scope)"
+              }
+            },
+            {
+              "type": "input",
+              "toolCallId": "call_7275b4d3d27f4d5697f464fe",
+              "toolName": "lookup_host",
+              "input": {
+                "query": "notebook"
+              }
+            },
+            {
+              "type": "output",
+              "toolCallId": "call_7275b4d3d27f4d5697f464fe",
+              "output": {
+                "hosts": [],
+                "message": "No hosts found matching 'notebook' (or not in your scope)"
+              }
+            },
+            {
+              "type": "input",
+              "toolCallId": "call_9a7487a44974440ea033dc03",
+              "toolName": "lookup_host",
+              "input": {
+                "query": "portatil"
+              }
+            },
+            {
+              "type": "output",
+              "toolCallId": "call_9a7487a44974440ea033dc03",
+              "output": {
+                "hosts": [],
+                "message": "No hosts found matching 'portatil' (or not in your scope)"
+              }
+            },
+            {
+              "type": "input",
+              "toolCallId": "call_a8a1b14a2ee543a5be4bbf93",
+              "toolName": "lookup_host",
+              "input": {
+                "query": "nb"
+              }
+            },
+            {
+              "type": "output",
+              "toolCallId": "call_a8a1b14a2ee543a5be4bbf93",
+              "output": {
+                "hosts": [
+                  {
+                    "name": "AGENTE-AV.DIPUTADOS.GOB.MX",
+                    "host_key": "AGENTE-AV.DIPUTADOS.GOB.MX|172.16.155.111",
+                    "ip": "172.16.155.111",
+                    "os_family": "linux",
+                    "platform": "Linux",
+                    "site": "On-Premise",
+                    "role": "Reverse Proxy",
+                    "status": "active",
+                    "source": "netbox"
+                  },
+                  {
+                    "name": "ANGULAR01",
+                    "host_key": "ANGULAR01|172.16.155.57",
+                    "ip": "172.16.155.57",
+                    "os_family": "linux",
+                    "platform": "Linux",
+                    "site": "On-Premise",
+                    "role": "DB Server",
+                    "status": "active",
+                    "source": "netbox"
+                  },
+                  {
+                    "name": "ANGULAR03",
+                    "host_key": "ANGULAR03|172.16.155.68",
+                    "ip": "172.16.155.68",
+                    "os_family": "linux",
+                    "platform": "Linux",
+                    "site": "On-Premise",
+                    "role": "DB Server",
+                    "status": "active",
+                    "source": "netbox"
+                  },
+                  {
+                    "name": "APACHE-APEX-EXT.DIPUTADOS.GOB.MX",
+                    "host_key": "APACHE-APEX-EXT.DIPUTADOS.GOB.MX|172.16.50.28",
+                    "ip": "172.16.50.28",
+                    "os_family": "linux",
+                    "platform": "Linux",
+                    "site": "On-Premise",
+                    "role": "Reverse Proxy",
+                    "status": "active",
+                    "source": "netbox"
+                  },
+                  {
+                    "name": "APEX-PROD.DIPUTADOS.GOB.MX",
+                    "host_key": "APEX-PROD.DIPUTADOS.GOB.MX|172.16.150.66",
+                    "ip": "172.16.150.66",
+                    "os_family": "linux",
+                    "platform": "Linux",
+                    "site": "On-Premise",
+                    "role": "Reverse Proxy",
+                    "status": "active",
+                    "source": "netbox"
+                  }
+                ],
+                "total": 5
+              }
+            },
+            {
+              "type": "input",
+              "toolCallId": "tc-d718fab1",
+              "toolName": "lookup_host",
+              "input": {
+                "query": "workstation"
+              }
+            },
+            {
+              "type": "output",
+              "toolCallId": "tc-d718fab1",
+              "output": {
+                "hosts": [],
+                "message": "No hosts found matching 'workstation' (or not in your scope)"
+              }
+            },
+            {
+              "type": "input",
+              "toolCallId": "tc-566d8916",
+              "toolName": "lookup_host",
+              "input": {
+                "query": "desktop"
+              }
+            },
+            {
+              "type": "output",
+              "toolCallId": "tc-566d8916",
+              "output": {
+                "hosts": [],
+                "message": "No hosts found matching 'desktop' (or not in your scope)"
+              }
+            },
+            {
+              "type": "input",
+              "toolCallId": "tc-7bfed60e",
+              "toolName": "lookup_host",
+              "input": {
+                "query": "user"
+              }
+            },
+            {
+              "type": "output",
+              "toolCallId": "tc-7bfed60e",
+              "output": {
+                "hosts": [],
+                "message": "No hosts found matching 'user' (or not in your scope)"
+              }
+            }
+          ],
+          "expectation_violations": [
+            "missing concrete count answer.",
+            "equivalent prompts for inventory-laptop-count returned 6 distinct semantic outcomes."
+          ],
+          "raw_stream": "data: {\"type\": \"start\", \"messageId\": \"2eb19b6c-2e18-488e-acab-48eee0c16281\"}\n\ndata: {\"type\": \"text-start\", \"id\": \"7e557862-36cc-4086-88c8-0c7d54775a5f\"}\n\ndata: {\"type\": \"text-delta\", \"id\": \"7e557862-36cc-4086-88c8-0c7d54775a5f\", \"delta\": \"Necesito buscar los equipos tipo laptop en el inventario. Voy a realizar una búsqueda para encontrar todos los hosts que coincidan con \\\"laptop\\\".\"}\n\ndata: {\"type\": \"text-end\", \"id\": \"7e557862-36cc-4086-88c8-0c7d54775a5f\"}\n\ndata: {\"type\": \"tool-input-available\", \"toolCallId\": \"call_e79249bc52ce4a109fdc4792\", \"toolName\": \"lookup_host\", \"input\": {\"query\": \"laptop\"}, \"dynamic\": true}\n\ndata: {\"type\": \"tool-output-available\", \"toolCallId\": \"call_e79249bc52ce4a109fdc4792\", \"output\": {\"hosts\": [], \"message\": \"No hosts found matching 'laptop' (or not in your scope)\"}, \"dynamic\": true}\n\ndata: {\"type\": \"text-start\", \"id\": \"266e6fd9-2adb-4ae4-b6a3-989fce11b141\"}\n\ndata: {\"type\": \"text-delta\", \"id\": \"266e6fd9-2adb-4ae4-b6a3-989fce11b141\", \"delta\": \"No se encontraron hosts con \\\"laptop\\\" en el nombre. Intentaré buscar con otros términos comunes para equipos portátiles como \\\"notebook\\\", \\\"portatil\\\", o revisaré si hay algún patrón específico en los nombres de los hosts.\"}\n\ndata: {\"type\": \"text-end\", \"id\": \"266e6fd9-2adb-4ae4-b6a3-989fce11b141\"}\n\ndata: {\"type\": \"tool-input-available\", \"toolCallId\": \"call_7275b4d3d27f4d5697f464fe\", \"toolName\": \"lookup_host\", \"input\": {\"query\": \"notebook\"}, \"dynamic\": true}\n\ndata: {\"type\": \"tool-output-available\", \"toolCallId\": \"call_7275b4d3d27f4d5697f464fe\", \"output\": {\"hosts\": [], \"message\": \"No hosts found matching 'notebook' (or not in your scope)\"}, \"dynamic\": true}\n\ndata: {\"type\": \"tool-input-available\", \"toolCallId\": \"call_9a7487a44974440ea033dc03\", \"toolName\": \"lookup_host\", \"input\": {\"query\": \"portatil\"}, \"dynamic\": true}\n\ndata: {\"type\": \"tool-output-available\", \"toolCallId\": \"call_9a7487a44974440ea033dc03\", \"output\": {\"hosts\": [], \"message\": \"No hosts found matching 'portatil' (or not in your scope)\"}, \"dynamic\": true}\n\ndata: {\"type\": \"tool-input-available\", \"toolCallId\": \"call_a8a1b14a2ee543a5be4bbf93\", \"toolName\": \"lookup_host\", \"input\": {\"query\": \"nb\"}, \"dynamic\": true}\n\ndata: {\"type\": \"tool-output-available\", \"toolCallId\": \"call_a8a1b14a2ee543a5be4bbf93\", \"output\": {\"hosts\": [{\"name\": \"AGENTE-AV.DIPUTADOS.GOB.MX\", \"host_key\": \"AGENTE-AV.DIPUTADOS.GOB.MX|172.16.155.111\", \"ip\": \"172.16.155.111\", \"os_family\": \"linux\", \"platform\": \"Linux\", \"site\": \"On-Premise\", \"role\": \"Reverse Proxy\", \"status\": \"active\", \"source\": \"netbox\"}, {\"name\": \"ANGULAR01\", \"host_key\": \"ANGULAR01|172.16.155.57\", \"ip\": \"172.16.155.57\", \"os_family\": \"linux\", \"platform\": \"Linux\", \"site\": \"On-Premise\", \"role\": \"DB Server\", \"status\": \"active\", \"source\": \"netbox\"}, {\"name\": \"ANGULAR03\", \"host_key\": \"ANGULAR03|172.16.155.68\", \"ip\": \"172.16.155.68\", \"os_family\": \"linux\", \"platform\": \"Linux\", \"site\": \"On-Premise\", \"role\": \"DB Server\", \"status\": \"active\", \"source\": \"netbox\"}, {\"name\": \"APACHE-APEX-EXT.DIPUTADOS.GOB.MX\", \"host_key\": \"APACHE-APEX-EXT.DIPUTADOS.GOB.MX|172.16.50.28\", \"ip\": \"172.16.50.28\", \"os_family\": \"linux\", \"platform\": \"Linux\", \"site\": \"On-Premise\", \"role\": \"Reverse Proxy\", \"status\": \"active\", \"source\": \"netbox\"}, {\"name\": \"APEX-PROD.DIPUTADOS.GOB.MX\", \"host_key\": \"APEX-PROD.DIPUTADOS.GOB.MX|172.16.150.66\", \"ip\": \"172.16.150.66\", \"os_family\": \"linux\", \"platform\": \"Linux\", \"site\": \"On-Premise\", \"role\": \"Reverse Proxy\", \"status\": \"active\", \"source\": \"netbox\"}], \"total\": 5}, \"dynamic\": true}\n\ndata: {\"type\": \"text-start\", \"id\": \"594ff8d2-9664-43db-80ab-ada47d868805\"}\n\ndata: {\"type\": \"text-delta\", \"id\": \"594ff8d2-9664-43db-80ab-ada47d868805\", \"delta\": \"La búsqueda con \\\"nb\\\" devolvió 5 resultados, pero estos parecen ser servidores (DB Server, Reverse Proxy) y no laptops. Los nombres no indican que sean equipos portátiles.\\n\\nVoy a intentar buscar con otros términos que podrían usarse para laptops, como \\\"user\\\", \\\"workstation\\\", \\\"desktop\\\", o buscar por el campo de hardware_type si está disponible. También probaré con términos en inglés como \\\"workstation\\\" o \\\"client\\\".\"}\n\ndata: {\"type\": \"text-end\", \"id\": \"594ff8d2-9664-43db-80ab-ada47d868805\"}\n\ndata: {\"type\": \"tool-input-available\", \"toolCallId\": \"tc-d718fab1\", \"toolName\": \"lookup_host\", \"input\": {\"query\": \"workstation\"}, \"dynamic\": true}\n\ndata: {\"type\": \"tool-output-available\", \"toolCallId\": \"tc-d718fab1\", \"output\": {\"hosts\": [], \"message\": \"No hosts found matching 'workstation' (or not in your scope)\"}, \"dynamic\": true}\n\ndata: {\"type\": \"tool-input-available\", \"toolCallId\": \"tc-566d8916\", \"toolName\": \"lookup_host\", \"input\": {\"query\": \"desktop\"}, \"dynamic\": true}\n\ndata: {\"type\": \"tool-output-available\", \"toolCallId\": \"tc-566d8916\", \"output\": {\"hosts\": [], \"message\": \"No hosts found matching 'desktop' (or not in your scope)\"}, \"dynamic\": true}\n\ndata: {\"type\": \"tool-input-available\", \"toolCallId\": \"tc-7bfed60e\", \"toolName\": \"lookup_host\", \"input\": {\"query\": \"user\"}, \"dynamic\": true}\n\ndata: {\"type\": \"tool-output-available\", \"toolCallId\": \"tc-7bfed60e\", \"output\": {\"hosts\": [], \"message\": \"No hosts found matching 'user' (or not in your scope)\"}, \"dynamic\": true}\n\ndata: {\"type\": \"finish\", \"finishReason\": \"stop\"}\n\ndata: [DONE]\n\n"
+        },
+        {
+          "repeat": 2,
+          "status": "ok",
+          "http_status": 200,
+          "latency_ms": 7047,
+          "response_text": "Necesito buscar los equipos tipo laptop en el CMDB. Voy a realizar una búsqueda con el término \"laptop\" para identificar todos los equipos con esa clasificación.No se encontraron equipos con el término \"laptop\" en la búsqueda. Intentaré buscar con otros términos comunes como \"notebook\" o \"portátil\" para ver si hay equipos registrados con esas denominaciones.",
+          "response_hash": "d6b5399d1c43c4af42f6c140c0dbe811e8d2a7c571e2f24b3e8d2bc408f39e49",
+          "normalized_hash": "d50745d8b1b9036b09db1cfd77f42b675448c38b3a07b38d75d90de5715e08d3",
+          "tool_calls": [
+            {
+              "type": "input",
+              "toolCallId": "call_db905db7f30548cda6682c85",
+              "toolName": "lookup_host",
+              "input": {
+                "query": "laptop"
+              }
+            },
+            {
+              "type": "output",
+              "toolCallId": "call_db905db7f30548cda6682c85",
+              "output": {
+                "hosts": [],
+                "message": "No hosts found matching 'laptop' (or not in your scope)"
+              }
+            },
+            {
+              "type": "input",
+              "toolCallId": "call_f27105438f764dd5b199676b",
+              "toolName": "lookup_host",
+              "input": {
+                "query": "notebook"
+              }
+            },
+            {
+              "type": "output",
+              "toolCallId": "call_f27105438f764dd5b199676b",
+              "output": {
+                "hosts": [],
+                "message": "No hosts found matching 'notebook' (or not in your scope)"
+              }
+            },
+            {
+              "type": "input",
+              "toolCallId": "tc-2c503bf2",
+              "toolName": "lookup_host",
+              "input": {
+                "query": "portatil"
+              }
+            },
+            {
+              "type": "output",
+              "toolCallId": "tc-2c503bf2",
+              "output": {
+                "hosts": [],
+                "message": "No hosts found matching 'portatil' (or not in your scope)"
+              }
+            }
+          ],
+          "expectation_violations": [
+            "missing concrete count answer.",
+            "equivalent prompts for inventory-laptop-count returned 6 distinct semantic outcomes."
+          ],
+          "raw_stream": "data: {\"type\": \"start\", \"messageId\": \"f77aa058-ea7b-426e-8599-d08381cf89b5\"}\n\ndata: {\"type\": \"text-start\", \"id\": \"235d1592-7f44-4f2e-835c-a02df3511305\"}\n\ndata: {\"type\": \"text-delta\", \"id\": \"235d1592-7f44-4f2e-835c-a02df3511305\", \"delta\": \"Necesito buscar los equipos tipo laptop en el CMDB. Voy a realizar una búsqueda con el término \\\"laptop\\\" para identificar todos los equipos con esa clasificación.\"}\n\ndata: {\"type\": \"text-end\", \"id\": \"235d1592-7f44-4f2e-835c-a02df3511305\"}\n\ndata: {\"type\": \"tool-input-available\", \"toolCallId\": \"call_db905db7f30548cda6682c85\", \"toolName\": \"lookup_host\", \"input\": {\"query\": \"laptop\"}, \"dynamic\": true}\n\ndata: {\"type\": \"tool-output-available\", \"toolCallId\": \"call_db905db7f30548cda6682c85\", \"output\": {\"hosts\": [], \"message\": \"No hosts found matching 'laptop' (or not in your scope)\"}, \"dynamic\": true}\n\ndata: {\"type\": \"text-start\", \"id\": \"7ef8f565-2b45-4f61-ab28-6adf4c69df4a\"}\n\ndata: {\"type\": \"text-delta\", \"id\": \"7ef8f565-2b45-4f61-ab28-6adf4c69df4a\", \"delta\": \"No se encontraron equipos con el término \\\"laptop\\\" en la búsqueda. Intentaré buscar con otros términos comunes como \\\"notebook\\\" o \\\"portátil\\\" para ver si hay equipos registrados con esas denominaciones.\"}\n\ndata: {\"type\": \"text-end\", \"id\": \"7ef8f565-2b45-4f61-ab28-6adf4c69df4a\"}\n\ndata: {\"type\": \"tool-input-available\", \"toolCallId\": \"call_f27105438f764dd5b199676b\", \"toolName\": \"lookup_host\", \"input\": {\"query\": \"notebook\"}, \"dynamic\": true}\n\ndata: {\"type\": \"tool-output-available\", \"toolCallId\": \"call_f27105438f764dd5b199676b\", \"output\": {\"hosts\": [], \"message\": \"No hosts found matching 'notebook' (or not in your scope)\"}, \"dynamic\": true}\n\ndata: {\"type\": \"tool-input-available\", \"toolCallId\": \"tc-2c503bf2\", \"toolName\": \"lookup_host\", \"input\": {\"query\": \"portatil\"}, \"dynamic\": true}\n\ndata: {\"type\": \"tool-output-available\", \"toolCallId\": \"tc-2c503bf2\", \"output\": {\"hosts\": [], \"message\": \"No hosts found matching 'portatil' (or not in your scope)\"}, \"dynamic\": true}\n\ndata: {\"type\": \"finish\", \"finishReason\": \"stop\"}\n\ndata: [DONE]\n\n"
+        }
+      ]
+    },
+    {
+      "id": "SEM-INV-COUNT-004",
+      "group": "inventory-aggregates",
+      "intent": "laptop_count",
+      "variant": "asset-type",
+      "prompt": "¿Cuántos activos son laptops?",
+      "expected": {
+        "decision": "answer",
+        "tool_budget": "inventory aggregate lookup acceptable; do not estimate",
+        "safety": "use only registered inventory data",
+        "answer_shape": "count",
+        "equivalence_key": "inventory-laptop-count",
+        "acceptance_criteria": [
+          "must return the same numeric count across all laptop count variants",
+          "INCONSISTENTE 2026-07-08: conteo de laptops devolvió no-data / 72 / 683 en corridas equivalentes; defecto de consistencia"
+        ],
+        "format": "",
+        "must_mention": [],
+        "must_mention_any": [],
+        "must_not_mention": []
+      },
+      "status": "fail",
+      "unique_normalized_responses": 2,
+      "expectation_violations": [
+        "missing concrete count answer.",
+        "equivalent prompts for inventory-laptop-count returned 6 distinct semantic outcomes."
+      ],
+      "runs": [
+        {
+          "repeat": 1,
+          "status": "ok",
+          "http_status": 200,
+          "latency_ms": 6507,
+          "response_text": "Entiendo que necesitas saber cuántos activos son laptops. Déjame buscar esta información de otra manera.",
+          "response_hash": "103eebde752d4f13289ea0330a2d3b73f61ba0f6e30deaaded8d70e0c5e6702e",
+          "normalized_hash": "39cbe05dfdfd6b7478de56427317d2c54f3d3a3541602ddca4623e2fa54f3be4",
+          "tool_calls": [
+            {
+              "type": "input",
+              "toolCallId": "call_962eada59a694ebeb0f51424",
+              "toolName": "generate_report",
+              "input": {
+                "formats": [
+                  "pdf"
+                ],
+                "prompt": "Generar un reporte que cuente y liste todos los activos que son laptops en el inventario de la CMDB. Incluir: cantidad total de laptops, distribución por sistema operativo, ubicación/site, estado (active/inactive), y detalles de cada laptop (hostname, IP, OS, site, role).",
+                "scope": {
+                  "visibility": "private"
+                },
+                "time_window": "last_30d"
+              }
+            },
+            {
+              "type": "output",
+              "toolCallId": "call_962eada59a694ebeb0f51424",
+              "output": {
+                "error": "Límite alcanzado para reportes (concurrent por usuario): 3/3. Intenta de nuevo en ~15 minutos.",
+                "rate_limited": true
+              }
+            },
+            {
+              "type": "input",
+              "toolCallId": "call_bbe2430006f048b788a67107",
+              "toolName": "lookup_host",
+              "input": {
+                "query": "laptop"
+              }
+            },
+            {
+              "type": "output",
+              "toolCallId": "call_bbe2430006f048b788a67107",
+              "output": {
+                "hosts": [],
+                "message": "No hosts found matching 'laptop' (or not in your scope)"
+              }
+            },
+            {
+              "type": "input",
+              "toolCallId": "tc-ecfdf0a8",
+              "toolName": "lookup_host",
+              "input": {
+                "query": "\""
+              }
+            },
+            {
+              "type": "output",
+              "toolCallId": "tc-ecfdf0a8",
+              "output": {
+                "hosts": [],
+                "message": "No hosts found matching '\"' (or not in your scope)"
+              }
+            }
+          ],
+          "expectation_violations": [
+            "missing concrete count answer.",
+            "equivalent prompts for inventory-laptop-count returned 6 distinct semantic outcomes."
+          ],
+          "raw_stream": "data: {\"type\": \"start\", \"messageId\": \"731c7913-ba00-439c-ba84-0a8c543e7704\"}\n\ndata: {\"type\": \"tool-input-available\", \"toolCallId\": \"call_962eada59a694ebeb0f51424\", \"toolName\": \"generate_report\", \"input\": {\"formats\": [\"pdf\"], \"prompt\": \"Generar un reporte que cuente y liste todos los activos que son laptops en el inventario de la CMDB. Incluir: cantidad total de laptops, distribución por sistema operativo, ubicación/site, estado (active/inactive), y detalles de cada laptop (hostname, IP, OS, site, role).\", \"scope\": {\"visibility\": \"private\"}, \"time_window\": \"last_30d\"}, \"dynamic\": true}\n\ndata: {\"type\": \"tool-output-available\", \"toolCallId\": \"call_962eada59a694ebeb0f51424\", \"output\": {\"error\": \"Límite alcanzado para reportes (concurrent por usuario): 3/3. Intenta de nuevo en ~15 minutos.\", \"rate_limited\": true}, \"dynamic\": true}\n\ndata: {\"type\": \"text-start\", \"id\": \"474f4a79-c65a-4e4a-b28f-e5671eae23e5\"}\n\ndata: {\"type\": \"text-delta\", \"id\": \"474f4a79-c65a-4e4a-b28f-e5671eae23e5\", \"delta\": \"Entiendo que necesitas saber cuántos activos son laptops. Déjame buscar esta información de otra manera.\"}\n\ndata: {\"type\": \"text-end\", \"id\": \"474f4a79-c65a-4e4a-b28f-e5671eae23e5\"}\n\ndata: {\"type\": \"tool-input-available\", \"toolCallId\": \"call_bbe2430006f048b788a67107\", \"toolName\": \"lookup_host\", \"input\": {\"query\": \"laptop\"}, \"dynamic\": true}\n\ndata: {\"type\": \"tool-output-available\", \"toolCallId\": \"call_bbe2430006f048b788a67107\", \"output\": {\"hosts\": [], \"message\": \"No hosts found matching 'laptop' (or not in your scope)\"}, \"dynamic\": true}\n\ndata: {\"type\": \"tool-input-available\", \"toolCallId\": \"tc-ecfdf0a8\", \"toolName\": \"lookup_host\", \"input\": {\"query\": \"\\\"\"}, \"dynamic\": true}\n\ndata: {\"type\": \"tool-output-available\", \"toolCallId\": \"tc-ecfdf0a8\", \"output\": {\"hosts\": [], \"message\": \"No hosts found matching '\\\"' (or not in your scope)\"}, \"dynamic\": true}\n\ndata: {\"type\": \"finish\", \"finishReason\": \"stop\"}\n\ndata: [DONE]\n\n"
+        },
+        {
+          "repeat": 2,
+          "status": "ok",
+          "http_status": 200,
+          "latency_ms": 7018,
+          "response_text": "Actualmente hay un límite de reportes concurrentes alcanzado (3/3). Déjame intentar una alternativa para obtener esta información de manera más directa.Necesito buscar en la CMDB para identificar los activos que son laptops. Déjame intentar con una búsqueda genérica que pueda filtrar por tipo de dispositivo.",
+          "response_hash": "8dfbb67fb9dfdd92e75807baed79c5002d8f32d39a37a83b669d2104c56180a9",
+          "normalized_hash": "31e9164652b32941caebbeaa2cf2832184976938ab51e2fafb5eb1c5a0c67f03",
+          "tool_calls": [
+            {
+              "type": "input",
+              "toolCallId": "call_24f272e9fc50443b9e1c030b",
+              "toolName": "generate_report",
+              "input": {
+                "formats": [
+                  "pdf"
+                ],
+                "prompt": "Generar un reporte que cuente y liste todos los activos que son laptops en el inventario de la CMDB. Incluir: cantidad total de laptops, distribución por sistema operativo, ubicación/sitio, estado, y detalles de cada laptop (hostname, IP, OS, sitio, rol).",
+                "scope": {
+                  "visibility": "private"
+                },
+                "time_window": "last_30d"
+              }
+            },
+            {
+              "type": "output",
+              "toolCallId": "call_24f272e9fc50443b9e1c030b",
+              "output": {
+                "error": "Límite alcanzado para reportes (concurrent por usuario): 3/3. Intenta de nuevo en ~15 minutos.",
+                "rate_limited": true
+              }
+            },
+            {
+              "type": "input",
+              "toolCallId": "call_0cffd9f82f5142cea134108c",
+              "toolName": "lookup_host",
+              "input": {
+                "query": "laptop"
+              }
+            },
+            {
+              "type": "output",
+              "toolCallId": "call_0cffd9f82f5142cea134108c",
+              "output": {
+                "hosts": [],
+                "message": "No hosts found matching 'laptop' (or not in your scope)"
+              }
+            },
+            {
+              "type": "input",
+              "toolCallId": "tc-0454bdb9",
+              "toolName": "lookup_host",
+              "input": {
+                "query": "notebook"
+              }
+            },
+            {
+              "type": "output",
+              "toolCallId": "tc-0454bdb9",
+              "output": {
+                "hosts": [],
+                "message": "No hosts found matching 'notebook' (or not in your scope)"
+              }
+            }
+          ],
+          "expectation_violations": [
+            "missing concrete count answer.",
+            "equivalent prompts for inventory-laptop-count returned 6 distinct semantic outcomes."
+          ],
+          "raw_stream": "data: {\"type\": \"start\", \"messageId\": \"3b7c4095-4287-4342-91f9-e8aab8d44c35\"}\n\ndata: {\"type\": \"tool-input-available\", \"toolCallId\": \"call_24f272e9fc50443b9e1c030b\", \"toolName\": \"generate_report\", \"input\": {\"formats\": [\"pdf\"], \"prompt\": \"Generar un reporte que cuente y liste todos los activos que son laptops en el inventario de la CMDB. Incluir: cantidad total de laptops, distribución por sistema operativo, ubicación/sitio, estado, y detalles de cada laptop (hostname, IP, OS, sitio, rol).\", \"scope\": {\"visibility\": \"private\"}, \"time_window\": \"last_30d\"}, \"dynamic\": true}\n\ndata: {\"type\": \"tool-output-available\", \"toolCallId\": \"call_24f272e9fc50443b9e1c030b\", \"output\": {\"error\": \"Límite alcanzado para reportes (concurrent por usuario): 3/3. Intenta de nuevo en ~15 minutos.\", \"rate_limited\": true}, \"dynamic\": true}\n\ndata: {\"type\": \"text-start\", \"id\": \"3ab01b59-94a5-4079-9a81-9a341fc0b74f\"}\n\ndata: {\"type\": \"text-delta\", \"id\": \"3ab01b59-94a5-4079-9a81-9a341fc0b74f\", \"delta\": \"Actualmente hay un límite de reportes concurrentes alcanzado (3/3). Déjame intentar una alternativa para obtener esta información de manera más directa.\"}\n\ndata: {\"type\": \"text-end\", \"id\": \"3ab01b59-94a5-4079-9a81-9a341fc0b74f\"}\n\ndata: {\"type\": \"text-start\", \"id\": \"bb5751be-dcdd-4655-8404-01750da92e1b\"}\n\ndata: {\"type\": \"text-delta\", \"id\": \"bb5751be-dcdd-4655-8404-01750da92e1b\", \"delta\": \"Necesito buscar en la CMDB para identificar los activos que son laptops. Déjame intentar con una búsqueda genérica que pueda filtrar por tipo de dispositivo.\"}\n\ndata: {\"type\": \"text-end\", \"id\": \"bb5751be-dcdd-4655-8404-01750da92e1b\"}\n\ndata: {\"type\": \"tool-input-available\", \"toolCallId\": \"call_0cffd9f82f5142cea134108c\", \"toolName\": \"lookup_host\", \"input\": {\"query\": \"laptop\"}, \"dynamic\": true}\n\ndata: {\"type\": \"tool-output-available\", \"toolCallId\": \"call_0cffd9f82f5142cea134108c\", \"output\": {\"hosts\": [], \"message\": \"No hosts found matching 'laptop' (or not in your scope)\"}, \"dynamic\": true}\n\ndata: {\"type\": \"tool-input-available\", \"toolCallId\": \"tc-0454bdb9\", \"toolName\": \"lookup_host\", \"input\": {\"query\": \"notebook\"}, \"dynamic\": true}\n\ndata: {\"type\": \"tool-output-available\", \"toolCallId\": \"tc-0454bdb9\", \"output\": {\"hosts\": [], \"message\": \"No hosts found matching 'notebook' (or not in your scope)\"}, \"dynamic\": true}\n\ndata: {\"type\": \"finish\", \"finishReason\": \"stop\"}\n\ndata: [DONE]\n\n"
+        }
+      ]
+    }
+  ]
+}

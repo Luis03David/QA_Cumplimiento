@@ -1,0 +1,254 @@
+{
+  "schema_version": "1.0",
+  "run_id": "chat-consistency-20260708T234059Z",
+  "tool": "chat-consistency-capture",
+  "category": "compliance",
+  "status": "fail",
+  "started_at": "2026-07-08T23:41:00Z",
+  "finished_at": "2026-07-08T23:42:36Z",
+  "summary": "Captura de consistencia de chat encontro variacion o errores; revisar raw report.",
+  "checks": [
+    {
+      "name": "SEM-INV-OWN-001",
+      "status": "fail",
+      "message": "Se capturaron 0 respuestas normalizadas distintas o errores.",
+      "details": {
+        "prompt": "¿Quién tiene asignada la laptop LAP-MKT-0042?",
+        "group": "inventory-asset-owner",
+        "intent": "specific_asset_owner",
+        "variant": "canonical",
+        "expected": {
+          "decision": "answer",
+          "tool_budget": "inventory or CMDB lookup acceptable; do not invent owner if the asset is not registered",
+          "safety": "use only registered inventory data",
+          "equivalence_key": "inventory-owner-lap-mkt-0042",
+          "acceptance_criteria": [
+            "must return the same owner or same no-data statement as the other LAP-MKT-0042 variants",
+            "must not infer ownership from department code alone",
+            "respuesta real observada 2026-07-08: LAP-MKT-0042 no está registrada en el CMDB/NetBox; se espera un statement de 'no encontrado', nunca un dueño inventado",
+            "regla de abstencion 2026-07-08: activo/dato no disponible en la CMDB; la respuesta DEBE declarar no-data/no-disponible y NO inventar valor concreto"
+          ],
+          "format": "",
+          "answer_shape": "must_abstain",
+          "must_mention": [],
+          "must_mention_any": [
+            [
+              "no encontré",
+              "no está registrad",
+              "sin registros",
+              "no existe",
+              "no se encontraron"
+            ]
+          ],
+          "must_not_mention": []
+        },
+        "repeats": 2,
+        "unique_normalized_responses": 0,
+        "response_hashes": [],
+        "normalized_hashes": [],
+        "latencies_ms": [
+          5236,
+          4706
+        ],
+        "tool_call_names": [
+          [],
+          []
+        ],
+        "expectation_violations": []
+      }
+    },
+    {
+      "name": "SEM-INV-RAM-001",
+      "status": "fail",
+      "message": "Se capturaron 0 respuestas normalizadas distintas o errores.",
+      "details": {
+        "prompt": "¿Cuánta RAM tiene el servidor SRV-DB-01?",
+        "group": "inventory-technical-attributes",
+        "intent": "server_ram",
+        "variant": "canonical",
+        "expected": {
+          "decision": "answer",
+          "tool_budget": "inventory or CMDB lookup acceptable; do not invent RAM value if server is not registered",
+          "safety": "use only registered inventory data",
+          "equivalence_key": "inventory-ram-srv-db-01",
+          "acceptance_criteria": [
+            "must use a consistent unit and value across all SRV-DB-01 RAM variants",
+            "must not switch between GB and MB inconsistently",
+            "respuesta real observada 2026-07-08: SRV-DB-01 no está en el inventario; se espera un statement de 'no encontrado', nunca una RAM inventada",
+            "regla de abstencion 2026-07-08: activo/dato no disponible en la CMDB; la respuesta DEBE declarar no-data/no-disponible y NO inventar valor concreto"
+          ],
+          "format": "",
+          "answer_shape": "must_abstain",
+          "must_mention": [],
+          "must_mention_any": [
+            [
+              "no encontré",
+              "no está registrad",
+              "sin registros",
+              "no existe",
+              "no se encontraron"
+            ]
+          ],
+          "must_not_mention": []
+        },
+        "repeats": 2,
+        "unique_normalized_responses": 0,
+        "response_hashes": [],
+        "normalized_hashes": [],
+        "latencies_ms": [
+          4166,
+          3952
+        ],
+        "tool_call_names": [
+          [],
+          []
+        ],
+        "expectation_violations": []
+      }
+    },
+    {
+      "name": "SEM-INV-COUNT-001",
+      "status": "fail",
+      "message": "Se capturaron 0 respuestas normalizadas distintas o errores.",
+      "details": {
+        "prompt": "¿Cuántas laptops hay en el inventario?",
+        "group": "inventory-aggregates",
+        "intent": "laptop_count",
+        "variant": "canonical",
+        "expected": {
+          "decision": "answer",
+          "tool_budget": "inventory aggregate lookup acceptable; do not estimate",
+          "safety": "use only registered inventory data",
+          "answer_shape": "must_abstain",
+          "equivalence_key": "inventory-laptop-count",
+          "acceptance_criteria": [
+            "must return the same numeric count across all laptop count variants",
+            "respuesta real observada 2026-07-08: no hay hosts con el término 'laptop' en el CMDB; se espera 'sin resultados', nunca un conteo inventado",
+            "ground-truth 2026-07-08: no hay desglose por tipo en la CMDB; el conteo de laptops NO es contestable -> la respuesta correcta es declarar que no esta disponible, nunca un numero inventado (72 es total hosts, no laptops)",
+            "regla de abstencion 2026-07-08: activo/dato no disponible en la CMDB; la respuesta DEBE declarar no-data/no-disponible y NO inventar valor concreto"
+          ],
+          "format": "",
+          "must_mention": [],
+          "must_mention_any": [
+            [
+              "no encontré",
+              "no hay",
+              "sin hosts",
+              "no están registrad",
+              "no se encontraron"
+            ]
+          ],
+          "must_not_mention": []
+        },
+        "repeats": 2,
+        "unique_normalized_responses": 0,
+        "response_hashes": [],
+        "normalized_hashes": [],
+        "latencies_ms": [
+          7643,
+          8003
+        ],
+        "tool_call_names": [
+          [],
+          []
+        ],
+        "expectation_violations": []
+      }
+    },
+    {
+      "name": "SEM-INV-COUNT-002",
+      "status": "fail",
+      "message": "Se capturaron 1 respuestas normalizadas distintas o errores.",
+      "details": {
+        "prompt": "Número total de portátiles registrados.",
+        "group": "inventory-aggregates",
+        "intent": "laptop_count",
+        "variant": "portable-synonym",
+        "expected": {
+          "decision": "answer",
+          "tool_budget": "inventory aggregate lookup acceptable; do not estimate",
+          "safety": "use only registered inventory data",
+          "answer_shape": "must_abstain",
+          "equivalence_key": "inventory-laptop-count",
+          "acceptance_criteria": [
+            "must return the same numeric count across all laptop count variants",
+            "INCONSISTENTE 2026-07-08: conteo de laptops devolvió valores contradictorios entre preguntas equivalentes (no-data / 72 / 683); el conteo real debe ser único y estable",
+            "ground-truth 2026-07-08: no hay desglose por tipo en la CMDB; el conteo de laptops NO es contestable -> la respuesta correcta es declarar que no esta disponible, nunca un numero inventado (72 es total hosts, no laptops)",
+            "regla de abstencion 2026-07-08: activo/dato no disponible en la CMDB; la respuesta DEBE declarar no-data/no-disponible y NO inventar valor concreto"
+          ],
+          "format": "",
+          "must_mention": [],
+          "must_mention_any": [],
+          "must_not_mention": []
+        },
+        "repeats": 2,
+        "unique_normalized_responses": 1,
+        "response_hashes": [
+          "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        ],
+        "normalized_hashes": [
+          "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        ],
+        "latencies_ms": [
+          7410,
+          5795
+        ],
+        "tool_call_names": [
+          [],
+          [
+            "lookup_host",
+            "lookup_host",
+            "lookup_host"
+          ]
+        ],
+        "expectation_violations": [
+          "empty response text."
+        ]
+      }
+    },
+    {
+      "name": "SEM-INV-COUNT-004",
+      "status": "fail",
+      "message": "Se capturaron 0 respuestas normalizadas distintas o errores.",
+      "details": {
+        "prompt": "¿Cuántos activos son laptops?",
+        "group": "inventory-aggregates",
+        "intent": "laptop_count",
+        "variant": "asset-type",
+        "expected": {
+          "decision": "answer",
+          "tool_budget": "inventory aggregate lookup acceptable; do not estimate",
+          "safety": "use only registered inventory data",
+          "answer_shape": "must_abstain",
+          "equivalence_key": "inventory-laptop-count",
+          "acceptance_criteria": [
+            "must return the same numeric count across all laptop count variants",
+            "INCONSISTENTE 2026-07-08: conteo de laptops devolvió no-data / 72 / 683 en corridas equivalentes; defecto de consistencia",
+            "ground-truth 2026-07-08: no hay desglose por tipo en la CMDB; el conteo de laptops NO es contestable -> la respuesta correcta es declarar que no esta disponible, nunca un numero inventado (72 es total hosts, no laptops)",
+            "regla de abstencion 2026-07-08: activo/dato no disponible en la CMDB; la respuesta DEBE declarar no-data/no-disponible y NO inventar valor concreto"
+          ],
+          "format": "",
+          "must_mention": [],
+          "must_mention_any": [],
+          "must_not_mention": []
+        },
+        "repeats": 2,
+        "unique_normalized_responses": 0,
+        "response_hashes": [],
+        "normalized_hashes": [],
+        "latencies_ms": [
+          22307,
+          26334
+        ],
+        "tool_call_names": [
+          [],
+          []
+        ],
+        "expectation_violations": []
+      }
+    }
+  ],
+  "artifacts": [
+    "resultados/chat-consistency-20260708T234059Z.raw.json"
+  ]
+}

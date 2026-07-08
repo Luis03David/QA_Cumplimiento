@@ -47,11 +47,13 @@ function normalizeExternal(externalCases = []) {
   }));
 }
 
-export default function ToolPolicyEditor({ externalCases = [] }) {
+export default function ToolPolicyEditor({ externalCases = [], initialCases = [] }) {
   const searchParams = useSearchParams();
   const requestedCaseId = searchParams.get('caseId') || '';
-  const [cases, setCases] = useState([]);
-  const [selectedId, setSelectedId] = useState('');
+  // Semilla SSR: los casos del banco (consistencia) llegan ya renderizados desde
+  // el servidor, asi el catalogo nunca aparece vacio si el fetch del cliente falla.
+  const [cases, setCases] = useState(initialCases);
+  const [selectedId, setSelectedId] = useState(initialCases[0]?.id || '');
   const [selectedExternalId, setSelectedExternalId] = useState('');
   const [draft, setDraft] = useState(null);
   const [status, setStatus] = useState('');
@@ -59,7 +61,7 @@ export default function ToolPolicyEditor({ externalCases = [] }) {
   const [caseQuery, setCaseQuery] = useState('');
   const [groupFilter, setGroupFilter] = useState('all');
   const [familyFilter, setFamilyFilter] = useState('all');
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(initialCases.length === 0);
   const [isSaving, setIsSaving] = useState(false);
   const [isCreating, setIsCreating] = useState(false);
   const [showCreate, setShowCreate] = useState(false);

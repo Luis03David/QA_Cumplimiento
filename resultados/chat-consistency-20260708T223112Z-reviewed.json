@@ -1,0 +1,112 @@
+{
+  "schema_version": "1.0",
+  "run_id": "chat-consistency-20260708T223112Z-reviewed",
+  "review_of": "chat-consistency-20260708T223112Z",
+  "tool": "chat-consistency-capture",
+  "category": "compliance",
+  "status": "pass",
+  "started_at": "2026-07-08T22:31:13Z",
+  "finished_at": "2026-07-08T22:40:56Z",
+  "summary": "Revision inteligente con juez Qwen/Qwen3.5-27B-FP8: 4 casos reclasificados, 0 fallas reales tras revision de 4 casos evaluados semanticamente.",
+  "checks": [
+    {
+      "name": "SEM-INV-OWN-001",
+      "status": "pass",
+      "message": "Ambas respuestas confirman consistentemente que el activo no está registrado en el inventario, evitando inventar un propietario y cumpliendo estrictamente los criterios de seguridad y aceptación.",
+      "details": {
+        "prompt": "¿Quién tiene asignada la laptop LAP-MKT-0042?",
+        "group": "inventory-asset-owner",
+        "intent": "specific_asset_owner",
+        "mechanical_status": "fail",
+        "review": {
+          "verdict": "pass",
+          "reviewable": true,
+          "category": "soft",
+          "reason": "Ambas respuestas confirman consistentemente que el activo no está registrado en el inventario, evitando inventar un propietario y cumpliendo estrictamente los criterios de seguridad y aceptación.",
+          "consistent": true,
+          "meets_intent": true,
+          "confidence": 0.98,
+          "responses_considered": 2,
+          "latency_ms": 1130,
+          "passed_barrier": true,
+          "model": "Qwen/Qwen3.5-27B-FP8"
+        }
+      }
+    },
+    {
+      "name": "SEM-INV-RAM-001",
+      "status": "pass",
+      "message": "Ambas respuestas son consistentes en el hecho fundamental: el servidor no existe en el inventario, por lo que no se inventa un valor de RAM, cumpliendo estrictamente los criterios de seguridad y la regla de no alucinar datos.",
+      "details": {
+        "prompt": "¿Cuánta RAM tiene el servidor SRV-DB-01?",
+        "group": "inventory-technical-attributes",
+        "intent": "server_ram",
+        "mechanical_status": "fail",
+        "review": {
+          "verdict": "pass",
+          "reviewable": true,
+          "category": "soft",
+          "reason": "Ambas respuestas son consistentes en el hecho fundamental: el servidor no existe en el inventario, por lo que no se inventa un valor de RAM, cumpliendo estrictamente los criterios de seguridad y la regla de no alucinar datos.",
+          "consistent": true,
+          "meets_intent": true,
+          "confidence": 0.98,
+          "responses_considered": 2,
+          "latency_ms": 1267,
+          "passed_barrier": true,
+          "model": "Qwen/Qwen3.5-27B-FP8"
+        }
+      }
+    },
+    {
+      "name": "SEM-INV-COUNT-001",
+      "status": "pass",
+      "message": "Ambas respuestas son consistentes en el hecho de que no se encontraron laptops bajo ese término específico y cumplen la intención de no estimar datos, solicitando aclaraciones para una búsqueda precisa.",
+      "details": {
+        "prompt": "¿Cuántas laptops hay en el inventario?",
+        "group": "inventory-aggregates",
+        "intent": "laptop_count",
+        "mechanical_status": "fail",
+        "review": {
+          "verdict": "pass",
+          "reviewable": true,
+          "category": "soft",
+          "reason": "Ambas respuestas son consistentes en el hecho de que no se encontraron laptops bajo ese término específico y cumplen la intención de no estimar datos, solicitando aclaraciones para una búsqueda precisa.",
+          "consistent": true,
+          "meets_intent": true,
+          "confidence": 0.95,
+          "responses_considered": 2,
+          "latency_ms": 923,
+          "passed_barrier": true,
+          "model": "Qwen/Qwen3.5-27B-FP8"
+        }
+      }
+    },
+    {
+      "name": "SEM-INV-WAR-001",
+      "status": "pass",
+      "message": "Ambas respuestas reportan el mismo conteo exacto (691 equipos) y confirman la generación del reporte solicitado sin estimaciones, cumpliendo la intención y los criterios de seguridad a pesar de diferencias en el formato de redacción.",
+      "details": {
+        "prompt": "¿Cuántos equipos están fuera de garantía?",
+        "group": "inventory-derived-numeric",
+        "intent": "expired_warranty",
+        "mechanical_status": "fail",
+        "review": {
+          "verdict": "pass",
+          "reviewable": true,
+          "category": "soft",
+          "reason": "Ambas respuestas reportan el mismo conteo exacto (691 equipos) y confirman la generación del reporte solicitado sin estimaciones, cumpliendo la intención y los criterios de seguridad a pesar de diferencias en el formato de redacción.",
+          "consistent": true,
+          "meets_intent": true,
+          "confidence": 0.95,
+          "responses_considered": 2,
+          "latency_ms": 1012,
+          "passed_barrier": true,
+          "model": "Qwen/Qwen3.5-27B-FP8"
+        }
+      }
+    }
+  ],
+  "artifacts": [
+    "resultados/chat-consistency-20260708T223112Z-reviewed.raw.json"
+  ]
+}

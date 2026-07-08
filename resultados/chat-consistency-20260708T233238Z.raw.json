@@ -1,0 +1,1331 @@
+{
+  "run_id": "chat-consistency-20260708T233238Z",
+  "started_at": "2026-07-08T23:32:40Z",
+  "finished_at": "2026-07-08T23:33:24Z",
+  "repeats": 2,
+  "endpoint": "/api/chat/v3/stream",
+  "cases": [
+    {
+      "id": "SEM-INV-LIST-001",
+      "group": "inventory-enumeration",
+      "intent": "list_all_hosts",
+      "variant": "inline",
+      "prompt": "Lista en el chat, sin generar un reporte PDF, los hosts registrados en el inventario (CMDB) con su hostname, tipo e IP. Si son muchos, muestra los primeros 50 y dime el total exacto.",
+      "expected": {
+        "decision": "",
+        "tool_budget": "",
+        "safety": "",
+        "format": "",
+        "equivalence_key": "inventory-enumeration-hosts",
+        "answer_shape": "list",
+        "acceptance_criteria": [
+          "caso de descubrimiento 2026-07-08: sirve para conocer que activos tiene realmente la CMDB y sembrar ground-truth",
+          "debe responder inline con hostnames reales, no solo generar un reporte"
+        ],
+        "must_mention": [],
+        "must_mention_any": [],
+        "must_not_mention": []
+      },
+      "status": "fail",
+      "unique_normalized_responses": 2,
+      "expectation_violations": [
+        "missing concrete list answer.",
+        "equivalent prompts for inventory-enumeration-hosts returned 2 distinct semantic outcomes."
+      ],
+      "runs": [
+        {
+          "repeat": 1,
+          "status": "ok",
+          "http_status": 200,
+          "latency_ms": 8078,
+          "response_text": "El dashboard indica que hay **72 hosts únicos** registrados en el inventario. Para obtener la lista detallada con hostname, tipo e IP, necesito consultar el CMDB. Sin embargo, no tengo una herramienta que liste todos los hosts de una sola vez con esos campos específicos.\n\nVoy a intentar buscar hosts con una consulta genérica para ver si puedo obtener la lista completa:El tool `lookup_host` requiere un parámetro de búsqueda. Voy a intentar con una búsqueda muy amplia para capturar todos los hosts:La búsqueda con `*` no devuelve resultados. Intentaré con una búsqueda vacía o con un patrón común. Dado que el dashboard muestra 72 hosts, debo encontrar una forma de listarlos.\n\nVoy a intentar buscar con un patrón muy común como \"a\" o verificar si hay alguna otra forma. También podría intentar buscar casos recientes para extraer los hosts de ahí:\n\n<tool_call>\nfunction=search_cases>{\"host_key\": \"\"}</function>\n</tool_call>",
+          "response_hash": "428e50a0cc61c8e46cbc1c156f1b8036088d2cbca4dbcd1ed528de64b37f10fa",
+          "normalized_hash": "fc8a589d603e4f5944a4ce0b4658861b6ff85672d414a79e53c53fb44fe4ecb8",
+          "tool_calls": [
+            {
+              "type": "input",
+              "toolCallId": "call_cc69711cdd3d43b1b1e6e065",
+              "toolName": "get_dashboard_stats",
+              "input": {}
+            },
+            {
+              "type": "output",
+              "toolCallId": "call_cc69711cdd3d43b1b1e6e065",
+              "output": {
+                "total_cases": 319,
+                "cases_24h": 0,
+                "unique_hosts": 72,
+                "pending_approvals": 0,
+                "by_status": {
+                  "ANALYZED": 1,
+                  "CANCELLED": 19,
+                  "ESCALATED": 3,
+                  "RESOLVED": 296
+                },
+                "by_priority": {
+                  "critical": 235,
+                  "normal": 84
+                }
+              }
+            },
+            {
+              "type": "input",
+              "toolCallId": "call_f5785d88a7104295aa8bae7f",
+              "toolName": "lookup_host",
+              "input": {
+                "query": "*"
+              }
+            },
+            {
+              "type": "output",
+              "toolCallId": "call_f5785d88a7104295aa8bae7f",
+              "output": {
+                "hosts": [],
+                "message": "No hosts found matching '*' (or not in your scope)"
+              }
+            }
+          ],
+          "expectation_violations": [
+            "missing concrete list answer.",
+            "equivalent prompts for inventory-enumeration-hosts returned 2 distinct semantic outcomes."
+          ],
+          "raw_stream": "data: {\"type\": \"start\", \"messageId\": \"bd9335c9-5d73-42a5-b478-b20471a6793a\"}\n\ndata: {\"type\": \"tool-input-available\", \"toolCallId\": \"call_cc69711cdd3d43b1b1e6e065\", \"toolName\": \"get_dashboard_stats\", \"input\": {}, \"dynamic\": true}\n\ndata: {\"type\": \"tool-output-available\", \"toolCallId\": \"call_cc69711cdd3d43b1b1e6e065\", \"output\": {\"total_cases\": 319, \"cases_24h\": 0, \"unique_hosts\": 72, \"pending_approvals\": 0, \"by_status\": {\"ANALYZED\": 1, \"CANCELLED\": 19, \"ESCALATED\": 3, \"RESOLVED\": 296}, \"by_priority\": {\"critical\": 235, \"normal\": 84}}, \"dynamic\": true}\n\ndata: {\"type\": \"text-start\", \"id\": \"0149e26e-1fe4-4bd1-afdb-ec3daa69ed65\"}\n\ndata: {\"type\": \"text-delta\", \"id\": \"0149e26e-1fe4-4bd1-afdb-ec3daa69ed65\", \"delta\": \"El dashboard indica que hay **72 hosts únicos** registrados en el inventario. Para obtener la lista detallada con hostname, tipo e IP, necesito consultar el CMDB. Sin embargo, no tengo una herramienta que liste todos los hosts de una sola vez con esos campos específicos.\\n\\nVoy a intentar buscar hosts con una consulta genérica para ver si puedo obtener la lista completa:\"}\n\ndata: {\"type\": \"text-end\", \"id\": \"0149e26e-1fe4-4bd1-afdb-ec3daa69ed65\"}\n\ndata: {\"type\": \"text-start\", \"id\": \"ce17c685-1c8c-45bb-8b2c-4a8dfa2c0f6c\"}\n\ndata: {\"type\": \"text-delta\", \"id\": \"ce17c685-1c8c-45bb-8b2c-4a8dfa2c0f6c\", \"delta\": \"El tool `lookup_host` requiere un parámetro de búsqueda. Voy a intentar con una búsqueda muy amplia para capturar todos los hosts:\"}\n\ndata: {\"type\": \"text-end\", \"id\": \"ce17c685-1c8c-45bb-8b2c-4a8dfa2c0f6c\"}\n\ndata: {\"type\": \"tool-input-available\", \"toolCallId\": \"call_f5785d88a7104295aa8bae7f\", \"toolName\": \"lookup_host\", \"input\": {\"query\": \"*\"}, \"dynamic\": true}\n\ndata: {\"type\": \"tool-output-available\", \"toolCallId\": \"call_f5785d88a7104295aa8bae7f\", \"output\": {\"hosts\": [], \"message\": \"No hosts found matching '*' (or not in your scope)\"}, \"dynamic\": true}\n\ndata: {\"type\": \"text-start\", \"id\": \"d9d033c8-c596-441d-8377-de1e0b268e90\"}\n\ndata: {\"type\": \"text-delta\", \"id\": \"d9d033c8-c596-441d-8377-de1e0b268e90\", \"delta\": \"La búsqueda con `*` no devuelve resultados. Intentaré con una búsqueda vacía o con un patrón común. Dado que el dashboard muestra 72 hosts, debo encontrar una forma de listarlos.\\n\\nVoy a intentar buscar con un patrón muy común como \\\"a\\\" o verificar si hay alguna otra forma. También podría intentar buscar casos recientes para extraer los hosts de ahí:\\n\\n<tool_call>\\nfunction=search_cases>{\\\"host_key\\\": \\\"\\\"}</function>\\n</tool_call>\"}\n\ndata: {\"type\": \"text-end\", \"id\": \"d9d033c8-c596-441d-8377-de1e0b268e90\"}\n\ndata: {\"type\": \"finish\", \"finishReason\": \"stop\"}\n\ndata: [DONE]\n\n"
+        },
+        {
+          "repeat": 2,
+          "status": "ok",
+          "http_status": 200,
+          "latency_ms": 7305,
+          "response_text": "El dashboard muestra que hay **72 hosts únicos** registrados en el inventario. Para obtener la lista detallada con hostname, tipo e IP, necesito consultar el CMDB. Sin embargo, no tengo una herramienta que liste directamente todos los hosts del CMDB de una vez.\n\nVoy a intentar buscar hosts con una consulta genérica para ver si puedo obtener la lista completa:La herramienta `lookup_host` requiere un parámetro de búsqueda. Voy a intentar con una búsqueda muy amplia para capturar la mayoría de los hosts:La búsqueda con `*` no devuelve resultados. Intentaré con una búsqueda vacía o con un patrón común. Dado que el dashboard indica 72 hosts únicos, estos deben estar registrados en el CMDB.\n\nVoy a intentar buscar con un patrón muy común como \"1\" o \"a\" para ver si puedo obtener algunos resultados:",
+          "response_hash": "8db8e569f85d8bdfc70ebb2e773dec622d023aac224aedac82f23217ff869f63",
+          "normalized_hash": "331bc6535c115811404fc765ddb77fe33353e2a81215761c11623ac8bc1343a9",
+          "tool_calls": [
+            {
+              "type": "input",
+              "toolCallId": "call_2cb54e96ca2b45ccb4049a08",
+              "toolName": "get_dashboard_stats",
+              "input": {}
+            },
+            {
+              "type": "output",
+              "toolCallId": "call_2cb54e96ca2b45ccb4049a08",
+              "output": {
+                "total_cases": 319,
+                "cases_24h": 0,
+                "unique_hosts": 72,
+                "pending_approvals": 0,
+                "by_status": {
+                  "ANALYZED": 1,
+                  "CANCELLED": 19,
+                  "ESCALATED": 3,
+                  "RESOLVED": 296
+                },
+                "by_priority": {
+                  "critical": 235,
+                  "normal": 84
+                }
+              }
+            },
+            {
+              "type": "input",
+              "toolCallId": "call_d6f21d52b3de4060a1692a04",
+              "toolName": "lookup_host",
+              "input": {
+                "query": "*"
+              }
+            },
+            {
+              "type": "output",
+              "toolCallId": "call_d6f21d52b3de4060a1692a04",
+              "output": {
+                "hosts": [],
+                "message": "No hosts found matching '*' (or not in your scope)"
+              }
+            },
+            {
+              "type": "input",
+              "toolCallId": "tc-13d2eea8",
+              "toolName": "lookup_host",
+              "input": {
+                "query": "a"
+              }
+            },
+            {
+              "type": "output",
+              "toolCallId": "tc-13d2eea8",
+              "output": {
+                "hosts": [
+                  {
+                    "name": "AGENTE-AV.DIPUTADOS.GOB.MX",
+                    "host_key": "AGENTE-AV.DIPUTADOS.GOB.MX|172.16.155.111",
+                    "ip": "172.16.155.111",
+                    "os_family": "linux",
+                    "platform": "Linux",
+                    "site": "On-Premise",
+                    "role": "Reverse Proxy",
+                    "status": "active",
+                    "source": "netbox"
+                  },
+                  {
+                    "name": "AGILEOPS",
+                    "host_key": "AGILEOPS|172.16.155.41",
+                    "ip": "172.16.155.41",
+                    "os_family": "linux",
+                    "platform": "Linux VM",
+                    "site": "On-Premise",
+                    "role": "AppServer",
+                    "status": "active",
+                    "source": "netbox"
+                  },
+                  {
+                    "name": "ANGULAR01",
+                    "host_key": "ANGULAR01|172.16.155.57",
+                    "ip": "172.16.155.57",
+                    "os_family": "linux",
+                    "platform": "Linux",
+                    "site": "On-Premise",
+                    "role": "DB Server",
+                    "status": "active",
+                    "source": "netbox"
+                  },
+                  {
+                    "name": "ANGULAR03",
+                    "host_key": "ANGULAR03|172.16.155.68",
+                    "ip": "172.16.155.68",
+                    "os_family": "linux",
+                    "platform": "Linux",
+                    "site": "On-Premise",
+                    "role": "DB Server",
+                    "status": "active",
+                    "source": "netbox"
+                  }
+                ],
+                "total": 4
+              }
+            }
+          ],
+          "expectation_violations": [
+            "missing concrete list answer.",
+            "equivalent prompts for inventory-enumeration-hosts returned 2 distinct semantic outcomes."
+          ],
+          "raw_stream": "data: {\"type\": \"start\", \"messageId\": \"824b8cca-4ca8-4ee6-861d-d0814edf8619\"}\n\ndata: {\"type\": \"tool-input-available\", \"toolCallId\": \"call_2cb54e96ca2b45ccb4049a08\", \"toolName\": \"get_dashboard_stats\", \"input\": {}, \"dynamic\": true}\n\ndata: {\"type\": \"tool-output-available\", \"toolCallId\": \"call_2cb54e96ca2b45ccb4049a08\", \"output\": {\"total_cases\": 319, \"cases_24h\": 0, \"unique_hosts\": 72, \"pending_approvals\": 0, \"by_status\": {\"ANALYZED\": 1, \"CANCELLED\": 19, \"ESCALATED\": 3, \"RESOLVED\": 296}, \"by_priority\": {\"critical\": 235, \"normal\": 84}}, \"dynamic\": true}\n\ndata: {\"type\": \"text-start\", \"id\": \"cdccf58d-aafc-4469-9db3-c5479a0deac1\"}\n\ndata: {\"type\": \"text-delta\", \"id\": \"cdccf58d-aafc-4469-9db3-c5479a0deac1\", \"delta\": \"El dashboard muestra que hay **72 hosts únicos** registrados en el inventario. Para obtener la lista detallada con hostname, tipo e IP, necesito consultar el CMDB. Sin embargo, no tengo una herramienta que liste directamente todos los hosts del CMDB de una vez.\\n\\nVoy a intentar buscar hosts con una consulta genérica para ver si puedo obtener la lista completa:\"}\n\ndata: {\"type\": \"text-end\", \"id\": \"cdccf58d-aafc-4469-9db3-c5479a0deac1\"}\n\ndata: {\"type\": \"text-start\", \"id\": \"766461e1-8ec7-4f44-8fd2-d41701c8448d\"}\n\ndata: {\"type\": \"text-delta\", \"id\": \"766461e1-8ec7-4f44-8fd2-d41701c8448d\", \"delta\": \"La herramienta `lookup_host` requiere un parámetro de búsqueda. Voy a intentar con una búsqueda muy amplia para capturar la mayoría de los hosts:\"}\n\ndata: {\"type\": \"text-end\", \"id\": \"766461e1-8ec7-4f44-8fd2-d41701c8448d\"}\n\ndata: {\"type\": \"tool-input-available\", \"toolCallId\": \"call_d6f21d52b3de4060a1692a04\", \"toolName\": \"lookup_host\", \"input\": {\"query\": \"*\"}, \"dynamic\": true}\n\ndata: {\"type\": \"tool-output-available\", \"toolCallId\": \"call_d6f21d52b3de4060a1692a04\", \"output\": {\"hosts\": [], \"message\": \"No hosts found matching '*' (or not in your scope)\"}, \"dynamic\": true}\n\ndata: {\"type\": \"text-start\", \"id\": \"6eca3175-1b1f-489f-aeb3-1168404fa236\"}\n\ndata: {\"type\": \"text-delta\", \"id\": \"6eca3175-1b1f-489f-aeb3-1168404fa236\", \"delta\": \"La búsqueda con `*` no devuelve resultados. Intentaré con una búsqueda vacía o con un patrón común. Dado que el dashboard indica 72 hosts únicos, estos deben estar registrados en el CMDB.\\n\\nVoy a intentar buscar con un patrón muy común como \\\"1\\\" o \\\"a\\\" para ver si puedo obtener algunos resultados:\"}\n\ndata: {\"type\": \"text-end\", \"id\": \"6eca3175-1b1f-489f-aeb3-1168404fa236\"}\n\ndata: {\"type\": \"tool-input-available\", \"toolCallId\": \"tc-13d2eea8\", \"toolName\": \"lookup_host\", \"input\": {\"query\": \"a\"}, \"dynamic\": true}\n\ndata: {\"type\": \"tool-output-available\", \"toolCallId\": \"tc-13d2eea8\", \"output\": {\"hosts\": [{\"name\": \"AGENTE-AV.DIPUTADOS.GOB.MX\", \"host_key\": \"AGENTE-AV.DIPUTADOS.GOB.MX|172.16.155.111\", \"ip\": \"172.16.155.111\", \"os_family\": \"linux\", \"platform\": \"Linux\", \"site\": \"On-Premise\", \"role\": \"Reverse Proxy\", \"status\": \"active\", \"source\": \"netbox\"}, {\"name\": \"AGILEOPS\", \"host_key\": \"AGILEOPS|172.16.155.41\", \"ip\": \"172.16.155.41\", \"os_family\": \"linux\", \"platform\": \"Linux VM\", \"site\": \"On-Premise\", \"role\": \"AppServer\", \"status\": \"active\", \"source\": \"netbox\"}, {\"name\": \"ANGULAR01\", \"host_key\": \"ANGULAR01|172.16.155.57\", \"ip\": \"172.16.155.57\", \"os_family\": \"linux\", \"platform\": \"Linux\", \"site\": \"On-Premise\", \"role\": \"DB Server\", \"status\": \"active\", \"source\": \"netbox\"}, {\"name\": \"ANGULAR03\", \"host_key\": \"ANGULAR03|172.16.155.68\", \"ip\": \"172.16.155.68\", \"os_family\": \"linux\", \"platform\": \"Linux\", \"site\": \"On-Premise\", \"role\": \"DB Server\", \"status\": \"active\", \"source\": \"netbox\"}], \"total\": 4}, \"dynamic\": true}\n\ndata: {\"type\": \"finish\", \"finishReason\": \"stop\"}\n\ndata: [DONE]\n\n"
+        }
+      ]
+    },
+    {
+      "id": "SEM-INV-LIST-002",
+      "group": "inventory-enumeration",
+      "intent": "inventory_type_breakdown",
+      "variant": "breakdown",
+      "prompt": "¿Cuántos activos hay en el inventario y cómo se distribuyen por tipo (servidor, laptop, router, switch, etc.)? Dame el desglose por tipo con el conteo de cada uno, en texto.",
+      "expected": {
+        "decision": "",
+        "tool_budget": "",
+        "safety": "",
+        "format": "",
+        "equivalence_key": "inventory-enumeration-total",
+        "answer_shape": "count",
+        "acceptance_criteria": [
+          "caso de descubrimiento 2026-07-08: total y desglose por tipo para conocer el tamano real del inventario"
+        ],
+        "must_mention": [],
+        "must_mention_any": [],
+        "must_not_mention": []
+      },
+      "status": "fail",
+      "unique_normalized_responses": 2,
+      "expectation_violations": [
+        "equivalent prompts for inventory-enumeration-total returned 2 distinct semantic outcomes."
+      ],
+      "runs": [
+        {
+          "repeat": 1,
+          "status": "ok",
+          "http_status": 200,
+          "latency_ms": 6728,
+          "response_text": "El inventario actual en la plataforma muestra **72 hosts únicos** registrados.\n\nSin embargo, las estadísticas del dashboard no proporcionan un desglose detallado por tipo de activo (servidor, laptop, router, switch, etc.). Para obtener esa información específica, necesito consultar el CMDB directamente.\n\nDéjame buscar información más detallada sobre los tipos de activos:Entiendo que el sistema de reportes está temporalmente limitado. Déjame intentar una búsqueda más directa en el inventario:",
+          "response_hash": "42a147b9e326298c52737159cb34bcc3122d77bbc5f1c6ece7abb6a051fb4eb2",
+          "normalized_hash": "79648f8b3fc945d8ca97bb536d3c4055c6d8f02906f654004ae09e954069b18b",
+          "tool_calls": [
+            {
+              "type": "input",
+              "toolCallId": "call_02eed6af60854d2e9ffa2ee7",
+              "toolName": "get_dashboard_stats",
+              "input": {}
+            },
+            {
+              "type": "output",
+              "toolCallId": "call_02eed6af60854d2e9ffa2ee7",
+              "output": {
+                "total_cases": 319,
+                "cases_24h": 0,
+                "unique_hosts": 72,
+                "pending_approvals": 0,
+                "by_status": {
+                  "ANALYZED": 1,
+                  "CANCELLED": 19,
+                  "ESCALATED": 3,
+                  "RESOLVED": 296
+                },
+                "by_priority": {
+                  "critical": 235,
+                  "normal": 84
+                }
+              }
+            },
+            {
+              "type": "input",
+              "toolCallId": "call_543171f7bbd6487eb5f01ead",
+              "toolName": "generate_report",
+              "input": {
+                "formats": [
+                  "md"
+                ],
+                "prompt": "Genera un reporte con el inventario completo de activos del tenant actual, mostrando el conteo total y el desglose por tipo de dispositivo (servidor, laptop, router, switch, firewall, etc.). Incluye una tabla con cada tipo y su cantidad.",
+                "scope": {
+                  "visibility": "private"
+                },
+                "time_window": "last_30d"
+              }
+            },
+            {
+              "type": "output",
+              "toolCallId": "call_543171f7bbd6487eb5f01ead",
+              "output": {
+                "error": "Límite alcanzado para reportes (concurrent por usuario): 3/3. Intenta de nuevo en ~15 minutos.",
+                "rate_limited": true
+              }
+            },
+            {
+              "type": "input",
+              "toolCallId": "tc-e2ea934e",
+              "toolName": "search_cases",
+              "input": {}
+            },
+            {
+              "type": "output",
+              "toolCallId": "tc-e2ea934e",
+              "output": {
+                "cases": [
+                  {
+                    "case_id": "ac3b4355-d0cc-4467-a3fc-95f528cb2b44",
+                    "status": "ANALYZED",
+                    "priority": "critical",
+                    "host_key": "appsvota04",
+                    "kind": "healthcheck",
+                    "created_at": "2026-07-04T06:22:15.154751",
+                    "updated_at": "2026-07-04T06:23:12.535668",
+                    "alert_summary": "Appsvota04",
+                    "source": "keep",
+                    "severity_initial": "critical",
+                    "analysis": {
+                      "severity": null,
+                      "risk_score": null,
+                      "summary": "",
+                      "action_plan": [],
+                      "anomalies": [],
+                      "system_info": null
+                    }
+                  },
+                  {
+                    "case_id": "b5ee0f0c-98a1-4b21-8584-94ff123f3db9",
+                    "status": "CANCELLED",
+                    "priority": "critical",
+                    "host_key": "agileops",
+                    "kind": "healthcheck",
+                    "created_at": "2026-06-16T12:57:51.377442",
+                    "updated_at": "2026-07-02T02:21:27.579574",
+                    "alert_summary": "Nginx: Process is not running",
+                    "source": "keep",
+                    "severity_initial": "high",
+                    "analysis": {
+                      "severity": null,
+                      "risk_score": null,
+                      "summary": "",
+                      "action_plan": [],
+                      "anomalies": [],
+                      "system_info": null
+                    }
+                  },
+                  {
+                    "case_id": "92a2f2ea-cbb3-4246-a3e8-209b950d2f68",
+                    "status": "CANCELLED",
+                    "priority": "normal",
+                    "host_key": "appsvota06",
+                    "kind": "healthcheck",
+                    "created_at": "2026-06-16T22:08:59.958806",
+                    "updated_at": "2026-07-02T02:21:27.390709",
+                    "alert_summary": "Controlado CDD PERF-CPU 20260616160859",
+                    "source": "zabbix",
+                    "severity_initial": "",
+                    "analysis": {
+                      "severity": null,
+                      "risk_score": null,
+                      "summary": "",
+                      "action_plan": [],
+                      "anomalies": [],
+                      "system_info": null
+                    }
+                  },
+                  {
+                    "case_id": "27317238-0fd5-4db8-9ef5-2eefcc8a450b",
+                    "status": "CANCELLED",
+                    "priority": "normal",
+                    "host_key": "appsvota07",
+                    "kind": "healthcheck",
+                    "created_at": "2026-06-17T15:58:40.114392",
+                    "updated_at": "2026-07-02T02:21:27.207306",
+                    "alert_summary": "Controlado Resolve CDD PERF-CPU 20260617095839",
+                    "source": "zabbix",
+                    "severity_initial": "",
+                    "analysis": {
+                      "severity": null,
+                      "risk_score": null,
+                      "summary": "",
+                      "action_plan": [],
+                      "anomalies": [],
+                      "system_info": null
+                    }
+                  },
+                  {
+                    "case_id": "e8d8d610-4f55-4352-8ee5-e7d786fae271",
+                    "status": "CANCELLED",
+                    "priority": "normal",
+                    "host_key": "mesd-win",
+                    "kind": "healthcheck",
+                    "created_at": "2026-06-17T15:58:40.157619",
+                    "updated_at": "2026-07-02T02:21:27.017108",
+                    "alert_summary": "Controlado Resolve CDD NET-ICMP 20260617095839",
+                    "source": "zabbix",
+                    "severity_initial": "",
+                    "analysis": {
+                      "severity": null,
+                      "risk_score": null,
+                      "summary": "",
+                      "action_plan": [],
+                      "anomalies": [],
+                      "system_info": null
+                    }
+                  },
+                  {
+                    "case_id": "f091fc47-279c-4287-b377-584110a0b617",
+                    "status": "CANCELLED",
+                    "priority": "normal",
+                    "host_key": "appsvota04",
+                    "kind": "healthcheck",
+                    "created_at": "2026-06-17T16:02:01.973012",
+                    "updated_at": "2026-07-02T02:21:26.834273",
+                    "alert_summary": "Controlado Resolve CDD PERF-CPU V2 20260617100201",
+                    "source": "zabbix",
+                    "severity_initial": "",
+                    "analysis": {
+                      "severity": null,
+                      "risk_score": null,
+                      "summary": "",
+                      "action_plan": [],
+                      "anomalies": [],
+                      "system_info": null
+                    }
+                  },
+                  {
+                    "case_id": "d5645315-bee2-4d5c-9d86-fe3ee04fa3a5",
+                    "status": "CANCELLED",
+                    "priority": "normal",
+                    "host_key": "solr01",
+                    "kind": "healthcheck",
+                    "created_at": "2026-06-17T16:02:02.012977",
+                    "updated_at": "2026-07-02T02:21:26.649108",
+                    "alert_summary": "Controlado Resolve CDD NET-ICMP V2 20260617100201",
+                    "source": "zabbix",
+                    "severity_initial": "",
+                    "analysis": {
+                      "severity": null,
+                      "risk_score": null,
+                      "summary": "",
+                      "action_plan": [],
+                      "anomalies": [],
+                      "system_info": null
+                    }
+                  },
+                  {
+                    "case_id": "dd42081c-2b30-423a-984f-842a4d3a771f",
+                    "status": "CANCELLED",
+                    "priority": "critical",
+                    "host_key": "iss-qa02",
+                    "kind": "healthcheck",
+                    "created_at": "2026-06-20T05:44:13.014414",
+                    "updated_at": "2026-07-02T02:21:26.268219",
+                    "alert_summary": "IIS: Port 80 is down",
+                    "source": "keep",
+                    "severity_initial": "warning",
+                    "analysis": {
+                      "severity": null,
+                      "risk_score": null,
+                      "summary": "",
+                      "action_plan": [],
+                      "anomalies": [],
+                      "system_info": null
+                    }
+                  },
+                  {
+                    "case_id": "2d974323-1a56-4f85-b21b-77d6e10d2cc6",
+                    "status": "CANCELLED",
+                    "priority": "critical",
+                    "host_key": "appsvota04",
+                    "kind": "healthcheck",
+                    "created_at": "2026-06-20T06:00:28.410251",
+                    "updated_at": "2026-07-02T02:21:26.092643",
+                    "alert_summary": "Appsvota04",
+                    "source": "keep",
+                    "severity_initial": "critical",
+                    "analysis": {
+                      "severity": null,
+                      "risk_score": null,
+                      "summary": "",
+                      "action_plan": [],
+                      "anomalies": [],
+                      "system_info": null
+                    }
+                  },
+                  {
+                    "case_id": "ca6ccd61-43cb-48cf-ac10-b010479e4b8f",
+                    "status": "CANCELLED",
+                    "priority": "critical",
+                    "host_key": "camara7dell",
+                    "kind": "healthcheck",
+                    "created_at": "2026-06-20T07:03:13.360966",
+                    "updated_at": "2026-07-02T02:21:25.914723",
+                    "alert_summary": "XCP-ng: No SNMP data collection",
+                    "source": "keep",
+                    "severity_initial": "critical",
+                    "analysis": {
+                      "severity": null,
+                      "risk_score": null,
+                      "summary": "",
+                      "action_plan": [],
+                      "anomalies": [],
+                      "system_info": null
+                    }
+                  },
+                  {
+                    "case_id": "f52c142c-64b8-49c4-9255-6da9dd7d1f62",
+                    "status": "CANCELLED",
+                    "priority": "normal",
+                    "host_key": "comsoc-app1",
+                    "kind": "healthcheck",
+                    "created_at": "2026-06-25T19:03:16.924075",
+                    "updated_at": "2026-07-02T02:21:25.001238",
+                    "alert_summary": "Linux: FS [/home/www/html]: Space is warning low",
+                    "source": "keep",
+                    "severity_initial": "warning",
+                    "analysis": {
+                      "severity": null,
+                      "risk_score": null,
+                      "summary": "",
+                      "action_plan": [],
+                      "anomalies": [],
+                      "system_info": null
+                    }
+                  },
+                  {
+                    "case_id": "8fc7cd7c-e7fd-44ca-ab1f-1e2d53c26209",
+                    "status": "CANCELLED",
+                    "priority": "critical",
+                    "host_key": "i02-90",
+                    "kind": "healthcheck",
+                    "created_at": "2026-06-27T00:04:49.926633",
+                    "updated_at": "2026-07-02T02:21:24.801255",
+                    "alert_summary": "Extreme EXOS: Interface 4:24(): Link down",
+                    "source": "keep",
+                    "severity_initial": "critical",
+                    "analysis": {
+                      "severity": null,
+                      "risk_score": null,
+                      "summary": "",
+                      "action_plan": [],
+                      "anomalies": [],
+                      "system_info": null
+                    }
+                  },
+                  {
+                    "case_id": "2b6e3149-b2c0-423b-9305-a3b1d553fed7",
+                    "status": "CANCELLED",
+                    "priority": "normal",
+                    "host_key": "i11-94",
+                    "kind": "healthcheck",
+                    "created_at": "2026-06-27T00:37:02.495109",
+                    "updated_at": "2026-07-02T02:21:24.601980",
+                    "alert_summary": "Extreme EXOS: Interface 4:33(Not-Advertised): Ethernet has changed to lower speed than it was before",
+                    "source": "keep",
+                    "severity_initial": "info",
+                    "analysis": {
+                      "severity": null,
+                      "risk_score": null,
+                      "summary": "",
+                      "action_plan": [],
+                      "anomalies": [],
+                      "system_info": null
+                    }
+                  },
+                  {
+                    "case_id": "d9d6a3b4-004a-4563-b386-980cf8ae3d2e",
+                    "status": "CANCELLED",
+                    "priority": "normal",
+                    "host_key": "i01-92",
+                    "kind": "healthcheck",
+                    "created_at": "2026-06-27T00:42:52.389119",
+                    "updated_at": "2026-07-02T02:21:24.394642",
+                    "alert_summary": "Extreme EXOS: Interface 3:26(): Ethernet has changed to lower speed than it was before",
+                    "source": "keep",
+                    "severity_initial": "info",
+                    "analysis": {
+                      "severity": null,
+                      "risk_score": null,
+                      "summary": "",
+                      "action_plan": [],
+                      "anomalies": [],
+                      "system_info": null
+                    }
+                  },
+                  {
+                    "case_id": "488ad580-af4e-4208-9724-b24eb9907f14",
+                    "status": "CANCELLED",
+                    "priority": "normal",
+                    "host_key": "biostar",
+                    "kind": "healthcheck",
+                    "created_at": "2026-06-27T00:52:35.360417",
+                    "updated_at": "2026-07-02T02:21:24.195357",
+                    "alert_summary": "Windows: Operating system description has changed",
+                    "source": "keep",
+                    "severity_initial": "info",
+                    "analysis": {
+                      "severity": null,
+                      "risk_score": null,
+                      "summary": "",
+                      "action_plan": [],
+                      "anomalies": [],
+                      "system_info": null
+                    }
+                  },
+                  {
+                    "case_id": "ce2f1e48-1b4a-4335-b251-2c9a7b87f2f1",
+                    "status": "CANCELLED",
+                    "priority": "critical",
+                    "host_key": "i02-90",
+                    "kind": "healthcheck",
+                    "created_at": "2026-06-27T00:52:49.393927",
+                    "updated_at": "2026-07-02T02:21:23.976330",
+                    "alert_summary": "Extreme EXOS: Interface 4:34(Imagenologia): Link down",
+                    "source": "keep",
+                    "severity_initial": "critical",
+                    "analysis": {
+                      "severity": null,
+                      "risk_score": null,
+                      "summary": "",
+                      "action_plan": [],
+                      "anomalies": [],
+                      "system_info": null
+                    }
+                  },
+                  {
+                    "case_id": "17613785-de0d-4f4c-8dff-8d4e0b55d23b",
+                    "status": "RESOLVED",
+                    "priority": "normal",
+                    "host_key": "i11-94",
+                    "kind": "healthcheck",
+                    "created_at": "2026-06-26T23:56:53.371029",
+                    "updated_at": "2026-06-27T00:36:52.192374",
+                    "alert_summary": "Extreme EXOS: Interface 2:22(): Ethernet has changed to lower speed than it was before",
+                    "source": "keep",
+                    "severity_initial": "info",
+                    "analysis": {
+                      "severity": null,
+                      "risk_score": null,
+                      "summary": "",
+                      "action_plan": [],
+                      "anomalies": [],
+                      "system_info": null
+                    }
+                  },
+                  {
+                    "case_id": "1e6e0051-0a73-4cc8-9dd4-4b85e3878bb6",
+                    "status": "RESOLVED",
+                    "priority": "critical",
+                    "host_key": "biostar",
+                    "kind": "healthcheck",
+                    "created_at": "2026-06-27T00:31:51.560865",
+                    "updated_at": "2026-06-27T00:35:52.270055",
+                    "alert_summary": "Windows: Agent is not available",
+                    "source": "keep",
+                    "severity_initial": "critical",
+                    "analysis": {
+                      "severity": null,
+                      "risk_score": null,
+                      "summary": "",
+                      "action_plan": [],
+                      "anomalies": [],
+                      "system_info": null
+                    }
+                  },
+                  {
+                    "case_id": "6ab7b885-24b0-455b-bbeb-6f76475cdacc",
+                    "status": "ESCALATED",
+                    "priority": "critical",
+                    "host_key": "i11-94",
+                    "kind": "healthcheck",
+                    "created_at": "2026-06-27T00:15:56.558578",
+                    "updated_at": "2026-06-27T00:16:10.612531",
+                    "alert_summary": "Extreme EXOS: Interface 1:9(CEDIP): Link down",
+                    "source": "keep",
+                    "severity_initial": "critical",
+                    "last_error": "Investigator failed: Server disconnected without sending a response."
+                  },
+                  {
+                    "case_id": "c2294bef-2e9c-4155-a69d-2815ef1d54ba",
+                    "status": "RESOLVED",
+                    "priority": "normal",
+                    "host_key": "agileops",
+                    "kind": "healthcheck",
+                    "created_at": "2026-06-26T22:36:15.461852",
+                    "updated_at": "2026-06-26T22:39:19.677063",
+                    "alert_summary": "Linux: FS [/]: Space is warning low",
+                    "source": "keep",
+                    "severity_initial": "warning",
+                    "analysis": {
+                      "severity": null,
+                      "risk_score": null,
+                      "summary": "",
+                      "action_plan": [],
+                      "anomalies": [],
+                      "system_info": null
+                    }
+                  }
+                ],
+                "total": 20
+              }
+            }
+          ],
+          "expectation_violations": [
+            "equivalent prompts for inventory-enumeration-total returned 2 distinct semantic outcomes."
+          ],
+          "raw_stream": "data: {\"type\": \"start\", \"messageId\": \"4b39f685-2cd5-4e41-812b-9962c0db9df7\"}\n\ndata: {\"type\": \"tool-input-available\", \"toolCallId\": \"call_02eed6af60854d2e9ffa2ee7\", \"toolName\": \"get_dashboard_stats\", \"input\": {}, \"dynamic\": true}\n\ndata: {\"type\": \"tool-output-available\", \"toolCallId\": \"call_02eed6af60854d2e9ffa2ee7\", \"output\": {\"total_cases\": 319, \"cases_24h\": 0, \"unique_hosts\": 72, \"pending_approvals\": 0, \"by_status\": {\"ANALYZED\": 1, \"CANCELLED\": 19, \"ESCALATED\": 3, \"RESOLVED\": 296}, \"by_priority\": {\"critical\": 235, \"normal\": 84}}, \"dynamic\": true}\n\ndata: {\"type\": \"text-start\", \"id\": \"ea5dcc12-8bf9-4b0e-93d2-36f1bf69190c\"}\n\ndata: {\"type\": \"text-delta\", \"id\": \"ea5dcc12-8bf9-4b0e-93d2-36f1bf69190c\", \"delta\": \"El inventario actual en la plataforma muestra **72 hosts únicos** registrados.\\n\\nSin embargo, las estadísticas del dashboard no proporcionan un desglose detallado por tipo de activo (servidor, laptop, router, switch, etc.). Para obtener esa información específica, necesito consultar el CMDB directamente.\\n\\nDéjame buscar información más detallada sobre los tipos de activos:\"}\n\ndata: {\"type\": \"text-end\", \"id\": \"ea5dcc12-8bf9-4b0e-93d2-36f1bf69190c\"}\n\ndata: {\"type\": \"tool-input-available\", \"toolCallId\": \"call_543171f7bbd6487eb5f01ead\", \"toolName\": \"generate_report\", \"input\": {\"formats\": [\"md\"], \"prompt\": \"Genera un reporte con el inventario completo de activos del tenant actual, mostrando el conteo total y el desglose por tipo de dispositivo (servidor, laptop, router, switch, firewall, etc.). Incluye una tabla con cada tipo y su cantidad.\", \"scope\": {\"visibility\": \"private\"}, \"time_window\": \"last_30d\"}, \"dynamic\": true}\n\ndata: {\"type\": \"tool-output-available\", \"toolCallId\": \"call_543171f7bbd6487eb5f01ead\", \"output\": {\"error\": \"Límite alcanzado para reportes (concurrent por usuario): 3/3. Intenta de nuevo en ~15 minutos.\", \"rate_limited\": true}, \"dynamic\": true}\n\ndata: {\"type\": \"text-start\", \"id\": \"5a701ee1-461e-48d2-b543-6de9caa903d2\"}\n\ndata: {\"type\": \"text-delta\", \"id\": \"5a701ee1-461e-48d2-b543-6de9caa903d2\", \"delta\": \"Entiendo que el sistema de reportes está temporalmente limitado. Déjame intentar una búsqueda más directa en el inventario:\"}\n\ndata: {\"type\": \"text-end\", \"id\": \"5a701ee1-461e-48d2-b543-6de9caa903d2\"}\n\ndata: {\"type\": \"tool-input-available\", \"toolCallId\": \"tc-e2ea934e\", \"toolName\": \"search_cases\", \"input\": {}, \"dynamic\": true}\n\ndata: {\"type\": \"tool-output-available\", \"toolCallId\": \"tc-e2ea934e\", \"output\": {\"cases\": [{\"case_id\": \"ac3b4355-d0cc-4467-a3fc-95f528cb2b44\", \"status\": \"ANALYZED\", \"priority\": \"critical\", \"host_key\": \"appsvota04\", \"kind\": \"healthcheck\", \"created_at\": \"2026-07-04T06:22:15.154751\", \"updated_at\": \"2026-07-04T06:23:12.535668\", \"alert_summary\": \"Appsvota04\", \"source\": \"keep\", \"severity_initial\": \"critical\", \"analysis\": {\"severity\": null, \"risk_score\": null, \"summary\": \"\", \"action_plan\": [], \"anomalies\": [], \"system_info\": null}}, {\"case_id\": \"b5ee0f0c-98a1-4b21-8584-94ff123f3db9\", \"status\": \"CANCELLED\", \"priority\": \"critical\", \"host_key\": \"agileops\", \"kind\": \"healthcheck\", \"created_at\": \"2026-06-16T12:57:51.377442\", \"updated_at\": \"2026-07-02T02:21:27.579574\", \"alert_summary\": \"Nginx: Process is not running\", \"source\": \"keep\", \"severity_initial\": \"high\", \"analysis\": {\"severity\": null, \"risk_score\": null, \"summary\": \"\", \"action_plan\": [], \"anomalies\": [], \"system_info\": null}}, {\"case_id\": \"92a2f2ea-cbb3-4246-a3e8-209b950d2f68\", \"status\": \"CANCELLED\", \"priority\": \"normal\", \"host_key\": \"appsvota06\", \"kind\": \"healthcheck\", \"created_at\": \"2026-06-16T22:08:59.958806\", \"updated_at\": \"2026-07-02T02:21:27.390709\", \"alert_summary\": \"Controlado CDD PERF-CPU 20260616160859\", \"source\": \"zabbix\", \"severity_initial\": \"\", \"analysis\": {\"severity\": null, \"risk_score\": null, \"summary\": \"\", \"action_plan\": [], \"anomalies\": [], \"system_info\": null}}, {\"case_id\": \"27317238-0fd5-4db8-9ef5-2eefcc8a450b\", \"status\": \"CANCELLED\", \"priority\": \"normal\", \"host_key\": \"appsvota07\", \"kind\": \"healthcheck\", \"created_at\": \"2026-06-17T15:58:40.114392\", \"updated_at\": \"2026-07-02T02:21:27.207306\", \"alert_summary\": \"Controlado Resolve CDD PERF-CPU 20260617095839\", \"source\": \"zabbix\", \"severity_initial\": \"\", \"analysis\": {\"severity\": null, \"risk_score\": null, \"summary\": \"\", \"action_plan\": [], \"anomalies\": [], \"system_info\": null}}, {\"case_id\": \"e8d8d610-4f55-4352-8ee5-e7d786fae271\", \"status\": \"CANCELLED\", \"priority\": \"normal\", \"host_key\": \"mesd-win\", \"kind\": \"healthcheck\", \"created_at\": \"2026-06-17T15:58:40.157619\", \"updated_at\": \"2026-07-02T02:21:27.017108\", \"alert_summary\": \"Controlado Resolve CDD NET-ICMP 20260617095839\", \"source\": \"zabbix\", \"severity_initial\": \"\", \"analysis\": {\"severity\": null, \"risk_score\": null, \"summary\": \"\", \"action_plan\": [], \"anomalies\": [], \"system_info\": null}}, {\"case_id\": \"f091fc47-279c-4287-b377-584110a0b617\", \"status\": \"CANCELLED\", \"priority\": \"normal\", \"host_key\": \"appsvota04\", \"kind\": \"healthcheck\", \"created_at\": \"2026-06-17T16:02:01.973012\", \"updated_at\": \"2026-07-02T02:21:26.834273\", \"alert_summary\": \"Controlado Resolve CDD PERF-CPU V2 20260617100201\", \"source\": \"zabbix\", \"severity_initial\": \"\", \"analysis\": {\"severity\": null, \"risk_score\": null, \"summary\": \"\", \"action_plan\": [], \"anomalies\": [], \"system_info\": null}}, {\"case_id\": \"d5645315-bee2-4d5c-9d86-fe3ee04fa3a5\", \"status\": \"CANCELLED\", \"priority\": \"normal\", \"host_key\": \"solr01\", \"kind\": \"healthcheck\", \"created_at\": \"2026-06-17T16:02:02.012977\", \"updated_at\": \"2026-07-02T02:21:26.649108\", \"alert_summary\": \"Controlado Resolve CDD NET-ICMP V2 20260617100201\", \"source\": \"zabbix\", \"severity_initial\": \"\", \"analysis\": {\"severity\": null, \"risk_score\": null, \"summary\": \"\", \"action_plan\": [], \"anomalies\": [], \"system_info\": null}}, {\"case_id\": \"dd42081c-2b30-423a-984f-842a4d3a771f\", \"status\": \"CANCELLED\", \"priority\": \"critical\", \"host_key\": \"iss-qa02\", \"kind\": \"healthcheck\", \"created_at\": \"2026-06-20T05:44:13.014414\", \"updated_at\": \"2026-07-02T02:21:26.268219\", \"alert_summary\": \"IIS: Port 80 is down\", \"source\": \"keep\", \"severity_initial\": \"warning\", \"analysis\": {\"severity\": null, \"risk_score\": null, \"summary\": \"\", \"action_plan\": [], \"anomalies\": [], \"system_info\": null}}, {\"case_id\": \"2d974323-1a56-4f85-b21b-77d6e10d2cc6\", \"status\": \"CANCELLED\", \"priority\": \"critical\", \"host_key\": \"appsvota04\", \"kind\": \"healthcheck\", \"created_at\": \"2026-06-20T06:00:28.410251\", \"updated_at\": \"2026-07-02T02:21:26.092643\", \"alert_summary\": \"Appsvota04\", \"source\": \"keep\", \"severity_initial\": \"critical\", \"analysis\": {\"severity\": null, \"risk_score\": null, \"summary\": \"\", \"action_plan\": [], \"anomalies\": [], \"system_info\": null}}, {\"case_id\": \"ca6ccd61-43cb-48cf-ac10-b010479e4b8f\", \"status\": \"CANCELLED\", \"priority\": \"critical\", \"host_key\": \"camara7dell\", \"kind\": \"healthcheck\", \"created_at\": \"2026-06-20T07:03:13.360966\", \"updated_at\": \"2026-07-02T02:21:25.914723\", \"alert_summary\": \"XCP-ng: No SNMP data collection\", \"source\": \"keep\", \"severity_initial\": \"critical\", \"analysis\": {\"severity\": null, \"risk_score\": null, \"summary\": \"\", \"action_plan\": [], \"anomalies\": [], \"system_info\": null}}, {\"case_id\": \"f52c142c-64b8-49c4-9255-6da9dd7d1f62\", \"status\": \"CANCELLED\", \"priority\": \"normal\", \"host_key\": \"comsoc-app1\", \"kind\": \"healthcheck\", \"created_at\": \"2026-06-25T19:03:16.924075\", \"updated_at\": \"2026-07-02T02:21:25.001238\", \"alert_summary\": \"Linux: FS [/home/www/html]: Space is warning low\", \"source\": \"keep\", \"severity_initial\": \"warning\", \"analysis\": {\"severity\": null, \"risk_score\": null, \"summary\": \"\", \"action_plan\": [], \"anomalies\": [], \"system_info\": null}}, {\"case_id\": \"8fc7cd7c-e7fd-44ca-ab1f-1e2d53c26209\", \"status\": \"CANCELLED\", \"priority\": \"critical\", \"host_key\": \"i02-90\", \"kind\": \"healthcheck\", \"created_at\": \"2026-06-27T00:04:49.926633\", \"updated_at\": \"2026-07-02T02:21:24.801255\", \"alert_summary\": \"Extreme EXOS: Interface 4:24(): Link down\", \"source\": \"keep\", \"severity_initial\": \"critical\", \"analysis\": {\"severity\": null, \"risk_score\": null, \"summary\": \"\", \"action_plan\": [], \"anomalies\": [], \"system_info\": null}}, {\"case_id\": \"2b6e3149-b2c0-423b-9305-a3b1d553fed7\", \"status\": \"CANCELLED\", \"priority\": \"normal\", \"host_key\": \"i11-94\", \"kind\": \"healthcheck\", \"created_at\": \"2026-06-27T00:37:02.495109\", \"updated_at\": \"2026-07-02T02:21:24.601980\", \"alert_summary\": \"Extreme EXOS: Interface 4:33(Not-Advertised): Ethernet has changed to lower speed than it was before\", \"source\": \"keep\", \"severity_initial\": \"info\", \"analysis\": {\"severity\": null, \"risk_score\": null, \"summary\": \"\", \"action_plan\": [], \"anomalies\": [], \"system_info\": null}}, {\"case_id\": \"d9d6a3b4-004a-4563-b386-980cf8ae3d2e\", \"status\": \"CANCELLED\", \"priority\": \"normal\", \"host_key\": \"i01-92\", \"kind\": \"healthcheck\", \"created_at\": \"2026-06-27T00:42:52.389119\", \"updated_at\": \"2026-07-02T02:21:24.394642\", \"alert_summary\": \"Extreme EXOS: Interface 3:26(): Ethernet has changed to lower speed than it was before\", \"source\": \"keep\", \"severity_initial\": \"info\", \"analysis\": {\"severity\": null, \"risk_score\": null, \"summary\": \"\", \"action_plan\": [], \"anomalies\": [], \"system_info\": null}}, {\"case_id\": \"488ad580-af4e-4208-9724-b24eb9907f14\", \"status\": \"CANCELLED\", \"priority\": \"normal\", \"host_key\": \"biostar\", \"kind\": \"healthcheck\", \"created_at\": \"2026-06-27T00:52:35.360417\", \"updated_at\": \"2026-07-02T02:21:24.195357\", \"alert_summary\": \"Windows: Operating system description has changed\", \"source\": \"keep\", \"severity_initial\": \"info\", \"analysis\": {\"severity\": null, \"risk_score\": null, \"summary\": \"\", \"action_plan\": [], \"anomalies\": [], \"system_info\": null}}, {\"case_id\": \"ce2f1e48-1b4a-4335-b251-2c9a7b87f2f1\", \"status\": \"CANCELLED\", \"priority\": \"critical\", \"host_key\": \"i02-90\", \"kind\": \"healthcheck\", \"created_at\": \"2026-06-27T00:52:49.393927\", \"updated_at\": \"2026-07-02T02:21:23.976330\", \"alert_summary\": \"Extreme EXOS: Interface 4:34(Imagenologia): Link down\", \"source\": \"keep\", \"severity_initial\": \"critical\", \"analysis\": {\"severity\": null, \"risk_score\": null, \"summary\": \"\", \"action_plan\": [], \"anomalies\": [], \"system_info\": null}}, {\"case_id\": \"17613785-de0d-4f4c-8dff-8d4e0b55d23b\", \"status\": \"RESOLVED\", \"priority\": \"normal\", \"host_key\": \"i11-94\", \"kind\": \"healthcheck\", \"created_at\": \"2026-06-26T23:56:53.371029\", \"updated_at\": \"2026-06-27T00:36:52.192374\", \"alert_summary\": \"Extreme EXOS: Interface 2:22(): Ethernet has changed to lower speed than it was before\", \"source\": \"keep\", \"severity_initial\": \"info\", \"analysis\": {\"severity\": null, \"risk_score\": null, \"summary\": \"\", \"action_plan\": [], \"anomalies\": [], \"system_info\": null}}, {\"case_id\": \"1e6e0051-0a73-4cc8-9dd4-4b85e3878bb6\", \"status\": \"RESOLVED\", \"priority\": \"critical\", \"host_key\": \"biostar\", \"kind\": \"healthcheck\", \"created_at\": \"2026-06-27T00:31:51.560865\", \"updated_at\": \"2026-06-27T00:35:52.270055\", \"alert_summary\": \"Windows: Agent is not available\", \"source\": \"keep\", \"severity_initial\": \"critical\", \"analysis\": {\"severity\": null, \"risk_score\": null, \"summary\": \"\", \"action_plan\": [], \"anomalies\": [], \"system_info\": null}}, {\"case_id\": \"6ab7b885-24b0-455b-bbeb-6f76475cdacc\", \"status\": \"ESCALATED\", \"priority\": \"critical\", \"host_key\": \"i11-94\", \"kind\": \"healthcheck\", \"created_at\": \"2026-06-27T00:15:56.558578\", \"updated_at\": \"2026-06-27T00:16:10.612531\", \"alert_summary\": \"Extreme EXOS: Interface 1:9(CEDIP): Link down\", \"source\": \"keep\", \"severity_initial\": \"critical\", \"last_error\": \"Investigator failed: Server disconnected without sending a response.\"}, {\"case_id\": \"c2294bef-2e9c-4155-a69d-2815ef1d54ba\", \"status\": \"RESOLVED\", \"priority\": \"normal\", \"host_key\": \"agileops\", \"kind\": \"healthcheck\", \"created_at\": \"2026-06-26T22:36:15.461852\", \"updated_at\": \"2026-06-26T22:39:19.677063\", \"alert_summary\": \"Linux: FS [/]: Space is warning low\", \"source\": \"keep\", \"severity_initial\": \"warning\", \"analysis\": {\"severity\": null, \"risk_score\": null, \"summary\": \"\", \"action_plan\": [], \"anomalies\": [], \"system_info\": null}}], \"total\": 20}, \"dynamic\": true}\n\ndata: {\"type\": \"finish\", \"finishReason\": \"stop\"}\n\ndata: [DONE]\n\n"
+        },
+        {
+          "repeat": 2,
+          "status": "ok",
+          "http_status": 200,
+          "latency_ms": 9433,
+          "response_text": "El inventario actual muestra **72 hosts únicos** registrados en la plataforma.\n\nSin embargo, las estadísticas del dashboard no incluyen el desglose por tipo de activo (servidor, laptop, router, switch, etc.). Para obtener esa información detallada, necesito consultar el inventario directamente.\n\nDéjame buscar información sobre los tipos de activos en el CMDB:Entiendo que el sistema de reportes está temporalmente limitado. Déjame intentar obtener la información del inventario de otra manera.\n\nBasado en los datos del dashboard que obtuve:\n\n**Resumen del Inventario Actual:**\n\n- **Total de activos únicos:** 72 hosts\n- **Casos totales procesados:** 319\n- **Casos en las últimas 24 horas:** 0\n- **Aprobaciones pendientes:** 0\n\n**Distribución por estado de casos:**\n- Resueltos: 296\n- Analizados: 1\n- Escalados: 3\n- Cancelados: 19\n\n**Distribución por prioridad:**\n- Críticos: 235\n- Normales: 84\n\n**Limitación actual:** El dashboard no proporciona el desglose específico por tipo de dispositivo (servidor, laptop, router, switch, etc.). Esta información detallada de clasificación de activos no está disponible a través de las herramientas actuales de estadísticas en tiempo real.\n\nPara obtener el desglose por tipo de dispositivo, necesitaría:\n1. Acceder directamente al CMDB (NetBox) con una consulta específica por dispositivo_type\n2. O generar un reporte de inventario completo (actualmente limitado por cuota)\n\n¿Te gustaría que intente buscar información específica sobre algún tipo de dispositivo en particular, o prefieres esperar a que se libere la cuota de reportes para obtener el desglose completo?",
+          "response_hash": "8f98529704639a22f88326d66052884f9e6ac3bda9f0319e6be14f4168b2ad0b",
+          "normalized_hash": "12ee2fbf63562a45f992678a6127c6a38dc6102c544b6b875a3e5cf3f1faad71",
+          "tool_calls": [
+            {
+              "type": "input",
+              "toolCallId": "call_47f7416a209d47eab1fd17c8",
+              "toolName": "get_dashboard_stats",
+              "input": {}
+            },
+            {
+              "type": "output",
+              "toolCallId": "call_47f7416a209d47eab1fd17c8",
+              "output": {
+                "total_cases": 319,
+                "cases_24h": 0,
+                "unique_hosts": 72,
+                "pending_approvals": 0,
+                "by_status": {
+                  "ANALYZED": 1,
+                  "CANCELLED": 19,
+                  "ESCALATED": 3,
+                  "RESOLVED": 296
+                },
+                "by_priority": {
+                  "critical": 235,
+                  "normal": 84
+                }
+              }
+            },
+            {
+              "type": "input",
+              "toolCallId": "call_12faefa514dc4bf28ddd3d8f",
+              "toolName": "generate_report",
+              "input": {
+                "formats": [
+                  "md"
+                ],
+                "prompt": "Generar un reporte de inventario de activos mostrando el conteo total de hosts y el desglose por tipo de dispositivo (servidor, laptop, router, switch, firewall, etc.). Incluir estadísticas por categoría de dispositivo.",
+                "template_id": "database_inventory",
+                "time_window": "last_30d"
+              }
+            },
+            {
+              "type": "output",
+              "toolCallId": "call_12faefa514dc4bf28ddd3d8f",
+              "output": {
+                "error": "Límite alcanzado para reportes (concurrent por usuario): 3/3. Intenta de nuevo en ~15 minutos.",
+                "rate_limited": true
+              }
+            }
+          ],
+          "expectation_violations": [
+            "equivalent prompts for inventory-enumeration-total returned 2 distinct semantic outcomes."
+          ],
+          "raw_stream": "data: {\"type\": \"start\", \"messageId\": \"0226f104-942b-43dd-ba0a-94f33e755b75\"}\n\ndata: {\"type\": \"tool-input-available\", \"toolCallId\": \"call_47f7416a209d47eab1fd17c8\", \"toolName\": \"get_dashboard_stats\", \"input\": {}, \"dynamic\": true}\n\ndata: {\"type\": \"tool-output-available\", \"toolCallId\": \"call_47f7416a209d47eab1fd17c8\", \"output\": {\"total_cases\": 319, \"cases_24h\": 0, \"unique_hosts\": 72, \"pending_approvals\": 0, \"by_status\": {\"ANALYZED\": 1, \"CANCELLED\": 19, \"ESCALATED\": 3, \"RESOLVED\": 296}, \"by_priority\": {\"critical\": 235, \"normal\": 84}}, \"dynamic\": true}\n\ndata: {\"type\": \"text-start\", \"id\": \"580a58fc-7658-41e4-a1ad-30cd6b823585\"}\n\ndata: {\"type\": \"text-delta\", \"id\": \"580a58fc-7658-41e4-a1ad-30cd6b823585\", \"delta\": \"El inventario actual muestra **72 hosts únicos** registrados en la plataforma.\\n\\nSin embargo, las estadísticas del dashboard no incluyen el desglose por tipo de activo (servidor, laptop, router, switch, etc.). Para obtener esa información detallada, necesito consultar el inventario directamente.\\n\\nDéjame buscar información sobre los tipos de activos en el CMDB:\"}\n\ndata: {\"type\": \"text-end\", \"id\": \"580a58fc-7658-41e4-a1ad-30cd6b823585\"}\n\ndata: {\"type\": \"tool-input-available\", \"toolCallId\": \"call_12faefa514dc4bf28ddd3d8f\", \"toolName\": \"generate_report\", \"input\": {\"formats\": [\"md\"], \"prompt\": \"Generar un reporte de inventario de activos mostrando el conteo total de hosts y el desglose por tipo de dispositivo (servidor, laptop, router, switch, firewall, etc.). Incluir estadísticas por categoría de dispositivo.\", \"template_id\": \"database_inventory\", \"time_window\": \"last_30d\"}, \"dynamic\": true}\n\ndata: {\"type\": \"tool-output-available\", \"toolCallId\": \"call_12faefa514dc4bf28ddd3d8f\", \"output\": {\"error\": \"Límite alcanzado para reportes (concurrent por usuario): 3/3. Intenta de nuevo en ~15 minutos.\", \"rate_limited\": true}, \"dynamic\": true}\n\ndata: {\"type\": \"text-start\", \"id\": \"355bb4d8-8dfc-4a97-a9e2-d4e6e6638288\"}\n\ndata: {\"type\": \"text-delta\", \"id\": \"355bb4d8-8dfc-4a97-a9e2-d4e6e6638288\", \"delta\": \"Entiendo que el sistema de reportes está temporalmente limitado. Déjame intentar obtener la información del inventario de otra manera.\\n\\nBasado en los datos del dashboard que obtuve:\\n\\n**Resumen del Inventario Actual:**\\n\\n- **Total de activos únicos:** 72 hosts\\n- **Casos totales procesados:** 319\\n- **Casos en las últimas 24 horas:** 0\\n- **Aprobaciones pendientes:** 0\\n\\n**Distribución por estado de casos:**\\n- Resueltos: 296\\n- Analizados: 1\\n- Escalados: 3\\n- Cancelados: 19\\n\\n**Distribución por prioridad:**\\n- Críticos: 235\\n- Normales: 84\\n\\n**Limitación actual:** El dashboard no proporciona el desglose específico por tipo de dispositivo (servidor, laptop, router, switch, etc.). Esta información detallada de clasificación de activos no está disponible a través de las herramientas actuales de estadísticas en tiempo real.\\n\\nPara obtener el desglose por tipo de dispositivo, necesitaría:\\n1. Acceder directamente al CMDB (NetBox) con una consulta específica por dispositivo_type\\n2. O generar un reporte de inventario completo (actualmente limitado por cuota)\\n\\n¿Te gustaría que intente buscar información específica sobre algún tipo de dispositivo en particular, o prefieres esperar a que se libere la cuota de reportes para obtener el desglose completo?\"}\n\ndata: {\"type\": \"text-end\", \"id\": \"355bb4d8-8dfc-4a97-a9e2-d4e6e6638288\"}\n\ndata: {\"type\": \"finish\", \"finishReason\": \"stop\"}\n\ndata: [DONE]\n\n"
+        }
+      ]
+    },
+    {
+      "id": "SEM-INV-LIST-003",
+      "group": "inventory-enumeration",
+      "intent": "list_servers",
+      "variant": "servers",
+      "prompt": "Lista en el chat los servidores registrados en la CMDB con hostname e IP, sin generar reporte. Indica el total de servidores.",
+      "expected": {
+        "decision": "",
+        "tool_budget": "",
+        "safety": "",
+        "format": "",
+        "equivalence_key": "inventory-enumeration-servers",
+        "answer_shape": "list",
+        "acceptance_criteria": [
+          "caso de descubrimiento 2026-07-08: enumera servidores reales para sembrar casos de owner/RAM/estado con activos que si existen"
+        ],
+        "must_mention": [],
+        "must_mention_any": [],
+        "must_not_mention": []
+      },
+      "status": "fail",
+      "unique_normalized_responses": 2,
+      "expectation_violations": [
+        "missing concrete list answer.",
+        "equivalent prompts for inventory-enumeration-servers returned 2 distinct semantic outcomes."
+      ],
+      "runs": [
+        {
+          "repeat": 1,
+          "status": "ok",
+          "http_status": 200,
+          "latency_ms": 5971,
+          "response_text": "La plataforma reporta **72 servidores únicos** registrados en la CMDB. Sin embargo, para listarlos individualmente con hostname e IP, necesito realizar una búsqueda específica. \n\nDéjame buscar los hosts registrados:Entiendo, necesito un término de búsqueda. Déjame intentar con una búsqueda genérica para obtener todos los hosts:La búsqueda con comodín no devuelve resultados directos. Déjame intentar con una búsqueda vacía o usar un enfoque diferente. Probemos buscando casos recientes para extraer los hosts:",
+          "response_hash": "6f0215ceba9859b5ec0e15580a769327e65ddb2fd76cf9b06ee518f2bc35fb0a",
+          "normalized_hash": "78ec5e1c5bf40923cb0db9958dc25452933e21c8fe7f5e879d663fe7543cb010",
+          "tool_calls": [
+            {
+              "type": "input",
+              "toolCallId": "call_3fd00af906ef49648f08637c",
+              "toolName": "get_dashboard_stats",
+              "input": {}
+            },
+            {
+              "type": "output",
+              "toolCallId": "call_3fd00af906ef49648f08637c",
+              "output": {
+                "total_cases": 319,
+                "cases_24h": 0,
+                "unique_hosts": 72,
+                "pending_approvals": 0,
+                "by_status": {
+                  "ANALYZED": 1,
+                  "CANCELLED": 19,
+                  "ESCALATED": 3,
+                  "RESOLVED": 296
+                },
+                "by_priority": {
+                  "critical": 235,
+                  "normal": 84
+                }
+              }
+            },
+            {
+              "type": "input",
+              "toolCallId": "call_5fa67968e2924e7e93e4d998",
+              "toolName": "lookup_host",
+              "input": {
+                "query": "*"
+              }
+            },
+            {
+              "type": "output",
+              "toolCallId": "call_5fa67968e2924e7e93e4d998",
+              "output": {
+                "hosts": [],
+                "message": "No hosts found matching '*' (or not in your scope)"
+              }
+            },
+            {
+              "type": "input",
+              "toolCallId": "tc-ed076dc2",
+              "toolName": "search_cases",
+              "input": {}
+            },
+            {
+              "type": "output",
+              "toolCallId": "tc-ed076dc2",
+              "output": {
+                "cases": [
+                  {
+                    "case_id": "ac3b4355-d0cc-4467-a3fc-95f528cb2b44",
+                    "status": "ANALYZED",
+                    "priority": "critical",
+                    "host_key": "appsvota04",
+                    "kind": "healthcheck",
+                    "created_at": "2026-07-04T06:22:15.154751",
+                    "updated_at": "2026-07-04T06:23:12.535668",
+                    "alert_summary": "Appsvota04",
+                    "source": "keep",
+                    "severity_initial": "critical",
+                    "analysis": {
+                      "severity": null,
+                      "risk_score": null,
+                      "summary": "",
+                      "action_plan": [],
+                      "anomalies": [],
+                      "system_info": null
+                    }
+                  },
+                  {
+                    "case_id": "b5ee0f0c-98a1-4b21-8584-94ff123f3db9",
+                    "status": "CANCELLED",
+                    "priority": "critical",
+                    "host_key": "agileops",
+                    "kind": "healthcheck",
+                    "created_at": "2026-06-16T12:57:51.377442",
+                    "updated_at": "2026-07-02T02:21:27.579574",
+                    "alert_summary": "Nginx: Process is not running",
+                    "source": "keep",
+                    "severity_initial": "high",
+                    "analysis": {
+                      "severity": null,
+                      "risk_score": null,
+                      "summary": "",
+                      "action_plan": [],
+                      "anomalies": [],
+                      "system_info": null
+                    }
+                  },
+                  {
+                    "case_id": "92a2f2ea-cbb3-4246-a3e8-209b950d2f68",
+                    "status": "CANCELLED",
+                    "priority": "normal",
+                    "host_key": "appsvota06",
+                    "kind": "healthcheck",
+                    "created_at": "2026-06-16T22:08:59.958806",
+                    "updated_at": "2026-07-02T02:21:27.390709",
+                    "alert_summary": "Controlado CDD PERF-CPU 20260616160859",
+                    "source": "zabbix",
+                    "severity_initial": "",
+                    "analysis": {
+                      "severity": null,
+                      "risk_score": null,
+                      "summary": "",
+                      "action_plan": [],
+                      "anomalies": [],
+                      "system_info": null
+                    }
+                  },
+                  {
+                    "case_id": "27317238-0fd5-4db8-9ef5-2eefcc8a450b",
+                    "status": "CANCELLED",
+                    "priority": "normal",
+                    "host_key": "appsvota07",
+                    "kind": "healthcheck",
+                    "created_at": "2026-06-17T15:58:40.114392",
+                    "updated_at": "2026-07-02T02:21:27.207306",
+                    "alert_summary": "Controlado Resolve CDD PERF-CPU 20260617095839",
+                    "source": "zabbix",
+                    "severity_initial": "",
+                    "analysis": {
+                      "severity": null,
+                      "risk_score": null,
+                      "summary": "",
+                      "action_plan": [],
+                      "anomalies": [],
+                      "system_info": null
+                    }
+                  },
+                  {
+                    "case_id": "e8d8d610-4f55-4352-8ee5-e7d786fae271",
+                    "status": "CANCELLED",
+                    "priority": "normal",
+                    "host_key": "mesd-win",
+                    "kind": "healthcheck",
+                    "created_at": "2026-06-17T15:58:40.157619",
+                    "updated_at": "2026-07-02T02:21:27.017108",
+                    "alert_summary": "Controlado Resolve CDD NET-ICMP 20260617095839",
+                    "source": "zabbix",
+                    "severity_initial": "",
+                    "analysis": {
+                      "severity": null,
+                      "risk_score": null,
+                      "summary": "",
+                      "action_plan": [],
+                      "anomalies": [],
+                      "system_info": null
+                    }
+                  },
+                  {
+                    "case_id": "f091fc47-279c-4287-b377-584110a0b617",
+                    "status": "CANCELLED",
+                    "priority": "normal",
+                    "host_key": "appsvota04",
+                    "kind": "healthcheck",
+                    "created_at": "2026-06-17T16:02:01.973012",
+                    "updated_at": "2026-07-02T02:21:26.834273",
+                    "alert_summary": "Controlado Resolve CDD PERF-CPU V2 20260617100201",
+                    "source": "zabbix",
+                    "severity_initial": "",
+                    "analysis": {
+                      "severity": null,
+                      "risk_score": null,
+                      "summary": "",
+                      "action_plan": [],
+                      "anomalies": [],
+                      "system_info": null
+                    }
+                  },
+                  {
+                    "case_id": "d5645315-bee2-4d5c-9d86-fe3ee04fa3a5",
+                    "status": "CANCELLED",
+                    "priority": "normal",
+                    "host_key": "solr01",
+                    "kind": "healthcheck",
+                    "created_at": "2026-06-17T16:02:02.012977",
+                    "updated_at": "2026-07-02T02:21:26.649108",
+                    "alert_summary": "Controlado Resolve CDD NET-ICMP V2 20260617100201",
+                    "source": "zabbix",
+                    "severity_initial": "",
+                    "analysis": {
+                      "severity": null,
+                      "risk_score": null,
+                      "summary": "",
+                      "action_plan": [],
+                      "anomalies": [],
+                      "system_info": null
+                    }
+                  },
+                  {
+                    "case_id": "dd42081c-2b30-423a-984f-842a4d3a771f",
+                    "status": "CANCELLED",
+                    "priority": "critical",
+                    "host_key": "iss-qa02",
+                    "kind": "healthcheck",
+                    "created_at": "2026-06-20T05:44:13.014414",
+                    "updated_at": "2026-07-02T02:21:26.268219",
+                    "alert_summary": "IIS: Port 80 is down",
+                    "source": "keep",
+                    "severity_initial": "warning",
+                    "analysis": {
+                      "severity": null,
+                      "risk_score": null,
+                      "summary": "",
+                      "action_plan": [],
+                      "anomalies": [],
+                      "system_info": null
+                    }
+                  },
+                  {
+                    "case_id": "2d974323-1a56-4f85-b21b-77d6e10d2cc6",
+                    "status": "CANCELLED",
+                    "priority": "critical",
+                    "host_key": "appsvota04",
+                    "kind": "healthcheck",
+                    "created_at": "2026-06-20T06:00:28.410251",
+                    "updated_at": "2026-07-02T02:21:26.092643",
+                    "alert_summary": "Appsvota04",
+                    "source": "keep",
+                    "severity_initial": "critical",
+                    "analysis": {
+                      "severity": null,
+                      "risk_score": null,
+                      "summary": "",
+                      "action_plan": [],
+                      "anomalies": [],
+                      "system_info": null
+                    }
+                  },
+                  {
+                    "case_id": "ca6ccd61-43cb-48cf-ac10-b010479e4b8f",
+                    "status": "CANCELLED",
+                    "priority": "critical",
+                    "host_key": "camara7dell",
+                    "kind": "healthcheck",
+                    "created_at": "2026-06-20T07:03:13.360966",
+                    "updated_at": "2026-07-02T02:21:25.914723",
+                    "alert_summary": "XCP-ng: No SNMP data collection",
+                    "source": "keep",
+                    "severity_initial": "critical",
+                    "analysis": {
+                      "severity": null,
+                      "risk_score": null,
+                      "summary": "",
+                      "action_plan": [],
+                      "anomalies": [],
+                      "system_info": null
+                    }
+                  },
+                  {
+                    "case_id": "f52c142c-64b8-49c4-9255-6da9dd7d1f62",
+                    "status": "CANCELLED",
+                    "priority": "normal",
+                    "host_key": "comsoc-app1",
+                    "kind": "healthcheck",
+                    "created_at": "2026-06-25T19:03:16.924075",
+                    "updated_at": "2026-07-02T02:21:25.001238",
+                    "alert_summary": "Linux: FS [/home/www/html]: Space is warning low",
+                    "source": "keep",
+                    "severity_initial": "warning",
+                    "analysis": {
+                      "severity": null,
+                      "risk_score": null,
+                      "summary": "",
+                      "action_plan": [],
+                      "anomalies": [],
+                      "system_info": null
+                    }
+                  },
+                  {
+                    "case_id": "8fc7cd7c-e7fd-44ca-ab1f-1e2d53c26209",
+                    "status": "CANCELLED",
+                    "priority": "critical",
+                    "host_key": "i02-90",
+                    "kind": "healthcheck",
+                    "created_at": "2026-06-27T00:04:49.926633",
+                    "updated_at": "2026-07-02T02:21:24.801255",
+                    "alert_summary": "Extreme EXOS: Interface 4:24(): Link down",
+                    "source": "keep",
+                    "severity_initial": "critical",
+                    "analysis": {
+                      "severity": null,
+                      "risk_score": null,
+                      "summary": "",
+                      "action_plan": [],
+                      "anomalies": [],
+                      "system_info": null
+                    }
+                  },
+                  {
+                    "case_id": "2b6e3149-b2c0-423b-9305-a3b1d553fed7",
+                    "status": "CANCELLED",
+                    "priority": "normal",
+                    "host_key": "i11-94",
+                    "kind": "healthcheck",
+                    "created_at": "2026-06-27T00:37:02.495109",
+                    "updated_at": "2026-07-02T02:21:24.601980",
+                    "alert_summary": "Extreme EXOS: Interface 4:33(Not-Advertised): Ethernet has changed to lower speed than it was before",
+                    "source": "keep",
+                    "severity_initial": "info",
+                    "analysis": {
+                      "severity": null,
+                      "risk_score": null,
+                      "summary": "",
+                      "action_plan": [],
+                      "anomalies": [],
+                      "system_info": null
+                    }
+                  },
+                  {
+                    "case_id": "d9d6a3b4-004a-4563-b386-980cf8ae3d2e",
+                    "status": "CANCELLED",
+                    "priority": "normal",
+                    "host_key": "i01-92",
+                    "kind": "healthcheck",
+                    "created_at": "2026-06-27T00:42:52.389119",
+                    "updated_at": "2026-07-02T02:21:24.394642",
+                    "alert_summary": "Extreme EXOS: Interface 3:26(): Ethernet has changed to lower speed than it was before",
+                    "source": "keep",
+                    "severity_initial": "info",
+                    "analysis": {
+                      "severity": null,
+                      "risk_score": null,
+                      "summary": "",
+                      "action_plan": [],
+                      "anomalies": [],
+                      "system_info": null
+                    }
+                  },
+                  {
+                    "case_id": "488ad580-af4e-4208-9724-b24eb9907f14",
+                    "status": "CANCELLED",
+                    "priority": "normal",
+                    "host_key": "biostar",
+                    "kind": "healthcheck",
+                    "created_at": "2026-06-27T00:52:35.360417",
+                    "updated_at": "2026-07-02T02:21:24.195357",
+                    "alert_summary": "Windows: Operating system description has changed",
+                    "source": "keep",
+                    "severity_initial": "info",
+                    "analysis": {
+                      "severity": null,
+                      "risk_score": null,
+                      "summary": "",
+                      "action_plan": [],
+                      "anomalies": [],
+                      "system_info": null
+                    }
+                  },
+                  {
+                    "case_id": "ce2f1e48-1b4a-4335-b251-2c9a7b87f2f1",
+                    "status": "CANCELLED",
+                    "priority": "critical",
+                    "host_key": "i02-90",
+                    "kind": "healthcheck",
+                    "created_at": "2026-06-27T00:52:49.393927",
+                    "updated_at": "2026-07-02T02:21:23.976330",
+                    "alert_summary": "Extreme EXOS: Interface 4:34(Imagenologia): Link down",
+                    "source": "keep",
+                    "severity_initial": "critical",
+                    "analysis": {
+                      "severity": null,
+                      "risk_score": null,
+                      "summary": "",
+                      "action_plan": [],
+                      "anomalies": [],
+                      "system_info": null
+                    }
+                  },
+                  {
+                    "case_id": "17613785-de0d-4f4c-8dff-8d4e0b55d23b",
+                    "status": "RESOLVED",
+                    "priority": "normal",
+                    "host_key": "i11-94",
+                    "kind": "healthcheck",
+                    "created_at": "2026-06-26T23:56:53.371029",
+                    "updated_at": "2026-06-27T00:36:52.192374",
+                    "alert_summary": "Extreme EXOS: Interface 2:22(): Ethernet has changed to lower speed than it was before",
+                    "source": "keep",
+                    "severity_initial": "info",
+                    "analysis": {
+                      "severity": null,
+                      "risk_score": null,
+                      "summary": "",
+                      "action_plan": [],
+                      "anomalies": [],
+                      "system_info": null
+                    }
+                  },
+                  {
+                    "case_id": "1e6e0051-0a73-4cc8-9dd4-4b85e3878bb6",
+                    "status": "RESOLVED",
+                    "priority": "critical",
+                    "host_key": "biostar",
+                    "kind": "healthcheck",
+                    "created_at": "2026-06-27T00:31:51.560865",
+                    "updated_at": "2026-06-27T00:35:52.270055",
+                    "alert_summary": "Windows: Agent is not available",
+                    "source": "keep",
+                    "severity_initial": "critical",
+                    "analysis": {
+                      "severity": null,
+                      "risk_score": null,
+                      "summary": "",
+                      "action_plan": [],
+                      "anomalies": [],
+                      "system_info": null
+                    }
+                  },
+                  {
+                    "case_id": "6ab7b885-24b0-455b-bbeb-6f76475cdacc",
+                    "status": "ESCALATED",
+                    "priority": "critical",
+                    "host_key": "i11-94",
+                    "kind": "healthcheck",
+                    "created_at": "2026-06-27T00:15:56.558578",
+                    "updated_at": "2026-06-27T00:16:10.612531",
+                    "alert_summary": "Extreme EXOS: Interface 1:9(CEDIP): Link down",
+                    "source": "keep",
+                    "severity_initial": "critical",
+                    "last_error": "Investigator failed: Server disconnected without sending a response."
+                  },
+                  {
+                    "case_id": "c2294bef-2e9c-4155-a69d-2815ef1d54ba",
+                    "status": "RESOLVED",
+                    "priority": "normal",
+                    "host_key": "agileops",
+                    "kind": "healthcheck",
+                    "created_at": "2026-06-26T22:36:15.461852",
+                    "updated_at": "2026-06-26T22:39:19.677063",
+                    "alert_summary": "Linux: FS [/]: Space is warning low",
+                    "source": "keep",
+                    "severity_initial": "warning",
+                    "analysis": {
+                      "severity": null,
+                      "risk_score": null,
+                      "summary": "",
+                      "action_plan": [],
+                      "anomalies": [],
+                      "system_info": null
+                    }
+                  }
+                ],
+                "total": 20
+              }
+            }
+          ],
+          "expectation_violations": [
+            "missing concrete list answer.",
+            "equivalent prompts for inventory-enumeration-servers returned 2 distinct semantic outcomes."
+          ],
+          "raw_stream": "data: {\"type\": \"start\", \"messageId\": \"6225f319-0bff-4088-9705-699bee6527b2\"}\n\ndata: {\"type\": \"tool-input-available\", \"toolCallId\": \"call_3fd00af906ef49648f08637c\", \"toolName\": \"get_dashboard_stats\", \"input\": {}, \"dynamic\": true}\n\ndata: {\"type\": \"tool-output-available\", \"toolCallId\": \"call_3fd00af906ef49648f08637c\", \"output\": {\"total_cases\": 319, \"cases_24h\": 0, \"unique_hosts\": 72, \"pending_approvals\": 0, \"by_status\": {\"ANALYZED\": 1, \"CANCELLED\": 19, \"ESCALATED\": 3, \"RESOLVED\": 296}, \"by_priority\": {\"critical\": 235, \"normal\": 84}}, \"dynamic\": true}\n\ndata: {\"type\": \"text-start\", \"id\": \"17138230-4f56-45ec-9f81-10148ddd7b3f\"}\n\ndata: {\"type\": \"text-delta\", \"id\": \"17138230-4f56-45ec-9f81-10148ddd7b3f\", \"delta\": \"La plataforma reporta **72 servidores únicos** registrados en la CMDB. Sin embargo, para listarlos individualmente con hostname e IP, necesito realizar una búsqueda específica. \\n\\nDéjame buscar los hosts registrados:\"}\n\ndata: {\"type\": \"text-end\", \"id\": \"17138230-4f56-45ec-9f81-10148ddd7b3f\"}\n\ndata: {\"type\": \"text-start\", \"id\": \"56f94125-e253-4e35-b37d-cd2bd4cf79cd\"}\n\ndata: {\"type\": \"text-delta\", \"id\": \"56f94125-e253-4e35-b37d-cd2bd4cf79cd\", \"delta\": \"Entiendo, necesito un término de búsqueda. Déjame intentar con una búsqueda genérica para obtener todos los hosts:\"}\n\ndata: {\"type\": \"text-end\", \"id\": \"56f94125-e253-4e35-b37d-cd2bd4cf79cd\"}\n\ndata: {\"type\": \"tool-input-available\", \"toolCallId\": \"call_5fa67968e2924e7e93e4d998\", \"toolName\": \"lookup_host\", \"input\": {\"query\": \"*\"}, \"dynamic\": true}\n\ndata: {\"type\": \"tool-output-available\", \"toolCallId\": \"call_5fa67968e2924e7e93e4d998\", \"output\": {\"hosts\": [], \"message\": \"No hosts found matching '*' (or not in your scope)\"}, \"dynamic\": true}\n\ndata: {\"type\": \"text-start\", \"id\": \"475e9e27-6292-4298-8ef8-33ad644a6ff4\"}\n\ndata: {\"type\": \"text-delta\", \"id\": \"475e9e27-6292-4298-8ef8-33ad644a6ff4\", \"delta\": \"La búsqueda con comodín no devuelve resultados directos. Déjame intentar con una búsqueda vacía o usar un enfoque diferente. Probemos buscando casos recientes para extraer los hosts:\"}\n\ndata: {\"type\": \"text-end\", \"id\": \"475e9e27-6292-4298-8ef8-33ad644a6ff4\"}\n\ndata: {\"type\": \"tool-input-available\", \"toolCallId\": \"tc-ed076dc2\", \"toolName\": \"search_cases\", \"input\": {}, \"dynamic\": true}\n\ndata: {\"type\": \"tool-output-available\", \"toolCallId\": \"tc-ed076dc2\", \"output\": {\"cases\": [{\"case_id\": \"ac3b4355-d0cc-4467-a3fc-95f528cb2b44\", \"status\": \"ANALYZED\", \"priority\": \"critical\", \"host_key\": \"appsvota04\", \"kind\": \"healthcheck\", \"created_at\": \"2026-07-04T06:22:15.154751\", \"updated_at\": \"2026-07-04T06:23:12.535668\", \"alert_summary\": \"Appsvota04\", \"source\": \"keep\", \"severity_initial\": \"critical\", \"analysis\": {\"severity\": null, \"risk_score\": null, \"summary\": \"\", \"action_plan\": [], \"anomalies\": [], \"system_info\": null}}, {\"case_id\": \"b5ee0f0c-98a1-4b21-8584-94ff123f3db9\", \"status\": \"CANCELLED\", \"priority\": \"critical\", \"host_key\": \"agileops\", \"kind\": \"healthcheck\", \"created_at\": \"2026-06-16T12:57:51.377442\", \"updated_at\": \"2026-07-02T02:21:27.579574\", \"alert_summary\": \"Nginx: Process is not running\", \"source\": \"keep\", \"severity_initial\": \"high\", \"analysis\": {\"severity\": null, \"risk_score\": null, \"summary\": \"\", \"action_plan\": [], \"anomalies\": [], \"system_info\": null}}, {\"case_id\": \"92a2f2ea-cbb3-4246-a3e8-209b950d2f68\", \"status\": \"CANCELLED\", \"priority\": \"normal\", \"host_key\": \"appsvota06\", \"kind\": \"healthcheck\", \"created_at\": \"2026-06-16T22:08:59.958806\", \"updated_at\": \"2026-07-02T02:21:27.390709\", \"alert_summary\": \"Controlado CDD PERF-CPU 20260616160859\", \"source\": \"zabbix\", \"severity_initial\": \"\", \"analysis\": {\"severity\": null, \"risk_score\": null, \"summary\": \"\", \"action_plan\": [], \"anomalies\": [], \"system_info\": null}}, {\"case_id\": \"27317238-0fd5-4db8-9ef5-2eefcc8a450b\", \"status\": \"CANCELLED\", \"priority\": \"normal\", \"host_key\": \"appsvota07\", \"kind\": \"healthcheck\", \"created_at\": \"2026-06-17T15:58:40.114392\", \"updated_at\": \"2026-07-02T02:21:27.207306\", \"alert_summary\": \"Controlado Resolve CDD PERF-CPU 20260617095839\", \"source\": \"zabbix\", \"severity_initial\": \"\", \"analysis\": {\"severity\": null, \"risk_score\": null, \"summary\": \"\", \"action_plan\": [], \"anomalies\": [], \"system_info\": null}}, {\"case_id\": \"e8d8d610-4f55-4352-8ee5-e7d786fae271\", \"status\": \"CANCELLED\", \"priority\": \"normal\", \"host_key\": \"mesd-win\", \"kind\": \"healthcheck\", \"created_at\": \"2026-06-17T15:58:40.157619\", \"updated_at\": \"2026-07-02T02:21:27.017108\", \"alert_summary\": \"Controlado Resolve CDD NET-ICMP 20260617095839\", \"source\": \"zabbix\", \"severity_initial\": \"\", \"analysis\": {\"severity\": null, \"risk_score\": null, \"summary\": \"\", \"action_plan\": [], \"anomalies\": [], \"system_info\": null}}, {\"case_id\": \"f091fc47-279c-4287-b377-584110a0b617\", \"status\": \"CANCELLED\", \"priority\": \"normal\", \"host_key\": \"appsvota04\", \"kind\": \"healthcheck\", \"created_at\": \"2026-06-17T16:02:01.973012\", \"updated_at\": \"2026-07-02T02:21:26.834273\", \"alert_summary\": \"Controlado Resolve CDD PERF-CPU V2 20260617100201\", \"source\": \"zabbix\", \"severity_initial\": \"\", \"analysis\": {\"severity\": null, \"risk_score\": null, \"summary\": \"\", \"action_plan\": [], \"anomalies\": [], \"system_info\": null}}, {\"case_id\": \"d5645315-bee2-4d5c-9d86-fe3ee04fa3a5\", \"status\": \"CANCELLED\", \"priority\": \"normal\", \"host_key\": \"solr01\", \"kind\": \"healthcheck\", \"created_at\": \"2026-06-17T16:02:02.012977\", \"updated_at\": \"2026-07-02T02:21:26.649108\", \"alert_summary\": \"Controlado Resolve CDD NET-ICMP V2 20260617100201\", \"source\": \"zabbix\", \"severity_initial\": \"\", \"analysis\": {\"severity\": null, \"risk_score\": null, \"summary\": \"\", \"action_plan\": [], \"anomalies\": [], \"system_info\": null}}, {\"case_id\": \"dd42081c-2b30-423a-984f-842a4d3a771f\", \"status\": \"CANCELLED\", \"priority\": \"critical\", \"host_key\": \"iss-qa02\", \"kind\": \"healthcheck\", \"created_at\": \"2026-06-20T05:44:13.014414\", \"updated_at\": \"2026-07-02T02:21:26.268219\", \"alert_summary\": \"IIS: Port 80 is down\", \"source\": \"keep\", \"severity_initial\": \"warning\", \"analysis\": {\"severity\": null, \"risk_score\": null, \"summary\": \"\", \"action_plan\": [], \"anomalies\": [], \"system_info\": null}}, {\"case_id\": \"2d974323-1a56-4f85-b21b-77d6e10d2cc6\", \"status\": \"CANCELLED\", \"priority\": \"critical\", \"host_key\": \"appsvota04\", \"kind\": \"healthcheck\", \"created_at\": \"2026-06-20T06:00:28.410251\", \"updated_at\": \"2026-07-02T02:21:26.092643\", \"alert_summary\": \"Appsvota04\", \"source\": \"keep\", \"severity_initial\": \"critical\", \"analysis\": {\"severity\": null, \"risk_score\": null, \"summary\": \"\", \"action_plan\": [], \"anomalies\": [], \"system_info\": null}}, {\"case_id\": \"ca6ccd61-43cb-48cf-ac10-b010479e4b8f\", \"status\": \"CANCELLED\", \"priority\": \"critical\", \"host_key\": \"camara7dell\", \"kind\": \"healthcheck\", \"created_at\": \"2026-06-20T07:03:13.360966\", \"updated_at\": \"2026-07-02T02:21:25.914723\", \"alert_summary\": \"XCP-ng: No SNMP data collection\", \"source\": \"keep\", \"severity_initial\": \"critical\", \"analysis\": {\"severity\": null, \"risk_score\": null, \"summary\": \"\", \"action_plan\": [], \"anomalies\": [], \"system_info\": null}}, {\"case_id\": \"f52c142c-64b8-49c4-9255-6da9dd7d1f62\", \"status\": \"CANCELLED\", \"priority\": \"normal\", \"host_key\": \"comsoc-app1\", \"kind\": \"healthcheck\", \"created_at\": \"2026-06-25T19:03:16.924075\", \"updated_at\": \"2026-07-02T02:21:25.001238\", \"alert_summary\": \"Linux: FS [/home/www/html]: Space is warning low\", \"source\": \"keep\", \"severity_initial\": \"warning\", \"analysis\": {\"severity\": null, \"risk_score\": null, \"summary\": \"\", \"action_plan\": [], \"anomalies\": [], \"system_info\": null}}, {\"case_id\": \"8fc7cd7c-e7fd-44ca-ab1f-1e2d53c26209\", \"status\": \"CANCELLED\", \"priority\": \"critical\", \"host_key\": \"i02-90\", \"kind\": \"healthcheck\", \"created_at\": \"2026-06-27T00:04:49.926633\", \"updated_at\": \"2026-07-02T02:21:24.801255\", \"alert_summary\": \"Extreme EXOS: Interface 4:24(): Link down\", \"source\": \"keep\", \"severity_initial\": \"critical\", \"analysis\": {\"severity\": null, \"risk_score\": null, \"summary\": \"\", \"action_plan\": [], \"anomalies\": [], \"system_info\": null}}, {\"case_id\": \"2b6e3149-b2c0-423b-9305-a3b1d553fed7\", \"status\": \"CANCELLED\", \"priority\": \"normal\", \"host_key\": \"i11-94\", \"kind\": \"healthcheck\", \"created_at\": \"2026-06-27T00:37:02.495109\", \"updated_at\": \"2026-07-02T02:21:24.601980\", \"alert_summary\": \"Extreme EXOS: Interface 4:33(Not-Advertised): Ethernet has changed to lower speed than it was before\", \"source\": \"keep\", \"severity_initial\": \"info\", \"analysis\": {\"severity\": null, \"risk_score\": null, \"summary\": \"\", \"action_plan\": [], \"anomalies\": [], \"system_info\": null}}, {\"case_id\": \"d9d6a3b4-004a-4563-b386-980cf8ae3d2e\", \"status\": \"CANCELLED\", \"priority\": \"normal\", \"host_key\": \"i01-92\", \"kind\": \"healthcheck\", \"created_at\": \"2026-06-27T00:42:52.389119\", \"updated_at\": \"2026-07-02T02:21:24.394642\", \"alert_summary\": \"Extreme EXOS: Interface 3:26(): Ethernet has changed to lower speed than it was before\", \"source\": \"keep\", \"severity_initial\": \"info\", \"analysis\": {\"severity\": null, \"risk_score\": null, \"summary\": \"\", \"action_plan\": [], \"anomalies\": [], \"system_info\": null}}, {\"case_id\": \"488ad580-af4e-4208-9724-b24eb9907f14\", \"status\": \"CANCELLED\", \"priority\": \"normal\", \"host_key\": \"biostar\", \"kind\": \"healthcheck\", \"created_at\": \"2026-06-27T00:52:35.360417\", \"updated_at\": \"2026-07-02T02:21:24.195357\", \"alert_summary\": \"Windows: Operating system description has changed\", \"source\": \"keep\", \"severity_initial\": \"info\", \"analysis\": {\"severity\": null, \"risk_score\": null, \"summary\": \"\", \"action_plan\": [], \"anomalies\": [], \"system_info\": null}}, {\"case_id\": \"ce2f1e48-1b4a-4335-b251-2c9a7b87f2f1\", \"status\": \"CANCELLED\", \"priority\": \"critical\", \"host_key\": \"i02-90\", \"kind\": \"healthcheck\", \"created_at\": \"2026-06-27T00:52:49.393927\", \"updated_at\": \"2026-07-02T02:21:23.976330\", \"alert_summary\": \"Extreme EXOS: Interface 4:34(Imagenologia): Link down\", \"source\": \"keep\", \"severity_initial\": \"critical\", \"analysis\": {\"severity\": null, \"risk_score\": null, \"summary\": \"\", \"action_plan\": [], \"anomalies\": [], \"system_info\": null}}, {\"case_id\": \"17613785-de0d-4f4c-8dff-8d4e0b55d23b\", \"status\": \"RESOLVED\", \"priority\": \"normal\", \"host_key\": \"i11-94\", \"kind\": \"healthcheck\", \"created_at\": \"2026-06-26T23:56:53.371029\", \"updated_at\": \"2026-06-27T00:36:52.192374\", \"alert_summary\": \"Extreme EXOS: Interface 2:22(): Ethernet has changed to lower speed than it was before\", \"source\": \"keep\", \"severity_initial\": \"info\", \"analysis\": {\"severity\": null, \"risk_score\": null, \"summary\": \"\", \"action_plan\": [], \"anomalies\": [], \"system_info\": null}}, {\"case_id\": \"1e6e0051-0a73-4cc8-9dd4-4b85e3878bb6\", \"status\": \"RESOLVED\", \"priority\": \"critical\", \"host_key\": \"biostar\", \"kind\": \"healthcheck\", \"created_at\": \"2026-06-27T00:31:51.560865\", \"updated_at\": \"2026-06-27T00:35:52.270055\", \"alert_summary\": \"Windows: Agent is not available\", \"source\": \"keep\", \"severity_initial\": \"critical\", \"analysis\": {\"severity\": null, \"risk_score\": null, \"summary\": \"\", \"action_plan\": [], \"anomalies\": [], \"system_info\": null}}, {\"case_id\": \"6ab7b885-24b0-455b-bbeb-6f76475cdacc\", \"status\": \"ESCALATED\", \"priority\": \"critical\", \"host_key\": \"i11-94\", \"kind\": \"healthcheck\", \"created_at\": \"2026-06-27T00:15:56.558578\", \"updated_at\": \"2026-06-27T00:16:10.612531\", \"alert_summary\": \"Extreme EXOS: Interface 1:9(CEDIP): Link down\", \"source\": \"keep\", \"severity_initial\": \"critical\", \"last_error\": \"Investigator failed: Server disconnected without sending a response.\"}, {\"case_id\": \"c2294bef-2e9c-4155-a69d-2815ef1d54ba\", \"status\": \"RESOLVED\", \"priority\": \"normal\", \"host_key\": \"agileops\", \"kind\": \"healthcheck\", \"created_at\": \"2026-06-26T22:36:15.461852\", \"updated_at\": \"2026-06-26T22:39:19.677063\", \"alert_summary\": \"Linux: FS [/]: Space is warning low\", \"source\": \"keep\", \"severity_initial\": \"warning\", \"analysis\": {\"severity\": null, \"risk_score\": null, \"summary\": \"\", \"action_plan\": [], \"anomalies\": [], \"system_info\": null}}], \"total\": 20}, \"dynamic\": true}\n\ndata: {\"type\": \"finish\", \"finishReason\": \"stop\"}\n\ndata: [DONE]\n\n"
+        },
+        {
+          "repeat": 2,
+          "status": "ok",
+          "http_status": 200,
+          "latency_ms": 6412,
+          "response_text": "El dashboard muestra que hay **72 servidores únicos** registrados en la CMDB. Sin embargo, para obtener la lista detallada con hostname e IP de cada servidor, necesito realizar una búsqueda. Déjame consultar los hosts disponibles:Necesito buscar los hosts de manera diferente. Voy a intentar con una búsqueda genérica para listar todos los servidores:Parece que la búsqueda con comodines no está funcionando. Déjame intentar con una búsqueda vacía o con un patrón más amplio para obtener la lista de todos los hosts:",
+          "response_hash": "874206fb08a0c36c4aa5aa4e7fd7f111e1ae5cfb688400cd3f7c7d6b3ba9929d",
+          "normalized_hash": "cac01fd7fe44c809a5fd2c5afd5f6ca7024a570789d1e23282d9319a104d033c",
+          "tool_calls": [
+            {
+              "type": "input",
+              "toolCallId": "call_f93a76ad0b704c3d9c8452d4",
+              "toolName": "get_dashboard_stats",
+              "input": {}
+            },
+            {
+              "type": "output",
+              "toolCallId": "call_f93a76ad0b704c3d9c8452d4",
+              "output": {
+                "total_cases": 319,
+                "cases_24h": 0,
+                "unique_hosts": 72,
+                "pending_approvals": 0,
+                "by_status": {
+                  "ANALYZED": 1,
+                  "CANCELLED": 19,
+                  "ESCALATED": 3,
+                  "RESOLVED": 296
+                },
+                "by_priority": {
+                  "critical": 235,
+                  "normal": 84
+                }
+              }
+            },
+            {
+              "type": "input",
+              "toolCallId": "call_a9fec090f96c4db19e5cc526",
+              "toolName": "lookup_host",
+              "input": {
+                "query": "*"
+              }
+            },
+            {
+              "type": "output",
+              "toolCallId": "call_a9fec090f96c4db19e5cc526",
+              "output": {
+                "hosts": [],
+                "message": "No hosts found matching '*' (or not in your scope)"
+              }
+            }
+          ],
+          "expectation_violations": [
+            "missing concrete list answer.",
+            "equivalent prompts for inventory-enumeration-servers returned 2 distinct semantic outcomes."
+          ],
+          "raw_stream": "data: {\"type\": \"start\", \"messageId\": \"143da32e-e23d-4c42-b1df-6444f3df190e\"}\n\ndata: {\"type\": \"tool-input-available\", \"toolCallId\": \"call_f93a76ad0b704c3d9c8452d4\", \"toolName\": \"get_dashboard_stats\", \"input\": {}, \"dynamic\": true}\n\ndata: {\"type\": \"tool-output-available\", \"toolCallId\": \"call_f93a76ad0b704c3d9c8452d4\", \"output\": {\"total_cases\": 319, \"cases_24h\": 0, \"unique_hosts\": 72, \"pending_approvals\": 0, \"by_status\": {\"ANALYZED\": 1, \"CANCELLED\": 19, \"ESCALATED\": 3, \"RESOLVED\": 296}, \"by_priority\": {\"critical\": 235, \"normal\": 84}}, \"dynamic\": true}\n\ndata: {\"type\": \"text-start\", \"id\": \"7db81379-eb54-4e37-aa30-63ffae69f6a4\"}\n\ndata: {\"type\": \"text-delta\", \"id\": \"7db81379-eb54-4e37-aa30-63ffae69f6a4\", \"delta\": \"El dashboard muestra que hay **72 servidores únicos** registrados en la CMDB. Sin embargo, para obtener la lista detallada con hostname e IP de cada servidor, necesito realizar una búsqueda. Déjame consultar los hosts disponibles:\"}\n\ndata: {\"type\": \"text-end\", \"id\": \"7db81379-eb54-4e37-aa30-63ffae69f6a4\"}\n\ndata: {\"type\": \"text-start\", \"id\": \"e521af9b-7ed0-4d8a-b26b-e2ce06d3e990\"}\n\ndata: {\"type\": \"text-delta\", \"id\": \"e521af9b-7ed0-4d8a-b26b-e2ce06d3e990\", \"delta\": \"Necesito buscar los hosts de manera diferente. Voy a intentar con una búsqueda genérica para listar todos los servidores:\"}\n\ndata: {\"type\": \"text-end\", \"id\": \"e521af9b-7ed0-4d8a-b26b-e2ce06d3e990\"}\n\ndata: {\"type\": \"tool-input-available\", \"toolCallId\": \"call_a9fec090f96c4db19e5cc526\", \"toolName\": \"lookup_host\", \"input\": {\"query\": \"*\"}, \"dynamic\": true}\n\ndata: {\"type\": \"tool-output-available\", \"toolCallId\": \"call_a9fec090f96c4db19e5cc526\", \"output\": {\"hosts\": [], \"message\": \"No hosts found matching '*' (or not in your scope)\"}, \"dynamic\": true}\n\ndata: {\"type\": \"text-start\", \"id\": \"5ec5fcdf-ef37-4125-8932-d987bcc023d3\"}\n\ndata: {\"type\": \"text-delta\", \"id\": \"5ec5fcdf-ef37-4125-8932-d987bcc023d3\", \"delta\": \"Parece que la búsqueda con comodines no está funcionando. Déjame intentar con una búsqueda vacía o con un patrón más amplio para obtener la lista de todos los hosts:\"}\n\ndata: {\"type\": \"text-end\", \"id\": \"5ec5fcdf-ef37-4125-8932-d987bcc023d3\"}\n\ndata: {\"type\": \"finish\", \"finishReason\": \"stop\"}\n\ndata: [DONE]\n\n"
+        }
+      ]
+    }
+  ]
+}

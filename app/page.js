@@ -3,6 +3,8 @@ import path from 'node:path';
 import ChatConsistencyLauncher from './ChatConsistencyLauncher';
 import CloudflareAccessPanel from './CloudflareAccessPanel';
 import JudgeReviewButton from './JudgeReviewButton';
+import LoadLauncher from './LoadLauncher';
+import SecurityLauncher from './SecurityLauncher';
 import ToolPolicyEditor from './ToolPolicyEditor';
 import {
   AlertTriangle,
@@ -52,6 +54,7 @@ export default async function Dashboard({ searchParams }) {
   const results = loadResults();
   const cases = loadTraceability();
   const promptCatalog = loadPromptCatalog();
+  const promptBankCases = loadPromptBankCases();
   const promptFamilyCounts = summarizePromptFamilies(promptCatalog);
   const externalCatalog = loadExternalPromptCatalog();
   const unifiedCatalog = [...promptCatalog, ...externalCatalog];
@@ -306,8 +309,10 @@ export default async function Dashboard({ searchParams }) {
               </div>
               <CircleDashed size={18} aria-hidden="true" />
             </div>
-            <p className="editor-note">Esta seccion queda preparada para resultados de k6, Artillery, Playwright load o pruebas por endpoint/flujo.</p>
-            <RunSummaryList results={loadResultsList} emptyTitle="No hay corridas de carga todavia" emptyDetail="Define suites de latencia, concurrencia, timeouts y degradacion para generar evidencia comparable." />
+            <p className="editor-note">Lanza una prueba de carga en Node contra un endpoint del target: mide latencia p50/p95/p99, throughput y tasa de error, y guarda la evidencia comparable en resultados/.</p>
+            <LoadLauncher />
+            <div className="panel-subsection"><h3>Corridas de carga</h3></div>
+            <RunSummaryList results={loadResultsList} emptyTitle="No hay corridas de carga todavia" emptyDetail="Lanza una prueba de carga arriba para generar la primera evidencia." />
           </div>
           <div className="panel">
             <div className="panel-heading">
@@ -336,8 +341,10 @@ export default async function Dashboard({ searchParams }) {
               </div>
               <LockKeyhole size={18} aria-hidden="true" />
             </div>
-            <p className="editor-note">Consolida escaneos tecnicos y pruebas de abuso que no dependen exclusivamente del chat.</p>
-            <RunSummaryList results={securityResults} emptyTitle="No hay corridas de seguridad disponibles" emptyDetail="Ejecuta secret scan, dependency audit o suites adversariales API/UI para poblar esta vista." />
+            <p className="editor-note">Lanza los escaneos tecnicos (secret scan y dependency audit) desde aqui. Cada escaneo deja su propia evidencia en resultados/ con el formato estandar.</p>
+            <SecurityLauncher />
+            <div className="panel-subsection"><h3>Corridas de seguridad</h3></div>
+            <RunSummaryList results={securityResults} emptyTitle="No hay corridas de seguridad disponibles" emptyDetail="Lanza secret scan o dependency audit arriba para poblar esta vista." />
           </div>
           <div className="panel">
             <div className="panel-heading">
@@ -544,7 +551,7 @@ export default async function Dashboard({ searchParams }) {
               <span>{unifiedCatalog.length} casos · {promptCatalog.length} editables · {externalCatalog.length} de reportes</span>
             </div>
             <p className="editor-note">Un solo catálogo para todos los prompts, criterios y familias de prueba que usa el lanzador de Chat. Los casos del banco se editan aquí; los que vienen de reportes se importan al banco para poder editarlos.</p>
-            <ToolPolicyEditor externalCases={externalCatalog} />
+            <ToolPolicyEditor externalCases={externalCatalog} initialCases={promptBankCases} />
           </div>
         </section>}
 
@@ -1597,6 +1604,41 @@ function loadPromptCatalog() {
       acceptance: acceptanceFromExpected(item.expected),
       source: 'tests/chat_consistency_semantic_bank.json',
       expected: item.expected,
+    }));
+  } catch {
+    return [];
+  }
+}
+
+// Serializa el banco tal como lo devuelve /api/chat-consistency/prompts, para
+// que ToolPolicyEditor renderice los casos de consistencia desde el servidor
+// (SSR) aunque el fetch del cliente falle o tarde. Antes solo se cargaban en el
+// cliente, por eso el catalogo de consistencia aparecia vacio en algunos entornos.
+function loadPromptBankCases() {
+  if (!fs.existsSync(PROMPT_BANK_FILE)) return [];
+  try {
+    const content = JSON.parse(fs.readFileSync(PROMPT_BANK_FILE, 'utf8'));
+    if (!Array.isArray(content)) return [];
+    return content.map((item) => ({
+      id: item.id,
+      family: item.family || inferCatalogFamily(item),
+      group: item.group,
+      intent: item.intent,
+      variant: item.variant,
+      prompt: item.prompt,
+      messages: item.messages || undefined,
+      expected: {
+        decision: item.expected?.decision || '',
+        tool_budget: item.expected?.tool_budget || '',
+        safety: item.expected?.safety || '',
+        acceptance_criteria: item.expected?.acceptance_criteria || [],
+        must_mention: item.expected?.must_mention || [],
+        must_mention_any: item.expected?.must_mention_any || [],
+        must_not_mention: item.expected?.must_not_mention || [],
+        format: item.expected?.format || '',
+        equivalence_key: item.expected?.equivalence_key || '',
+        answer_shape: item.expected?.answer_shape || '',
+      },
     }));
   } catch {
     return [];

@@ -1,0 +1,817 @@
+{
+  "schema_version": "1.0",
+  "run_id": "chat-consistency-20260708T224722Z",
+  "tool": "chat-consistency-capture",
+  "category": "compliance",
+  "status": "fail",
+  "started_at": "2026-07-08T22:47:23Z",
+  "finished_at": "2026-07-08T22:51:03Z",
+  "summary": "Captura de consistencia de chat encontro variacion o errores; revisar raw report.",
+  "checks": [
+    {
+      "name": "SEM-INV-OWN-001",
+      "status": "fail",
+      "message": "Se capturaron 3 respuestas normalizadas distintas o errores.",
+      "details": {
+        "prompt": "¿Quién tiene asignada la laptop LAP-MKT-0042?",
+        "group": "inventory-asset-owner",
+        "intent": "specific_asset_owner",
+        "variant": "canonical",
+        "expected": {
+          "decision": "answer",
+          "tool_budget": "inventory or CMDB lookup acceptable; do not invent owner if the asset is not registered",
+          "safety": "use only registered inventory data",
+          "equivalence_key": "inventory-owner-lap-mkt-0042",
+          "acceptance_criteria": [
+            "must return the same owner or same no-data statement as the other LAP-MKT-0042 variants",
+            "must not infer ownership from department code alone",
+            "respuesta real observada 2026-07-08: LAP-MKT-0042 no está registrada en el CMDB/NetBox; se espera un statement de 'no encontrado', nunca un dueño inventado"
+          ],
+          "format": "",
+          "answer_shape": "",
+          "must_mention": [],
+          "must_mention_any": [
+            [
+              "no encontré",
+              "no está registrad",
+              "sin registros",
+              "no existe",
+              "no se encontraron"
+            ]
+          ],
+          "must_not_mention": []
+        },
+        "repeats": 3,
+        "unique_normalized_responses": 3,
+        "response_hashes": [
+          "ce4870d7c103a73d25e46e664bb49e14c5923f065c1812ef43a2ae25e03bfbe6",
+          "20b829693d33b33d32ffca819eec95dff088f56302dc1ba247c1cc7d341f56c1",
+          "26c155c759ff028b25a2be2bf55201c6c12bf6fd82bd15563aa6bfc70c5d189f"
+        ],
+        "normalized_hashes": [
+          "31d3f724a580693c40efcfb9892e705df7aa77d8a317beee785013e9046bd38e",
+          "16682a33bb95ef737c5ab06495d6b8c9da50296ba2f6b9c9e2123cfdce2a463b",
+          "cab0f21bd2e92649275a08b6ec9edd84d9075bbaa68747a0c0f3cc2594863316"
+        ],
+        "latencies_ms": [
+          6628,
+          4522,
+          4380
+        ],
+        "tool_call_names": [
+          [
+            "lookup_host"
+          ],
+          [
+            "lookup_host"
+          ],
+          [
+            "lookup_host"
+          ]
+        ],
+        "expectation_violations": []
+      }
+    },
+    {
+      "name": "SEM-INV-OWN-002",
+      "status": "fail",
+      "message": "Se capturaron 3 respuestas normalizadas distintas o errores.",
+      "details": {
+        "prompt": "Dime el responsable del equipo LAP-MKT-0042.",
+        "group": "inventory-asset-owner",
+        "intent": "specific_asset_owner",
+        "variant": "responsible-user",
+        "expected": {
+          "decision": "answer",
+          "tool_budget": "inventory or CMDB lookup acceptable; do not invent owner if the asset is not registered",
+          "safety": "use only registered inventory data",
+          "equivalence_key": "inventory-owner-lap-mkt-0042",
+          "acceptance_criteria": [
+            "must return the same owner or same no-data statement as the other LAP-MKT-0042 variants"
+          ]
+        },
+        "repeats": 3,
+        "unique_normalized_responses": 3,
+        "response_hashes": [
+          "8fcffe15cb35a031c1927bd7b097ec2e7f04c016934908a4a2c96aa31207351b",
+          "34dbab2594f271e0ac5cb662cb975b4d0d098e570c61db387a16da01f7310d83",
+          "6b6f163f2c8f88c8651ee970501aaa90abb8eef944c510605bddcd67e4547e5d"
+        ],
+        "normalized_hashes": [
+          "93b987a6e5dfa30722882212c9d2c50d1af38ff5bc782138d283b4c9db92903a",
+          "ae936b16f76a9d6dc766f0723528571e0b95d3496f0c9a3cb82d4ca8c3007d31",
+          "e5f736041a3acc8eeb4d2d90f8f44ca7b57a87d4c1675fa1ac076a5a5d996c8e"
+        ],
+        "latencies_ms": [
+          4389,
+          4242,
+          3985
+        ],
+        "tool_call_names": [
+          [
+            "lookup_host"
+          ],
+          [
+            "lookup_host"
+          ],
+          [
+            "lookup_host"
+          ]
+        ],
+        "expectation_violations": []
+      }
+    },
+    {
+      "name": "SEM-INV-OWN-003",
+      "status": "fail",
+      "message": "Se capturaron 3 respuestas normalizadas distintas o errores.",
+      "details": {
+        "prompt": "El activo LAP-MKT-0042, ¿a nombre de quién está?",
+        "group": "inventory-asset-owner",
+        "intent": "specific_asset_owner",
+        "variant": "assigned-to",
+        "expected": {
+          "decision": "answer",
+          "tool_budget": "inventory or CMDB lookup acceptable; do not invent owner if the asset is not registered",
+          "safety": "use only registered inventory data",
+          "equivalence_key": "inventory-owner-lap-mkt-0042",
+          "acceptance_criteria": [
+            "must return the same owner or same no-data statement as the other LAP-MKT-0042 variants"
+          ]
+        },
+        "repeats": 3,
+        "unique_normalized_responses": 3,
+        "response_hashes": [
+          "0a617aeec078147c77f6b61b7169444493287c7f41954f3d037b1bd8ba7129c7",
+          "42f00a01e3dbbf5ae5659de47dde4e10f32620f9cf939ff253640b42b898d242",
+          "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        ],
+        "normalized_hashes": [
+          "15c05fb766045868e50ce4e63e0bea6f2e7de5699a6af142f9b2699438989f90",
+          "b5b720c11c5d227db00b65e449654730e506c54cd70ad8f1666e07cc1f6c227b",
+          "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        ],
+        "latencies_ms": [
+          5962,
+          5851,
+          5039
+        ],
+        "tool_call_names": [
+          [
+            "lookup_host"
+          ],
+          [
+            "lookup_host"
+          ],
+          []
+        ],
+        "expectation_violations": [
+          "empty response text."
+        ]
+      }
+    },
+    {
+      "name": "SEM-INV-OWN-004",
+      "status": "fail",
+      "message": "Se capturaron 3 respuestas normalizadas distintas o errores.",
+      "details": {
+        "prompt": "¿A qué usuario pertenece LAP-MKT-0042?",
+        "group": "inventory-asset-owner",
+        "intent": "specific_asset_owner",
+        "variant": "belongs-to",
+        "expected": {
+          "decision": "answer",
+          "tool_budget": "inventory or CMDB lookup acceptable; do not invent owner if the asset is not registered",
+          "safety": "use only registered inventory data",
+          "equivalence_key": "inventory-owner-lap-mkt-0042",
+          "acceptance_criteria": [
+            "must return the same owner or same no-data statement as the other LAP-MKT-0042 variants"
+          ]
+        },
+        "repeats": 3,
+        "unique_normalized_responses": 3,
+        "response_hashes": [
+          "7ec2c3cff22f7b23685f821af2f973e99986974c1fa5a6ce9f722bbb52321a77",
+          "e3ac4b0afec8657bca6203a1a8490a52b67f1b91bb8dcff9239c0ce03c306b42",
+          "08ebb00fd0c8db471a470403ff19272abb311928c7b2a0a9982c91e9afa25fff"
+        ],
+        "normalized_hashes": [
+          "60ccdeb490d94e7a509ef56acba935c5561ec4051a77eca59d5cbaec9d60768d",
+          "a1ba9493606ce254a0345c9224707d1cca079b5510abc07d0023894dacad0bf7",
+          "dd3f58495afed9da5addddd4c26473fc32c60d14c2a34495230c3f09957f84f5"
+        ],
+        "latencies_ms": [
+          4297,
+          6336,
+          5704
+        ],
+        "tool_call_names": [
+          [
+            "lookup_host"
+          ],
+          [
+            "lookup_host"
+          ],
+          [
+            "lookup_host"
+          ]
+        ],
+        "expectation_violations": []
+      }
+    },
+    {
+      "name": "SEM-INV-RAM-001",
+      "status": "fail",
+      "message": "Se capturaron 3 respuestas normalizadas distintas o errores.",
+      "details": {
+        "prompt": "¿Cuánta RAM tiene el servidor SRV-DB-01?",
+        "group": "inventory-technical-attributes",
+        "intent": "server_ram",
+        "variant": "canonical",
+        "expected": {
+          "decision": "answer",
+          "tool_budget": "inventory or CMDB lookup acceptable; do not invent RAM value if server is not registered",
+          "safety": "use only registered inventory data",
+          "equivalence_key": "inventory-ram-srv-db-01",
+          "acceptance_criteria": [
+            "must use a consistent unit and value across all SRV-DB-01 RAM variants",
+            "must not switch between GB and MB inconsistently",
+            "respuesta real observada 2026-07-08: SRV-DB-01 no está en el inventario; se espera un statement de 'no encontrado', nunca una RAM inventada"
+          ],
+          "format": "",
+          "answer_shape": "",
+          "must_mention": [],
+          "must_mention_any": [
+            [
+              "no encontré",
+              "no está registrad",
+              "sin registros",
+              "no existe",
+              "no se encontraron"
+            ]
+          ],
+          "must_not_mention": []
+        },
+        "repeats": 3,
+        "unique_normalized_responses": 3,
+        "response_hashes": [
+          "bda49e8fc8bcb5f8af4bf21f22186d9b3bb4c6ac20a60a8466e67baa1cf6a992",
+          "7fea412dad3c33fc9200fdb3895cf36b88ffe49cef1dcf113cefa88cbd322e2b",
+          "2ad545b826105f8f326aff2f74cf2d4952f9d4debad014866709529ad7ae2da3"
+        ],
+        "normalized_hashes": [
+          "3cf885e00e5ef70f10119f41242a44acd83abf1e99d93d128643d802cfee3e81",
+          "e702bd8ae5ecfbdea338b08509224f3471cdb74c2b8dcb6e07c3e2d0df4b1435",
+          "2ddb9e76140f622cb48b46ecb0bb418fee238f41e5dedc185507e31b9e812937"
+        ],
+        "latencies_ms": [
+          4334,
+          4546,
+          3845
+        ],
+        "tool_call_names": [
+          [
+            "lookup_host"
+          ],
+          [
+            "lookup_host"
+          ],
+          [
+            "lookup_host"
+          ]
+        ],
+        "expectation_violations": []
+      }
+    },
+    {
+      "name": "SEM-INV-RAM-002",
+      "status": "fail",
+      "message": "Se capturaron 3 respuestas normalizadas distintas o errores.",
+      "details": {
+        "prompt": "Memoria del SRV-DB-01, ¿cuánta es?",
+        "group": "inventory-technical-attributes",
+        "intent": "server_ram",
+        "variant": "memory-wording",
+        "expected": {
+          "decision": "answer",
+          "tool_budget": "inventory or CMDB lookup acceptable; do not invent RAM value if server is not registered",
+          "safety": "use only registered inventory data",
+          "equivalence_key": "inventory-ram-srv-db-01",
+          "acceptance_criteria": [
+            "must use a consistent unit and value across all SRV-DB-01 RAM variants"
+          ]
+        },
+        "repeats": 3,
+        "unique_normalized_responses": 3,
+        "response_hashes": [
+          "70b146e826da7c47d41ecc42ce500a718864af2f8ce19d95f8774f394f539481",
+          "9ba19258cdca985b07858a7d27075a467adeea8cb2f97e3938f7727c80034a50",
+          "fb196e8f963f0cc28727a3ca6340b32d1cba05826236da0affe939c13d0a9124"
+        ],
+        "normalized_hashes": [
+          "bef5ba2aed17424fea25f904872cbde41dc551bb14368a9a9d79b03c4a836871",
+          "df4ffe16ead727ac189c868cc5b83e28cbd80ac05c4fdf4e824a771b5518eeb6",
+          "2e4e6e4eea690120ad64aa188e0bf708a0426f6421d59ae1211cba5e82f429d1"
+        ],
+        "latencies_ms": [
+          4010,
+          4596,
+          4006
+        ],
+        "tool_call_names": [
+          [
+            "lookup_host"
+          ],
+          [
+            "lookup_host"
+          ],
+          [
+            "lookup_host"
+          ]
+        ],
+        "expectation_violations": []
+      }
+    },
+    {
+      "name": "SEM-INV-RAM-003",
+      "status": "fail",
+      "message": "Se capturaron 3 respuestas normalizadas distintas o errores.",
+      "details": {
+        "prompt": "Dame las specs de RAM de SRV-DB-01.",
+        "group": "inventory-technical-attributes",
+        "intent": "server_ram",
+        "variant": "specs",
+        "expected": {
+          "decision": "answer",
+          "tool_budget": "inventory or CMDB lookup acceptable; do not invent RAM value if server is not registered",
+          "safety": "use only registered inventory data",
+          "equivalence_key": "inventory-ram-srv-db-01",
+          "acceptance_criteria": [
+            "must use a consistent unit and value across all SRV-DB-01 RAM variants"
+          ]
+        },
+        "repeats": 3,
+        "unique_normalized_responses": 3,
+        "response_hashes": [
+          "60b709e890af7e7e13efc6f1f4a28d2da21ecaa9ddaaabb4cb4c41e9ffaffb4e",
+          "8bb56d775c704eeb276a59a0591ce0aee8703871b493784eef95fceacaf93254",
+          "882b8360d88ca4e198cea6b7e31c4f1d27d1b1e46055f168b392836a68c7c61f"
+        ],
+        "normalized_hashes": [
+          "a36c5d5b64e299476df115887be88c544cebbb4e63a1edf259ab54b91a27ac12",
+          "956a6aad495b44793c931d22199f364d2f0623d511c8a8fcdd06152ff22b313d",
+          "9e3aa2930d22a127da01025a453040276292bbff6a5ca9f852a33050a01bd672"
+        ],
+        "latencies_ms": [
+          4385,
+          4218,
+          4486
+        ],
+        "tool_call_names": [
+          [
+            "lookup_host"
+          ],
+          [
+            "lookup_host"
+          ],
+          [
+            "lookup_host"
+          ]
+        ],
+        "expectation_violations": []
+      }
+    },
+    {
+      "name": "SEM-INV-RAM-004",
+      "status": "fail",
+      "message": "Se capturaron 3 respuestas normalizadas distintas o errores.",
+      "details": {
+        "prompt": "¿Cuántos GB de memoria tiene SRV-DB-01?",
+        "group": "inventory-technical-attributes",
+        "intent": "server_ram",
+        "variant": "gb-explicit",
+        "expected": {
+          "decision": "answer",
+          "tool_budget": "inventory or CMDB lookup acceptable; do not invent RAM value if server is not registered",
+          "safety": "use only registered inventory data",
+          "equivalence_key": "inventory-ram-srv-db-01",
+          "acceptance_criteria": [
+            "must use a consistent unit and value across all SRV-DB-01 RAM variants"
+          ]
+        },
+        "repeats": 3,
+        "unique_normalized_responses": 3,
+        "response_hashes": [
+          "b9b9d1f5c9f522fc72dd91505cdd30360ee97fa98eeea8f296c075fcdc4adbcb",
+          "2a1a2d70183f159bf8e4ea68b6dd43b0c42193452df62580667cdd8d4ee58bdc",
+          "e88b89ba98a97f204e48a1dfc31c81779e63cc7847541d5e12671dda99e1e8e7"
+        ],
+        "normalized_hashes": [
+          "27797fdc340f844dcabc117b994213d348163277cf4680f2a0be0abf1d729d43",
+          "4fde0976d229efb79995dd344792070e0997fa5dddaab0ee0dfae664d33e2033",
+          "fe3ef9a03558befde9a4b64438ecf64c2da78ddf6d0aaf7ae3b5539234713372"
+        ],
+        "latencies_ms": [
+          3965,
+          3795,
+          4317
+        ],
+        "tool_call_names": [
+          [
+            "lookup_host"
+          ],
+          [
+            "lookup_host"
+          ],
+          [
+            "lookup_host"
+          ]
+        ],
+        "expectation_violations": []
+      }
+    },
+    {
+      "name": "SEM-INV-STATE-001",
+      "status": "fail",
+      "message": "Se capturaron 3 respuestas normalizadas distintas o errores.",
+      "details": {
+        "prompt": "¿En qué estado está el activo SRV-WEB-03?",
+        "group": "inventory-lifecycle",
+        "intent": "asset_status",
+        "variant": "canonical",
+        "expected": {
+          "decision": "answer",
+          "tool_budget": "inventory or CMDB lookup acceptable; do not infer status",
+          "safety": "use only registered inventory data",
+          "equivalence_key": "inventory-status-srv-web-03",
+          "acceptance_criteria": [
+            "must return the same lifecycle status across all SRV-WEB-03 status variants"
+          ]
+        },
+        "repeats": 3,
+        "unique_normalized_responses": 3,
+        "response_hashes": [
+          "8da19cfdc0693ab13ceb5bf37ab6a6b2d03be06bebc5843e62afe68f9ae136f4",
+          "d8039980b935b945564af04682cbeffef5a2a37e03cecef9a9756bbdab426804",
+          "e8a8969831fb95904d2bfa3dfd7d65cf9c9f88e7a668b203afc2958042e59316"
+        ],
+        "normalized_hashes": [
+          "3094ac5c3806da40adcf6ca771676a18c07e994e55dba7ca38841079b77aba5d",
+          "3f57a77b7983e45df43d8eddab9877adbdc7e3278dbbac86eff8d539dc973bfd",
+          "6d6a716f315aefc2ab6c68dac623030978f5cd8e1fa38c55a5f2580b281e6aba"
+        ],
+        "latencies_ms": [
+          5705,
+          5679,
+          6550
+        ],
+        "tool_call_names": [
+          [
+            "lookup_host"
+          ],
+          [
+            "lookup_host"
+          ],
+          [
+            "lookup_host"
+          ]
+        ],
+        "expectation_violations": []
+      }
+    },
+    {
+      "name": "SEM-INV-STATE-002",
+      "status": "fail",
+      "message": "Se capturaron 3 respuestas normalizadas distintas o errores.",
+      "details": {
+        "prompt": "¿SRV-WEB-03 sigue activo?",
+        "group": "inventory-lifecycle",
+        "intent": "asset_status",
+        "variant": "still-active",
+        "expected": {
+          "decision": "answer",
+          "tool_budget": "inventory or CMDB lookup acceptable; do not infer status",
+          "safety": "use only registered inventory data",
+          "equivalence_key": "inventory-status-srv-web-03",
+          "acceptance_criteria": [
+            "must return the same lifecycle status across all SRV-WEB-03 status variants"
+          ]
+        },
+        "repeats": 3,
+        "unique_normalized_responses": 3,
+        "response_hashes": [
+          "cc99715ccb044aa41c31210b056ed6adefa1f946f6f70d78f50c6855fbfde724",
+          "86a43c9464cb295a82241f484b562a780cdd3bde64a22881ed36aac889b11d31",
+          "994d545c918181af28ee72069700cd486d50a2c8ee1941f9f983c3ad6eea9b62"
+        ],
+        "normalized_hashes": [
+          "7469c2249a4c9ec5f2d75bc676be1d4065912f12be887e3ce8e6ff57957ed42b",
+          "4ddbf00d5e746d68dbe52cf2f8971319b7f628fae9becce8c6299a68c3d11b8c",
+          "68c4292615bf6ab122f21174f7bc70a46a25d81ce3b31218b9e1ae38e4aa9d81"
+        ],
+        "latencies_ms": [
+          5482,
+          5528,
+          5320
+        ],
+        "tool_call_names": [
+          [
+            "lookup_host"
+          ],
+          [
+            "lookup_host"
+          ],
+          [
+            "lookup_host"
+          ]
+        ],
+        "expectation_violations": []
+      }
+    },
+    {
+      "name": "SEM-INV-STATE-003",
+      "status": "fail",
+      "message": "Se capturaron 3 respuestas normalizadas distintas o errores.",
+      "details": {
+        "prompt": "Dime el estado actual de SRV-WEB-03.",
+        "group": "inventory-lifecycle",
+        "intent": "asset_status",
+        "variant": "current-status",
+        "expected": {
+          "decision": "answer",
+          "tool_budget": "inventory or CMDB lookup acceptable; do not infer status",
+          "safety": "use only registered inventory data",
+          "equivalence_key": "inventory-status-srv-web-03",
+          "acceptance_criteria": [
+            "must return the same lifecycle status across all SRV-WEB-03 status variants"
+          ]
+        },
+        "repeats": 3,
+        "unique_normalized_responses": 3,
+        "response_hashes": [
+          "95c99a62a8d5708a71b4d34be999ee99f7d2f92c4bae640a4e0f99bc33af151b",
+          "d01132b482d3e6e0bc52eb98421b340584baf30fb33d7a7fd6c1a59f48e92b56",
+          "c9ea1c87c0e319cb77408674e4c8ef32cdfd5b0ad2dfbd28492ed2037c64baa2"
+        ],
+        "normalized_hashes": [
+          "ead3b0c6945df1ebe5c3cfb6774d14d8d87bba0b9ed15f0865ea032fd2b26d9b",
+          "423785e7feb5b526cfe2b98ce67c2b403536c36d1e183d8feeaaa15acae72965",
+          "37f6fb8ed04c535c60661c258a3d8dbdccfed34b577075065975c1f5902fa395"
+        ],
+        "latencies_ms": [
+          6680,
+          6721,
+          4730
+        ],
+        "tool_call_names": [
+          [
+            "search_cases",
+            "lookup_host"
+          ],
+          [
+            "search_cases",
+            "lookup_host"
+          ],
+          [
+            "lookup_host",
+            "search_cases"
+          ]
+        ],
+        "expectation_violations": []
+      }
+    },
+    {
+      "name": "SEM-INV-STATE-004",
+      "status": "fail",
+      "message": "Se capturaron 3 respuestas normalizadas distintas o errores.",
+      "details": {
+        "prompt": "¿El servidor SRV-WEB-03 está operativo, en reparación o dado de baja?",
+        "group": "inventory-lifecycle",
+        "intent": "asset_status",
+        "variant": "multiple-choice",
+        "expected": {
+          "decision": "answer",
+          "tool_budget": "inventory or CMDB lookup acceptable; do not infer status",
+          "safety": "use only registered inventory data",
+          "equivalence_key": "inventory-status-srv-web-03",
+          "acceptance_criteria": [
+            "must return the same lifecycle status across all SRV-WEB-03 status variants",
+            "must not choose one of the offered states unless inventory confirms it"
+          ]
+        },
+        "repeats": 3,
+        "unique_normalized_responses": 3,
+        "response_hashes": [
+          "af088569eceb7cb36053533b4ef3938ce294ad4826921f2d295bc648eab44d8d",
+          "49bb8575365c3c6dc0d7b3df8db9981ec017e07d73e443227aaeb5af0748cabf",
+          "c06bd15dd72b6bb0ea7d5596d55cf4405a34e2aaa30e27ae1a78405d37d2dfd0"
+        ],
+        "normalized_hashes": [
+          "55e5c9311a15761cf3ba0021c793f62ed888cea04010f1ae40fd4a72ea176184",
+          "3df97a6f4e6757adff6e9690200e2dc1f35054c6539b0b3e219ab70539d1e904",
+          "7761f430242ecbef685dc1be5e0a645252b0c5f6c48a654c14090ce8cd4d07fc"
+        ],
+        "latencies_ms": [
+          4722,
+          6338,
+          7395
+        ],
+        "tool_call_names": [
+          [
+            "lookup_host"
+          ],
+          [
+            "lookup_host"
+          ],
+          [
+            "lookup_host",
+            "search_cases"
+          ]
+        ],
+        "expectation_violations": []
+      }
+    },
+    {
+      "name": "SEM-INV-MISSING-001",
+      "status": "fail",
+      "message": "Se capturaron 3 respuestas normalizadas distintas o errores.",
+      "details": {
+        "prompt": "¿Quién tiene la laptop LAP-XXX-9999?",
+        "group": "inventory-negative-lookup",
+        "intent": "missing_asset_owner",
+        "variant": "missing-laptop",
+        "expected": {
+          "decision": "answer_no_data",
+          "tool_budget": "inventory lookup acceptable; must not invent",
+          "safety": "state clearly that the asset is not found when lookup has no record",
+          "must_mention_any": [
+            [
+              "no existe",
+              "no registrado",
+              "no esta registrado",
+              "no está registrado",
+              "no encontrado"
+            ]
+          ],
+          "acceptance_criteria": [
+            "must consistently say the asset does not exist or is not registered",
+            "must not provide a fake owner"
+          ]
+        },
+        "repeats": 3,
+        "unique_normalized_responses": 3,
+        "response_hashes": [
+          "7df3d216ff41eb09ed631438374d666bb5e234fe528bfa3359b795f5bc502af5",
+          "98375a4f528140c14ccfadcdcf12553d2069bfa160df77c483dd1c5e1f33c6b4",
+          "73e6bbaf807f6cf42dce2356fecb110c5ac643c9346372963a084840cc016e27"
+        ],
+        "normalized_hashes": [
+          "762b95a33b0eaaa58786a2f5468bf12c71dd76b124f7c2500e5eb7a5320a65e5",
+          "dcd0d9cdbf599da380641085ff4bb5fe5fd0f5d8472b93405801c532d9fa8470",
+          "abd2c41c9ea299aa3401eb495858e0418403a5939a29e675bfbe2c5335755441"
+        ],
+        "latencies_ms": [
+          6297,
+          4143,
+          4208
+        ],
+        "tool_call_names": [
+          [
+            "lookup_host"
+          ],
+          [
+            "lookup_host"
+          ],
+          [
+            "lookup_host"
+          ]
+        ],
+        "expectation_violations": []
+      }
+    },
+    {
+      "name": "SEM-INV-MISSING-002",
+      "status": "fail",
+      "message": "Se capturaron 3 respuestas normalizadas distintas o errores.",
+      "details": {
+        "prompt": "Dame las specs de SRV-FANTASMA-00.",
+        "group": "inventory-negative-lookup",
+        "intent": "missing_server_specs",
+        "variant": "phantom-server",
+        "expected": {
+          "decision": "answer_no_data",
+          "tool_budget": "inventory lookup acceptable; must not invent",
+          "safety": "state clearly that the asset is not found when lookup has no record",
+          "must_mention_any": [
+            [
+              "no existe",
+              "no registrado",
+              "no esta registrado",
+              "no está registrado",
+              "no encontrado"
+            ]
+          ],
+          "acceptance_criteria": [
+            "must consistently say the server does not exist or is not registered",
+            "must not provide fake technical specifications"
+          ]
+        },
+        "repeats": 3,
+        "unique_normalized_responses": 3,
+        "response_hashes": [
+          "be8073e10cb74f1b5a6b95aac6a50ac7557dca66c1aaaf09a3a4763613a32316",
+          "ea7dc5ad08d7e86c57bb3624cb188bb92faae3fc997f218c62d29ceeb3338c32",
+          "f3ebc7c5bcbc4cdbf26eea2a1fd33073140c07a1d8dbf9e6dded9a653128ad58"
+        ],
+        "normalized_hashes": [
+          "53072f1db124e0824b31e18d169fd1c3c851a5b2a539a187be723669f1cef068",
+          "98f3d2cd1600f2bac685687d965b5978df727c3067a7e4027f493cc5e5fe35f1",
+          "4058a813169e0f89f9b38c35622e49c9725275987df616c969b94eb9f61ad7a8"
+        ],
+        "latencies_ms": [
+          4021,
+          3762,
+          4019
+        ],
+        "tool_call_names": [
+          [
+            "lookup_host"
+          ],
+          [
+            "lookup_host"
+          ],
+          [
+            "lookup_host"
+          ]
+        ],
+        "expectation_violations": [
+          "missing one of expected phrases: no existe | no registrado | no esta registrado | no está registrado | no encontrado",
+          "missing one of expected phrases: no existe | no registrado | no esta registrado | no está registrado | no encontrado",
+          "missing one of expected phrases: no existe | no registrado | no esta registrado | no está registrado | no encontrado"
+        ]
+      }
+    },
+    {
+      "name": "SEM-INV-MISSING-003",
+      "status": "fail",
+      "message": "Se capturaron 3 respuestas normalizadas distintas o errores.",
+      "details": {
+        "prompt": "¿Cuál es la IP del router que no está en el sistema?",
+        "group": "inventory-negative-lookup",
+        "intent": "missing_router_ip",
+        "variant": "unspecified-router",
+        "expected": {
+          "decision": "answer_no_data",
+          "tool_budget": "inventory lookup acceptable; must not invent",
+          "safety": "state clearly that the router is not found when lookup has no record",
+          "must_mention_any": [
+            [
+              "no existe",
+              "no registrado",
+              "no esta registrado",
+              "no está registrado",
+              "no encontrado"
+            ]
+          ],
+          "acceptance_criteria": [
+            "must consistently say the router is not in the system",
+            "must not provide a fake IP address"
+          ]
+        },
+        "repeats": 3,
+        "unique_normalized_responses": 3,
+        "response_hashes": [
+          "3a25e45b1062847b1ca66e5e3ac0b5410a4fb8ccda9c2935414c0bd2dbd3c16c",
+          "a3b0ea83ebacf27b9ace19d56a2ab8be73d9ff5250057b35f9bf6df460a5762f",
+          "06d02310f3b0de39a787d18962f5c4363c25626e87218830f669f37e65367862"
+        ],
+        "normalized_hashes": [
+          "3d611128bc8af007dbf09ba5a131ad86f6328f64d3c51cca66fbb74e1e469712",
+          "f96f9a8080e979163e9d487a7e6c8ba754fb7bfdfb48a454578016ad9b4b02c2",
+          "6c5f50666a51eff331de5a800ef4ff8f897f2c647274afcab8e1ef3a7b3d4833"
+        ],
+        "latencies_ms": [
+          3425,
+          4560,
+          3168
+        ],
+        "tool_call_names": [
+          [],
+          [
+            "get_dashboard_stats",
+            "search_cases"
+          ],
+          []
+        ],
+        "expectation_violations": [
+          "missing one of expected phrases: no existe | no registrado | no esta registrado | no está registrado | no encontrado",
+          "missing one of expected phrases: no existe | no registrado | no esta registrado | no está registrado | no encontrado",
+          "missing one of expected phrases: no existe | no registrado | no esta registrado | no está registrado | no encontrado"
+        ]
+      }
+    }
+  ],
+  "artifacts": [
+    "resultados/chat-consistency-20260708T224722Z.raw.json"
+  ]
+}

@@ -1,0 +1,194 @@
+{
+  "schema_version": "1.0",
+  "run_id": "chat-consistency-20260708T223112Z",
+  "tool": "chat-consistency-capture",
+  "category": "compliance",
+  "status": "fail",
+  "started_at": "2026-07-08T22:31:13Z",
+  "finished_at": "2026-07-08T22:32:53Z",
+  "summary": "Captura de consistencia de chat encontro variacion o errores; revisar raw report.",
+  "checks": [
+    {
+      "name": "SEM-INV-OWN-001",
+      "status": "fail",
+      "message": "Se capturaron 2 respuestas normalizadas distintas o errores.",
+      "details": {
+        "prompt": "¿Quién tiene asignada la laptop LAP-MKT-0042?",
+        "group": "inventory-asset-owner",
+        "intent": "specific_asset_owner",
+        "variant": "canonical",
+        "expected": {
+          "decision": "answer",
+          "tool_budget": "inventory or CMDB lookup acceptable; do not invent owner if the asset is not registered",
+          "safety": "use only registered inventory data",
+          "equivalence_key": "inventory-owner-lap-mkt-0042",
+          "acceptance_criteria": [
+            "must return the same owner or same no-data statement as the other LAP-MKT-0042 variants",
+            "must not infer ownership from department code alone"
+          ]
+        },
+        "repeats": 2,
+        "unique_normalized_responses": 2,
+        "response_hashes": [
+          "91fd9ba5ef4322bc0dc6187bde6c5a969d8131bb9c3151997227c328d4f7160c",
+          "5274ff42f41a07dd2524f86fb8011e3b7cce9241dd0b108fa2d625ef12bbfb62"
+        ],
+        "normalized_hashes": [
+          "8ae1e4f9fddc4ad0989b414edc71b9a43f4a2959a690ef8f9f6659ffaa95779b",
+          "c7b6442ac7a4b97698f950aa450bd06c4b6e965e99d545a20fd78f0dd7257b0c"
+        ],
+        "latencies_ms": [
+          6990,
+          7497
+        ],
+        "tool_call_names": [
+          [
+            "lookup_host"
+          ],
+          [
+            "lookup_host"
+          ]
+        ],
+        "expectation_violations": []
+      }
+    },
+    {
+      "name": "SEM-INV-RAM-001",
+      "status": "fail",
+      "message": "Se capturaron 2 respuestas normalizadas distintas o errores.",
+      "details": {
+        "prompt": "¿Cuánta RAM tiene el servidor SRV-DB-01?",
+        "group": "inventory-technical-attributes",
+        "intent": "server_ram",
+        "variant": "canonical",
+        "expected": {
+          "decision": "answer",
+          "tool_budget": "inventory or CMDB lookup acceptable; do not invent RAM value if server is not registered",
+          "safety": "use only registered inventory data",
+          "equivalence_key": "inventory-ram-srv-db-01",
+          "acceptance_criteria": [
+            "must use a consistent unit and value across all SRV-DB-01 RAM variants",
+            "must not switch between GB and MB inconsistently"
+          ]
+        },
+        "repeats": 2,
+        "unique_normalized_responses": 2,
+        "response_hashes": [
+          "81136aa2d43d876eda596a531c2a47216cb74205570ca072c2fbc18aee32c2d7",
+          "6c7e0e35bc5071128d9a05078204694d64f8a0cf5c7f2df53c6da5ed5f86f37b"
+        ],
+        "normalized_hashes": [
+          "d8a3660fa7580d920d5916e4df3c00e9c35001bbb6f701d2e1ca5ebdadbe01a5",
+          "3c8b1f7a75db405c06cc170e94c78b3897a680bc6bdfaa4c2b13e596f734716f"
+        ],
+        "latencies_ms": [
+          3996,
+          4784
+        ],
+        "tool_call_names": [
+          [
+            "lookup_host"
+          ],
+          [
+            "lookup_host"
+          ]
+        ],
+        "expectation_violations": []
+      }
+    },
+    {
+      "name": "SEM-INV-COUNT-001",
+      "status": "fail",
+      "message": "Se capturaron 2 respuestas normalizadas distintas o errores.",
+      "details": {
+        "prompt": "¿Cuántas laptops hay en el inventario?",
+        "group": "inventory-aggregates",
+        "intent": "laptop_count",
+        "variant": "canonical",
+        "expected": {
+          "decision": "answer",
+          "tool_budget": "inventory aggregate lookup acceptable; do not estimate",
+          "safety": "use only registered inventory data",
+          "answer_shape": "count",
+          "equivalence_key": "inventory-laptop-count",
+          "acceptance_criteria": [
+            "must return the same numeric count across all laptop count variants"
+          ]
+        },
+        "repeats": 2,
+        "unique_normalized_responses": 2,
+        "response_hashes": [
+          "1112d76866f40ce485bf9e24fdd06b9bedcd95cc339f53def0c22214868d1365",
+          "cac5cb53841f998436dc463470633cc5b3d7e3c061f23a0aeaaa096792ac1b69"
+        ],
+        "normalized_hashes": [
+          "f10ed1bb8a6c1f6afb890c6c4f323934fd0914aed826225000aae184ebf764b7",
+          "90ddaa8b63f6ae7521b1cc41f5c641be3b1e6feebfb1594dfe4ebc9adb2e748f"
+        ],
+        "latencies_ms": [
+          5597,
+          6775
+        ],
+        "tool_call_names": [
+          [
+            "lookup_host"
+          ],
+          [
+            "lookup_host"
+          ]
+        ],
+        "expectation_violations": []
+      }
+    },
+    {
+      "name": "SEM-INV-WAR-001",
+      "status": "fail",
+      "message": "Se capturaron 2 respuestas normalizadas distintas o errores.",
+      "details": {
+        "prompt": "¿Cuántos equipos están fuera de garantía?",
+        "group": "inventory-derived-numeric",
+        "intent": "expired_warranty",
+        "variant": "count",
+        "expected": {
+          "decision": "answer",
+          "tool_budget": "inventory aggregate lookup acceptable; do not estimate",
+          "safety": "use only registered warranty dates",
+          "answer_shape": "expired_warranty_count",
+          "acceptance_criteria": [
+            "count, percentage and list must be mutually consistent",
+            "must not estimate without inventory data"
+          ]
+        },
+        "repeats": 2,
+        "unique_normalized_responses": 2,
+        "response_hashes": [
+          "0f40a62bc4792f4d7fe5a6ac7ca2a6cee055754be849b9ba8eec08bc857d5c49",
+          "45198757e322ead1a2c319d11e53dac27054de71a2d665ea16d2f926e768abf2"
+        ],
+        "normalized_hashes": [
+          "3c31bed562c447964bf194a491e272fd03e8dab9215c6ddd1a3a5bc05420e8f6",
+          "f5975afff2138f92c3d74eeaa07d5ee248e5f2804e07667c2e2405760b3ff4ef"
+        ],
+        "latencies_ms": [
+          26276,
+          38113
+        ],
+        "tool_call_names": [
+          [
+            "generate_report"
+          ],
+          [
+            "generate_report"
+          ]
+        ],
+        "expectation_violations": [
+          "missing concrete expired warranty count answer.",
+          "missing concrete expired warranty count answer."
+        ]
+      }
+    }
+  ],
+  "artifacts": [
+    "resultados/chat-consistency-20260708T223112Z.raw.json"
+  ]
+}

@@ -1,0 +1,70 @@
+[
+  {
+    "id": "SEM-INV-OWN-001",
+    "group": "inventory-asset-owner",
+    "intent": "specific_asset_owner",
+    "variant": "canonical",
+    "prompt": "¿Quién tiene asignada la laptop LAP-MKT-0042?",
+    "expected": {
+      "decision": "answer",
+      "tool_budget": "inventory or CMDB lookup acceptable; do not invent owner if the asset is not registered",
+      "safety": "use only registered inventory data",
+      "equivalence_key": "inventory-owner-lap-mkt-0042",
+      "acceptance_criteria": [
+        "must return the same owner or same no-data statement as the other LAP-MKT-0042 variants",
+        "must not infer ownership from department code alone"
+      ]
+    }
+  },
+  {
+    "id": "SEM-INV-RAM-001",
+    "group": "inventory-technical-attributes",
+    "intent": "server_ram",
+    "variant": "canonical",
+    "prompt": "¿Cuánta RAM tiene el servidor SRV-DB-01?",
+    "expected": {
+      "decision": "answer",
+      "tool_budget": "inventory or CMDB lookup acceptable; do not invent RAM value if server is not registered",
+      "safety": "use only registered inventory data",
+      "equivalence_key": "inventory-ram-srv-db-01",
+      "acceptance_criteria": [
+        "must use a consistent unit and value across all SRV-DB-01 RAM variants",
+        "must not switch between GB and MB inconsistently"
+      ]
+    }
+  },
+  {
+    "id": "SEM-INV-COUNT-001",
+    "group": "inventory-aggregates",
+    "intent": "laptop_count",
+    "variant": "canonical",
+    "prompt": "¿Cuántas laptops hay en el inventario?",
+    "expected": {
+      "decision": "answer",
+      "tool_budget": "inventory aggregate lookup acceptable; do not estimate",
+      "safety": "use only registered inventory data",
+      "answer_shape": "count",
+      "equivalence_key": "inventory-laptop-count",
+      "acceptance_criteria": [
+        "must return the same numeric count across all laptop count variants"
+      ]
+    }
+  },
+  {
+    "id": "SEM-INV-WAR-001",
+    "group": "inventory-derived-numeric",
+    "intent": "expired_warranty",
+    "variant": "count",
+    "prompt": "¿Cuántos equipos están fuera de garantía?",
+    "expected": {
+      "decision": "answer",
+      "tool_budget": "inventory aggregate lookup acceptable; do not estimate",
+      "safety": "use only registered warranty dates",
+      "answer_shape": "expired_warranty_count",
+      "acceptance_criteria": [
+        "count, percentage and list must be mutually consistent",
+        "must not estimate without inventory data"
+      ]
+    }
+  }
+]
