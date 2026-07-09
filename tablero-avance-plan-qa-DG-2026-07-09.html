@@ -1,0 +1,437 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Tablero de avance · Plan QA & Cumplimiento</title>
+<style>
+  :root{
+    color-scheme: dark;
+    --bg:#16191e; --panel:#1b1f26; --panel-2:#20242c;
+    --text:#c9d1d9; --dim:#8b949e; --border:#2a2f38; --track:#2a2f38;
+    --amber:#f0b429; --green:#3fb950; --lime:#c7ff00;
+    --amber-soft:rgba(240,180,41,.14); --amber-line:rgba(240,180,41,.55);
+  }
+  @media (prefers-color-scheme: light){
+    :root{
+      color-scheme: light;
+      --bg:#eef1f4; --panel:#ffffff; --panel-2:#f4f6f8;
+      --text:#1b2027; --dim:#57606a; --border:#d5dbe1; --track:#e3e8ed;
+      --amber:#b9820a; --green:#2ea043; --lime:#5f8a00;
+      --amber-soft:rgba(185,130,10,.10); --amber-line:rgba(185,130,10,.5);
+    }
+  }
+  :root[data-theme="dark"]{
+    color-scheme: dark;
+    --bg:#16191e; --panel:#1b1f26; --panel-2:#20242c;
+    --text:#c9d1d9; --dim:#8b949e; --border:#2a2f38; --track:#2a2f38;
+    --amber:#f0b429; --green:#3fb950; --lime:#c7ff00;
+    --amber-soft:rgba(240,180,41,.14); --amber-line:rgba(240,180,41,.55);
+  }
+  :root[data-theme="light"]{
+    color-scheme: light;
+    --bg:#eef1f4; --panel:#ffffff; --panel-2:#f4f6f8;
+    --text:#1b2027; --dim:#57606a; --border:#d5dbe1; --track:#e3e8ed;
+    --amber:#b9820a; --green:#2ea043; --lime:#5f8a00;
+    --amber-soft:rgba(185,130,10,.10); --amber-line:rgba(185,130,10,.5);
+  }
+
+  *{box-sizing:border-box}
+  html{-webkit-text-size-adjust:100%}
+  body{
+    margin:0; background:var(--bg); color:var(--text);
+    font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, "Liberation Mono", monospace;
+    font-size:14px; line-height:1.55;
+    padding:28px 16px 64px;
+  }
+  .wrap{max-width:760px; margin:0 auto; display:flex; flex-direction:column; gap:20px}
+
+  /* ---- header ---- */
+  header.top{display:flex; flex-direction:column; gap:6px}
+  .eyebrow{color:var(--dim); font-size:12px; letter-spacing:.14em; text-transform:uppercase}
+  h1{font-size:19px; margin:0; font-weight:700; letter-spacing:.01em; text-wrap:balance}
+  .meta{color:var(--dim); font-size:12.5px}
+  .meta b{color:var(--text); font-weight:600}
+
+  /* ---- panels ---- */
+  .panel{background:var(--panel); border:1px solid var(--border); border-radius:8px; padding:18px 18px 20px}
+  .panel > h2{
+    margin:0 0 14px; font-size:12px; letter-spacing:.14em; text-transform:uppercase; color:var(--dim);
+    font-weight:700; display:flex; align-items:baseline; gap:10px;
+  }
+  .panel > h2 .hint{letter-spacing:.02em; text-transform:none; font-weight:400; color:var(--dim); font-size:11.5px}
+
+  /* ---- bar rows ---- */
+  .rows{display:flex; flex-direction:column; gap:12px}
+  .row{display:grid; grid-template-columns: 1fr; gap:5px}
+  .row .rlabel{font-size:13px; color:var(--text); display:flex; justify-content:space-between; gap:12px; align-items:baseline}
+  .row .rlabel .num{color:var(--dim); font-variant-numeric:tabular-nums; font-size:12.5px; white-space:nowrap}
+  .row .rlabel .num b{color:var(--text)}
+  .bar{position:relative; height:14px; background:var(--track); border-radius:3px; overflow:hidden}
+  .fill{position:absolute; inset:0 auto 0 0; height:100%; border-radius:3px 0 0 3px}
+  .fill.amber{background:var(--amber)}
+  .fill.green{background:var(--green)}
+  .fill.lime{background:var(--lime)}
+  .fill.zero{background:transparent}
+
+  .legend{display:flex; flex-wrap:wrap; gap:14px; margin-top:16px; padding-top:14px; border-top:1px solid var(--border); font-size:11.5px; color:var(--dim)}
+  .legend span{display:inline-flex; align-items:center; gap:6px}
+  .sw{width:11px; height:11px; border-radius:2px; display:inline-block}
+  .sw.amber{background:var(--amber)} .sw.green{background:var(--green)} .sw.lime{background:var(--lime)} .sw.track{background:var(--track); border:1px solid var(--border)}
+
+  /* pending strip */
+  .pend{margin-top:16px; padding-top:14px; border-top:1px solid var(--border)}
+  .pend .ph{font-size:11.5px; letter-spacing:.1em; text-transform:uppercase; color:var(--dim); margin-bottom:8px}
+  .pend ul{margin:0; padding:0; list-style:none; display:flex; flex-direction:column; gap:6px}
+  .pend li{font-size:12.5px; color:var(--dim); display:flex; gap:8px}
+  .pend li::before{content:"\2b1c"; }
+  .pend li b{color:var(--text); font-weight:600}
+
+  /* ---- verify panel ---- */
+  .verify-panel{background:var(--panel); border:1px solid var(--amber-line); border-left:3px solid var(--amber); border-radius:8px; padding:18px}
+  .verify-panel > h2{margin:0 0 6px; font-size:12px; letter-spacing:.14em; text-transform:uppercase; color:var(--amber); font-weight:700}
+  .verify-intro{color:var(--dim); font-size:12.5px; margin:0 0 16px}
+  .verify-intro code{background:var(--panel-2); border:1px solid var(--border); border-radius:4px; padding:1px 5px; color:var(--text)}
+  .gate-group{margin-top:16px}
+  .gate-group:first-of-type{margin-top:0}
+  .gate-title{font-size:11.5px; letter-spacing:.08em; text-transform:uppercase; color:var(--dim); margin:0 0 10px; padding-bottom:6px; border-bottom:1px dashed var(--border)}
+  .vlist{display:flex; flex-direction:column; gap:10px}
+  .v{background:var(--panel-2); border:1px solid var(--border); border-radius:6px; padding:11px 12px}
+  .v-head{display:flex; align-items:baseline; gap:8px; flex-wrap:wrap}
+  .v-mark{color:var(--amber)}
+  .v-title{font-weight:600; color:var(--text); font-size:13px}
+  .v-mod{margin-left:auto; font-size:11px; color:var(--dim); background:var(--panel); border:1px solid var(--border); border-radius:4px; padding:1px 7px; white-space:nowrap}
+  .v-steps{margin:8px 0 0; padding-left:18px; color:var(--dim); font-size:12.5px; display:flex; flex-direction:column; gap:3px}
+  .v-steps code{background:var(--panel); border:1px solid var(--border); border-radius:4px; padding:0 4px; color:var(--text); font-size:12px; word-break:break-word}
+  .v-foot{margin-top:8px; font-size:11.5px; color:var(--dim); display:flex; gap:8px; flex-wrap:wrap; align-items:center}
+  .v-foot .time{color:var(--text); font-variant-numeric:tabular-nums}
+  a{color:var(--amber); text-decoration:none; border-bottom:1px solid transparent}
+  a:hover{border-bottom-color:var(--amber)}
+  a:focus-visible{outline:2px solid var(--amber); outline-offset:2px; border-radius:2px}
+
+  /* ---- bitacora ---- */
+  .log{display:flex; flex-direction:column; gap:0}
+  .log .entry{display:grid; grid-template-columns:96px 1fr; gap:14px; padding:11px 0; border-top:1px solid var(--border)}
+  .log .entry:first-child{border-top:0}
+  .log .date{color:var(--dim); font-variant-numeric:tabular-nums; font-size:12.5px}
+  .log .what{font-size:12.5px}
+  .log .what b{color:var(--text)}
+  .log .what{color:var(--dim)}
+
+  .foot{color:var(--dim); font-size:11.5px; text-align:center; line-height:1.7}
+  @media (max-width:520px){
+    .log .entry{grid-template-columns:1fr; gap:2px}
+    .v-mod{margin-left:0}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <!-- (1) TITULO -->
+  <header class="top">
+    <div class="eyebrow">QA / Quality Engineering</div>
+    <h1>Tablero de avance · Plan QA &amp; Cumplimiento</h1>
+    <div class="meta">Corte al <b>2026-07-09</b> · Fase en curso: <b>F0 — Fundamentos</b> · Estados derivados de la evidencia del repositorio. Verificado del dueño = lo que tú confirmas a mano.</div>
+  </header>
+
+  <!-- (2) GENERAL -->
+  <section class="panel">
+    <h2>General <span class="hint">36 hitos en total</span></h2>
+    <div class="rows">
+      <div class="row">
+        <div class="rlabel"><span>Construido</span><span class="num"><b>30</b>/36 · 83%</span></div>
+        <div class="bar"><span class="fill amber" style="width:83.3%"></span></div>
+      </div>
+      <div class="row">
+        <div class="rlabel"><span>Verificado por ti</span><span class="num"><b>0</b>/36 · 0%</span></div>
+        <div class="bar"><span class="fill green zero" style="width:0%"></span></div>
+      </div>
+    </div>
+    <div class="legend">
+      <span><i class="sw amber"></i> Construido</span>
+      <span><i class="sw green"></i> Verificado (dueño)</span>
+      <span><i class="sw lime"></i> Total de fase</span>
+      <span><i class="sw track"></i> Pendiente</span>
+    </div>
+  </section>
+
+  <!-- (3) POR GATE -->
+  <section class="panel">
+    <h2>Por gate <span class="hint">construido / total del gate</span></h2>
+    <div class="rows">
+      <div class="row">
+        <div class="rlabel"><span>F0 · Fundamentos</span><span class="num"><b>15</b>/15</span></div>
+        <div class="bar"><span class="fill amber" style="width:100%"></span></div>
+      </div>
+      <div class="row">
+        <div class="rlabel"><span>G1 · E2E / Plataforma</span><span class="num"><b>4</b>/6</span></div>
+        <div class="bar"><span class="fill amber" style="width:66.7%"></span></div>
+      </div>
+      <div class="row">
+        <div class="rlabel"><span>G2 · Seguridad</span><span class="num"><b>5</b>/6</span></div>
+        <div class="bar"><span class="fill amber" style="width:83.3%"></span></div>
+      </div>
+      <div class="row">
+        <div class="rlabel"><span>G3 · CP-11 Consistencia LLM / RAG</span><span class="num"><b>3</b>/4</span></div>
+        <div class="bar"><span class="fill amber" style="width:75%"></span></div>
+      </div>
+      <div class="row">
+        <div class="rlabel"><span>G4 · CP-12 Agentic evals</span><span class="num"><b>2</b>/3</span></div>
+        <div class="bar"><span class="fill amber" style="width:66.7%"></span></div>
+      </div>
+      <div class="row">
+        <div class="rlabel"><span>G5 · Carga</span><span class="num"><b>1</b>/2</span></div>
+        <div class="bar"><span class="fill amber" style="width:50%"></span></div>
+      </div>
+    </div>
+    <div class="pend">
+      <div class="ph">Pendiente en cada gate (⬜, 6 hitos)</div>
+      <ul>
+        <li><b>G1 · CP-01 borrado de datos</b> — registrado skipped; mecanismo aún no implementado.</li>
+        <li><b>G1 · CP-03 DSAR / acceso</b> — registrado skipped; export/acceso aún no implementado.</li>
+        <li><b>G2 · Suite Playwright CP-02 y CP-04..CP-10</b> — Fase 2 sin cerrar.</li>
+        <li><b>G3 · Golden set RAG + monitoreo Prometheus/Grafana</b> — pendientes de habilitación de observabilidad.</li>
+        <li><b>G4 · Suite de regresión de safety con baselines de model-drift</b> — sin versionar aún.</li>
+        <li><b>G5 · CP-05 carga parametrizable con SLO por endpoint</b> — falta framework k6/Locust.</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- (4) ZOOM F0 -->
+  <section class="panel">
+    <h2>Zoom a la fase en curso · F0 <span class="hint">totales de fase</span></h2>
+    <div class="rows">
+      <div class="row">
+        <div class="rlabel"><span>F0.a · Repo, estructura y escaneos base</span><span class="num"><b>7</b>/7</span></div>
+        <div class="bar"><span class="fill lime" style="width:100%"></span></div>
+      </div>
+      <div class="row">
+        <div class="rlabel"><span>F0.b · Empaque, publicación y app base</span><span class="num"><b>8</b>/8</span></div>
+        <div class="bar"><span class="fill lime" style="width:100%"></span></div>
+      </div>
+      <div class="row">
+        <div class="rlabel"><span>F0 total</span><span class="num"><b>15</b>/15</span></div>
+        <div class="bar"><span class="fill lime" style="width:100%"></span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- (5) TE TOCA VERIFICAR -->
+  <section class="verify-panel">
+    <h2>Te toca verificar</h2>
+    <p class="verify-intro">30 hitos están construidos (🔶) y esperan tu visto bueno. Arranca la app QA con <code>npm run dev</code> y abre <code>http://localhost:3000</code>; cada bloque dice el módulo exacto o el comando. Cada revisión es de 10 min o menos.</p>
+
+    <div class="gate-group">
+      <h3 class="gate-title">F0.a · Repo, estructura y escaneos base</h3>
+      <div class="vlist">
+        <div class="v">
+          <div class="v-head"><span class="v-mark">🔶</span><span class="v-title">Repositorio Git inicializado</span><span class="v-mod">terminal</span></div>
+          <ul class="v-steps"><li><code>git -C /cum remote -v</code> → origin = <code>github.com/Luis03David/QA_Cumplimiento</code></li><li><code>git log --oneline -1</code> devuelve el último commit</li></ul>
+          <div class="v-foot"><span class="time">~2 min</span></div>
+        </div>
+        <div class="v">
+          <div class="v-head"><span class="v-mark">🔶</span><span class="v-title">Estructura base de carpetas</span><span class="v-mod">terminal</span></div>
+          <ul class="v-steps"><li><code>ls tests/e2e tests/load tests/security config resultados docs scripts</code> → todas existen</li></ul>
+          <div class="v-foot"><span class="time">~1 min</span></div>
+        </div>
+        <div class="v">
+          <div class="v-head"><span class="v-mark">🔶</span><span class="v-title">Contrato de resultados JSON</span><span class="v-mod">config/result.schema.json</span></div>
+          <ul class="v-steps"><li>Abre <code>config/result.schema.json</code> y confirma campos <code>surface</code>, <code>family</code>, <code>status</code>, <code>compliance_control</code></li></ul>
+          <div class="v-foot"><span class="time">~3 min</span></div>
+        </div>
+        <div class="v">
+          <div class="v-head"><span class="v-mark">🔶</span><span class="v-title">Documentación del formato</span><span class="v-mod">docs/result-format.md</span></div>
+          <ul class="v-steps"><li>Abre <code>docs/result-format.md</code>; describe los mismos campos del schema</li></ul>
+          <div class="v-foot"><span class="time">~2 min</span></div>
+        </div>
+        <div class="v">
+          <div class="v-head"><span class="v-mark">🔶</span><span class="v-title">Matriz de trazabilidad inicial</span><span class="v-mod">?tab=compliance</span></div>
+          <ul class="v-steps"><li>Abre <a href="http://localhost:3000/?tab=compliance">/?tab=compliance</a> y coteja contra <code>docs/traceability.md</code>: requisito → control → caso → evidencia</li></ul>
+          <div class="v-foot"><span class="time">~4 min</span></div>
+        </div>
+        <div class="v">
+          <div class="v-head"><span class="v-mark">🔶</span><span class="v-title">Escaneo de dependencias</span><span class="v-mod">?tab=seguridad</span></div>
+          <ul class="v-steps"><li>Abre <a href="http://localhost:3000/?tab=seguridad">/?tab=seguridad</a>; abre la última corrida <code>dependency-audit</code>: estado <code>pass</code> con timestamp</li></ul>
+          <div class="v-foot"><span class="time">~5 min</span></div>
+        </div>
+        <div class="v">
+          <div class="v-head"><span class="v-mark">🔶</span><span class="v-title">Escaneo de secretos</span><span class="v-mod">?tab=seguridad</span></div>
+          <ul class="v-steps"><li>En <a href="http://localhost:3000/?tab=seguridad">/?tab=seguridad</a> abre la última corrida <code>secret-scan</code>: estado <code>pass</code> (fallback regex documentado)</li></ul>
+          <div class="v-foot"><span class="time">~5 min</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="gate-group">
+      <h3 class="gate-title">F0.b · Empaque, publicación y app base</h3>
+      <div class="vlist">
+        <div class="v">
+          <div class="v-head"><span class="v-mark">🔶</span><span class="v-title">Evidencia inicial en resultados/</span><span class="v-mod">?tab=corridas</span></div>
+          <ul class="v-steps"><li>Abre <a href="http://localhost:3000/?tab=corridas">/?tab=corridas</a>; filtra <code>dependency-audit</code> y <code>secret-scan</code>: cada uno con timestamp y estado</li></ul>
+          <div class="v-foot"><span class="time">~3 min</span></div>
+        </div>
+        <div class="v">
+          <div class="v-head"><span class="v-mark">🔶</span><span class="v-title">Imagen Docker validada localmente</span><span class="v-mod">terminal</span></div>
+          <ul class="v-steps"><li><code>docker build -t qa-cumplimiento:local .</code></li><li><code>docker run --rm qa-cumplimiento:local</code> arranca sin error</li></ul>
+          <div class="v-foot"><span class="time">~8 min</span></div>
+        </div>
+        <div class="v">
+          <div class="v-head"><span class="v-mark">🔶</span><span class="v-title">Git remoto configurado</span><span class="v-mod">terminal</span></div>
+          <ul class="v-steps"><li><code>git ls-remote origin</code> responde contra el repo QA_Cumplimiento</li></ul>
+          <div class="v-foot"><span class="time">~2 min</span></div>
+        </div>
+        <div class="v">
+          <div class="v-head"><span class="v-mark">🔶</span><span class="v-title">Publicación Docker preparada</span><span class="v-mod">.github/workflows/</span></div>
+          <ul class="v-steps"><li>Revisa el workflow en <code>.github/</code>: dispara en tag <code>v*</code> y usa secrets <code>DOCKERHUB_USERNAME</code> / <code>DOCKERHUB_TOKEN</code></li></ul>
+          <div class="v-foot"><span class="time">~4 min</span></div>
+        </div>
+        <div class="v">
+          <div class="v-head"><span class="v-mark">🔶</span><span class="v-title">Versionado semántico automático</span><span class="v-mod">git-release.sh</span></div>
+          <ul class="v-steps"><li>Abre <code>git-release.sh</code>: calcula semver desde commits o flags <code>--patch/--minor/--major</code> y crea el tag</li></ul>
+          <div class="v-foot"><span class="time">~3 min</span></div>
+        </div>
+        <div class="v">
+          <div class="v-head"><span class="v-mark">🔶</span><span class="v-title">App Mission Control QA (Next.js)</span><span class="v-mod">?tab=inicio</span></div>
+          <ul class="v-steps"><li><code>npm run dev</code> y abre <a href="http://localhost:3000/?tab=inicio">/?tab=inicio</a>: carga y muestra conteos por superficie leídos de resultados/</li></ul>
+          <div class="v-foot"><span class="time">~5 min</span></div>
+        </div>
+        <div class="v">
+          <div class="v-head"><span class="v-mark">🔶</span><span class="v-title">Runbook operativo</span><span class="v-mod">RUNBOOK.md</span></div>
+          <ul class="v-steps"><li>Sigue el arranque de <code>RUNBOOK.md</code> de inicio a fin sin pasos rotos</li></ul>
+          <div class="v-foot"><span class="time">~6 min</span></div>
+        </div>
+        <div class="v">
+          <div class="v-head"><span class="v-mark">🔶</span><span class="v-title">README del proyecto</span><span class="v-mod">README.md</span></div>
+          <ul class="v-steps"><li>Los comandos del <code>README.md</code> coinciden con los scripts de <code>package.json</code></li></ul>
+          <div class="v-foot"><span class="time">~4 min</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="gate-group">
+      <h3 class="gate-title">G1 · E2E / Plataforma</h3>
+      <div class="vlist">
+        <div class="v">
+          <div class="v-head"><span class="v-mark">🔶</span><span class="v-title">Configuración de Playwright</span><span class="v-mod">playwright.config.js</span></div>
+          <ul class="v-steps"><li><code>npx playwright test --list</code> enumera las specs de <code>tests/e2e/</code></li></ul>
+          <div class="v-foot"><span class="time">~3 min</span></div>
+        </div>
+        <div class="v">
+          <div class="v-head"><span class="v-mark">🔶</span><span class="v-title">Auth Cloudflare Access + login de la app</span><span class="v-mod">?tab=configuracion</span></div>
+          <ul class="v-steps"><li><code>npm run e2e:auth</code> (o pestaña <a href="http://localhost:3000/?tab=configuracion">Configuración</a>): completa OTP y genera <code>.auth/aitops.json</code></li></ul>
+          <div class="v-foot"><span class="time">~6 min</span></div>
+        </div>
+        <div class="v">
+          <div class="v-head"><span class="v-mark">🔶</span><span class="v-title">Runner de evidencia E2E</span><span class="v-mod">terminal</span></div>
+          <ul class="v-steps"><li><code>npm run e2e:report</code> escribe <code>resultados/e2e-playwright-&lt;ts&gt;.json</code></li></ul>
+          <div class="v-foot"><span class="time">~7 min</span></div>
+        </div>
+        <div class="v">
+          <div class="v-head"><span class="v-mark">🔶</span><span class="v-title">Smoke de plataforma (4 flujos)</span><span class="v-mod">?tab=plataforma</span></div>
+          <ul class="v-steps"><li>En <a href="http://localhost:3000/?tab=plataforma">/?tab=plataforma</a> revisa la última corrida: auth+home CDD, acceso admin restringido, dashboard de tokens y KB config en <code>pass</code></li></ul>
+          <div class="v-foot"><span class="time">~5 min</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="gate-group">
+      <h3 class="gate-title">G2 · Seguridad</h3>
+      <div class="vlist">
+        <div class="v">
+          <div class="v-head"><span class="v-mark">🔶</span><span class="v-title">SAST Bandit</span><span class="v-mod">?tab=seguridad</span></div>
+          <ul class="v-steps"><li>En <a href="http://localhost:3000/?tab=seguridad">/?tab=seguridad</a> abre la corrida <code>sast-bandit</code>: hallazgos en el formato estándar</li></ul>
+          <div class="v-foot"><span class="time">~5 min</span></div>
+        </div>
+        <div class="v">
+          <div class="v-head"><span class="v-mark">🔶</span><span class="v-title">DAST ZAP</span><span class="v-mod">?tab=seguridad</span></div>
+          <ul class="v-steps"><li>En <a href="http://localhost:3000/?tab=seguridad">/?tab=seguridad</a> abre la corrida <code>dast-zap</code> (2026-07-09) y su reporte</li></ul>
+          <div class="v-foot"><span class="time">~6 min</span></div>
+        </div>
+        <div class="v">
+          <div class="v-head"><span class="v-mark">🔶</span><span class="v-title">Suite de seguridad consolidada</span><span class="v-mod">?tab=seguridad</span></div>
+          <ul class="v-steps"><li>Con el lanzador de <a href="http://localhost:3000/?tab=seguridad">/?tab=seguridad</a> corre la suite: produce <code>security-suite-&lt;ts&gt;</code></li></ul>
+          <div class="v-foot"><span class="time">~7 min</span></div>
+        </div>
+        <div class="v">
+          <div class="v-head"><span class="v-mark">🔶</span><span class="v-title">Banco adversarial del asistente</span><span class="v-mod">archivo HTML</span></div>
+          <ul class="v-steps"><li>Abre <code>banco-pruebas-adversarial-aitops-DG-2026-06-26.html</code>: clases de ataque de segundo orden presentes</li></ul>
+          <div class="v-foot"><span class="time">~5 min</span></div>
+        </div>
+        <div class="v">
+          <div class="v-head"><span class="v-mark">🔶</span><span class="v-title">Informe de jailbreak</span><span class="v-mod">archivo HTML</span></div>
+          <ul class="v-steps"><li>Abre <code>informe-pruebas-jailbreak-aitops-DG-2026-06-23.html</code>: casos y veredictos documentados</li></ul>
+          <div class="v-foot"><span class="time">~5 min</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="gate-group">
+      <h3 class="gate-title">G3 · CP-11 Consistencia LLM / RAG</h3>
+      <div class="vlist">
+        <div class="v">
+          <div class="v-head"><span class="v-mark">🔶</span><span class="v-title">Captura de consistencia del chat</span><span class="v-mod">?tab=chat</span></div>
+          <ul class="v-steps"><li>En <a href="http://localhost:3000/?tab=chat">/?tab=chat</a> lanza una corrida corta: el oráculo numérico/abstención marca desacuerdos sin depender del juez</li></ul>
+          <div class="v-foot"><span class="time">~8 min</span></div>
+        </div>
+        <div class="v">
+          <div class="v-head"><span class="v-mark">🔶</span><span class="v-title">Juez endurecido (voto N-de-M)</span><span class="v-mod">?tab=chat</span></div>
+          <ul class="v-steps"><li><code>npm run judge:review</code> (o botón en <a href="http://localhost:3000/?tab=chat">/?tab=chat</a>): muestra votos, <code>agreement</code> y marca alucinación como falla dura</li></ul>
+          <div class="v-foot"><span class="time">~6 min</span></div>
+        </div>
+        <div class="v">
+          <div class="v-head"><span class="v-mark">🔶</span><span class="v-title">Evals RAGAS + promptfoo</span><span class="v-mod">terminal</span></div>
+          <ul class="v-steps"><li><code>npm run ragas:evals</code> y <code>npm run promptfoo:eval</code> escriben en <code>resultados/</code></li></ul>
+          <div class="v-foot"><span class="time">~9 min</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="gate-group">
+      <h3 class="gate-title">G4 · CP-12 Agentic evals</h3>
+      <div class="vlist">
+        <div class="v">
+          <div class="v-head"><span class="v-mark">🔶</span><span class="v-title">Agentic evals deterministas (+ DeepEval)</span><span class="v-mod">terminal</span></div>
+          <ul class="v-steps"><li><code>npm run agentic:evals</code> genera <code>resultados/agentic-evals-&lt;ts&gt;.json</code> con <code>eval_theme</code></li></ul>
+          <div class="v-foot"><span class="time">~7 min</span></div>
+        </div>
+        <div class="v">
+          <div class="v-head"><span class="v-mark">🔶</span><span class="v-title">Agent workflow evals</span><span class="v-mod">terminal</span></div>
+          <ul class="v-steps"><li><code>npm run agent:workflow:evals</code> genera <code>resultados/agent-workflow-evals-&lt;ts&gt;.json</code></li></ul>
+          <div class="v-foot"><span class="time">~7 min</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="gate-group">
+      <h3 class="gate-title">G5 · Carga</h3>
+      <div class="vlist">
+        <div class="v">
+          <div class="v-head"><span class="v-mark">🔶</span><span class="v-title">Runner de carga + lanzador</span><span class="v-mod">?tab=carga</span></div>
+          <ul class="v-steps"><li>En <a href="http://localhost:3000/?tab=carga">/?tab=carga</a> lanza una corrida corta: p50/p95 por superficie; contrasta con <code>informe-carga-y-seguridad-DG-2026-07-08.html</code></li></ul>
+          <div class="v-foot"><span class="time">~8 min</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- (6) BITACORA -->
+  <section class="panel">
+    <h2>Bitácora</h2>
+    <div class="log">
+      <div class="entry"><div class="date">2026-07-03</div><div class="what"><b>F0 cerrado.</b> Repo + estructura + contrato JSON; escaneos de dependencias y secretos con evidencia; Docker local; remoto GitHub. Primera corrida E2E.</div></div>
+      <div class="entry"><div class="date">2026-07-06</div><div class="what"><b>plan.md v1.1</b> y arranque de CP-11: captura de consistencia del chat.</div></div>
+      <div class="entry"><div class="date">2026-07-07</div><div class="what"><b>Evals ampliadas.</b> RAGAS y promptfoo, microagente QA (orquesta gates) y registro de riesgos aceptados.</div></div>
+      <div class="entry"><div class="date">2026-07-08</div><div class="what"><b>Fase 6 · endurecimiento del asistente.</b> Oráculo de acuerdo numérico, regla dura de abstención, juez con voto N-de-M; informe de carga y seguridad.</div></div>
+      <div class="entry"><div class="date">2026-07-09</div><div class="what"><b>DAST ZAP</b> ejecutado y este tablero publicado. Verificado del dueño = 0: espera tu visto bueno sobre los 30 hitos 🔶.</div></div>
+    </div>
+  </section>
+
+  <div class="foot">
+    Leyenda de marcadores · 🔶 construido, espera verificación del dueño · ⬜ pendiente · ✅ verificado por el dueño (hoy: 0).<br>
+    Estados derivados de la evidencia real en <code>resultados/</code>, <code>tests/</code>, <code>scripts/</code> y <code>app/</code> del repositorio QA.
+  </div>
+
+</div>
+</body>
+</html>
