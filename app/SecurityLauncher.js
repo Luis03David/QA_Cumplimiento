@@ -16,6 +16,9 @@ const STEP_LABELS = { pending: 'en espera', running: 'corriendo', done: 'ok', er
 export default function SecurityLauncher() {
   const router = useRouter();
   const [selected, setSelected] = useState(['secret', 'dependency', 'sast']);
+  const [dastAuth, setDastAuth] = useState(false);
+  const [dastPull, setDastPull] = useState(false);
+  const [dastMinutes, setDastMinutes] = useState(2);
   const [job, setJob] = useState(null);
   const [progress, setProgress] = useState(null);
   const [logTail, setLogTail] = useState('');
@@ -60,7 +63,10 @@ export default function SecurityLauncher() {
       const response = await fetch('/api/security/run', {
         method: 'POST',
         headers: { 'content-type': 'application/json' },
-        body: JSON.stringify({ scans: selected }),
+        body: JSON.stringify({
+          scans: selected,
+          dast: { use_auth: dastAuth, pull: dastPull, minutes: dastMinutes },
+        }),
       });
       const payload = await response.json();
       if (!response.ok && !payload.state) throw new Error(payload.error || `HTTP ${response.status}`);
@@ -100,6 +106,38 @@ export default function SecurityLauncher() {
             </label>
           ))}
         </div>
+
+        {selected.includes('dast') && (
+          <div className="launcher-dast-opts">
+            <div className="launcher-selector-head">
+              <div>
+                <strong>Opciones de DAST</strong>
+                <span>Controlan como OWASP ZAP escanea el target QA.</span>
+              </div>
+            </div>
+            <label className="launcher-case-row">
+              <input type="checkbox" checked={dastAuth} disabled={isRunning || isLaunching} onChange={(event) => setDastAuth(event.target.checked)} />
+              <span>
+                <strong>Usar sesion (.auth): escanear la app real autenticada</strong>
+                <em>Sin marcar, ZAP solo ve el borde/login (superficie edge). Con sesion valida, escanea la app por dentro (surface app).</em>
+              </span>
+            </label>
+            <label className="launcher-case-row">
+              <input type="checkbox" checked={dastPull} disabled={isRunning || isLaunching} onChange={(event) => setDastPull(event.target.checked)} />
+              <span>
+                <strong>Descargar imagen ZAP si falta (~1.5GB)</strong>
+                <em>Necesario la primera vez si la imagen de OWASP ZAP no esta en el equipo.</em>
+              </span>
+            </label>
+            <label className="launcher-case-row" style={{ alignItems: 'center' }}>
+              <span style={{ minWidth: 0 }}>
+                <strong>Minutos maximos de spider</strong>
+                <em>Cuanto tiempo recorre el sitio (1-5).</em>
+              </span>
+              <input type="number" min="1" max="5" value={dastMinutes} disabled={isRunning || isLaunching} style={{ width: 64 }} onChange={(event) => setDastMinutes(Number(event.target.value))} />
+            </label>
+          </div>
+        )}
       </div>
 
       <div className="launcher-controls">

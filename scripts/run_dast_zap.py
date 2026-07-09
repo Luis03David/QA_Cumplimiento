@@ -97,6 +97,60 @@ def access_header_config():
     return args, True
 
 
+def cookie_header_config():
+    """Si DAST_USE_AUTH=true, arma un replacer con el header Cookie tomado de la
+    sesion guardada en .auth/aitops.json (misma logica de dominio que el runner
+    de carga). Permite DAST de la app autenticada sin service token."""
+    if os.environ.get("DAST_USE_AUTH", "").strip().lower() != "true":
+        return [], False
+    storage = ROOT / os.environ.get("AITOPS_STORAGE_STATE", ".auth/aitops.json")
+    if not storage.exists():
+        return [], False
+    target = target_url()
+    host = target.split("://", 1)[-1].split("/", 1)[0].split(":", 1)[0]
+    if not host:
+        return [], False
+    try:
+        data = json.loads(storage.read_text(encoding="utf-8"))
+    except (ValueError, OSError):
+        return [], False
+    pairs = []
+    for cookie in data.get("cookies", []):
+        domain = str(cookie.get("domain", "")).lstrip(".")
+        if domain and (host == domain or host.endswith(f".{domain}")):
+            pairs.append(f"{cookie.get('name')}={cookie.get('value')}")
+    if not pairs:
+        return [], False
+    prefix = "replacer.full_list(0)"
+    args = [
+        "-config", f"{prefix}.description=session-cookie",
+        "-config", f"{prefix}.enabled=true",
+        "-config", f"{prefix}.matchtype=REQ_HEADER",
+        "-config", f"{prefix}.matchstr=Cookie",
+        "-config", f"{prefix}.regex=false",
+        # Union con ';' SIN espacio: ZAP parte el string de -z por espacios, y un
+        # "; " partiria el valor de la cookie. HTTP acepta ';' sin espacio.
+        "-config", f"{prefix}.replacement={';'.join(pairs)}",
+    ]
+    return args, True
+
+
+# Oculta el payload de -z (que puede contener cookies/tokens) al imprimir el
+# comando: nunca dejamos credenciales en el log de evidencia.
+def redact_cmd(command):
+    out = []
+    skip = False
+    for token in command:
+        if skip:
+            out.append("<redacted>")
+            skip = False
+            continue
+        out.append(token)
+        if token == "-z":
+            skip = True
+    return " ".join(out)
+
+
 def docker_available():
     return shutil.which("docker") is not None
 
@@ -192,8 +246,13 @@ def main():
 
     report_name = f"{run_id}.zap.json"
     header_args, used_access = access_header_config()
+    auth_mode = "service-token" if used_access else None
+    if not used_access:
+        header_args, used_access = cookie_header_config()
+        if used_access:
+            auth_mode = "session-cookie"
     if used_access:
-        print("Inyectando cabeceras Cloudflare Access (service token).")
+        print(f"Autenticando ante Cloudflare Access (modo {auth_mode}).")
 
     # ZAP corre en el contenedor como uid 1000 y no siempre coincide con el uid
     # del host: si montamos resultados/ directo, ZAP no puede escribir el reporte
@@ -215,7 +274,7 @@ def main():
         *zap_cmd,
     ]
     print("Ejecutando OWASP ZAP baseline (spider + pasivo, no intrusivo)...")
-    print(" ".join(docker_cmd))
+    print(redact_cmd(docker_cmd))
     try:
         code, stdout, stderr = run(docker_cmd, timeout=1200)
     except subprocess.TimeoutExpired:
@@ -287,9 +346,9 @@ def main():
     checks.append({
         "name": "zap:access",
         "status": "pass" if used_access else "skipped",
-        "message": "Escaneo con service token de Cloudflare Access (atraviesa el login)." if used_access
-        else "Escaneo sin service token: ZAP ve el borde/login de Access, no la app autenticada. Configura AITOPS_ACCESS_CLIENT_ID/SECRET para DAST de la app real.",
-        "details": {"used_access": used_access},
+        "message": f"Escaneo autenticado ante Cloudflare Access (modo {auth_mode}): ZAP alcanza la app real." if used_access
+        else "Escaneo sin autenticacion: ZAP ve el borde/login de Access, no la app. Usa DAST_USE_AUTH=true (sesion .auth) o service token para la app real.",
+        "details": {"used_access": used_access, "auth_mode": auth_mode},
     })
 
     return finalize(run_id, started_at, target, checks, artifacts)

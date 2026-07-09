@@ -1,0 +1,538 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Informe de pruebas de carga y seguridad — QA Cumplimiento</title>
+<style>
+  :root{
+    --bg:#f6f7f9; --panel:#ffffff; --ink:#17191f; --muted:#5c6472; --line:#e2e6ec;
+    --accent:#176b87; --accent-soft:#e6f1f5;
+    --high:#8a1c1c; --high-soft:#fbe4e4;
+    --med:#b45309; --med-soft:#fdefd9;
+    --low:#1d4ed8; --low-soft:#e6edfd;
+    --info:#4b5563; --info-soft:#eef0f3;
+    --ok:#0f7b4f; --ok-soft:#e5f4ed;
+  }
+  @media (prefers-color-scheme: dark){
+    :root{
+      --bg:#12151b; --panel:#1a1e26; --ink:#e8ebf0; --muted:#9aa4b2; --line:#2a2f3a;
+      --accent:#4fb3d0; --accent-soft:#15303a;
+      --high:#f2a2a2; --high-soft:#3a1a1a;
+      --med:#f0c07a; --med-soft:#3a2a12;
+      --low:#a8c1ff; --low-soft:#1a2540;
+      --info:#aab3c0; --info-soft:#242a33;
+      --ok:#7fd6ab; --ok-soft:#14301f;
+    }
+  }
+  *{box-sizing:border-box;}
+  body{margin:0;background:var(--bg);color:var(--ink);
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    line-height:1.6;font-size:16px;}
+  .wrap{max-width:920px;margin:0 auto;padding:32px 20px 80px;}
+  header.top{border-bottom:2px solid var(--accent);padding-bottom:20px;margin-bottom:8px;}
+  header.top .eyebrow{color:var(--accent);font-weight:700;letter-spacing:.06em;text-transform:uppercase;font-size:12px;margin:0;}
+  header.top h1{font-size:28px;margin:6px 0 8px;line-height:1.2;}
+  header.top .meta{color:var(--muted);font-size:14px;}
+  header.top .meta b{color:var(--ink);}
+  h2{font-size:22px;margin:38px 0 12px;padding-top:10px;border-top:1px solid var(--line);}
+  h3{font-size:17px;margin:24px 0 8px;}
+  p{margin:10px 0;}
+  a{color:var(--accent);}
+  .lead{font-size:17px;color:var(--ink);}
+  .panel{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:16px 18px;margin:14px 0;}
+  .callout{border-left:4px solid var(--accent);background:var(--accent-soft);border-radius:8px;padding:12px 16px;margin:16px 0;}
+  .callout.warn{border-left-color:var(--med);background:var(--med-soft);}
+  .confidential{border:2px solid var(--high);border-radius:12px;padding:0 18px 16px;margin:22px 0;background:var(--high-soft);}
+  .confidential .conf-banner{margin:0 -18px 12px;padding:8px 18px;background:var(--high);color:#fff;font-weight:700;
+    font-size:12px;letter-spacing:.08em;text-transform:uppercase;border-radius:9px 9px 0 0;}
+  .confidential h3{margin-top:14px;}
+  .iplist{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:13px;background:var(--panel);
+    border:1px solid var(--line);border-radius:8px;padding:10px 12px;white-space:pre-wrap;word-break:break-all;}
+  .grid3{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:12px;}
+  .tech{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:16px;}
+  .tech .tag{display:inline-block;font-size:11px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;color:var(--accent);}
+  .tech h3{margin:6px 0;}
+  .tech .analogy{color:var(--muted);font-size:14px;font-style:italic;}
+  ol.process{counter-reset:step;list-style:none;padding:0;}
+  ol.process>li{position:relative;padding:12px 14px 12px 54px;margin:10px 0;background:var(--panel);border:1px solid var(--line);border-radius:10px;counter-increment:step;}
+  ol.process>li::before{content:counter(step);position:absolute;left:14px;top:12px;width:28px;height:28px;border-radius:50%;
+    background:var(--accent);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:14px;}
+  ol.process>li b{display:block;margin-bottom:2px;}
+  table{width:100%;border-collapse:collapse;margin:12px 0;font-size:14px;}
+  th,td{text-align:left;padding:9px 10px;border-bottom:1px solid var(--line);vertical-align:top;}
+  th{font-size:12px;text-transform:uppercase;letter-spacing:.03em;color:var(--muted);}
+  td.num{font-variant-numeric:tabular-nums;white-space:nowrap;}
+  .badge{display:inline-block;font-size:11px;font-weight:700;padding:2px 8px;border-radius:999px;white-space:nowrap;}
+  .b-high{background:var(--high-soft);color:var(--high);}
+  .b-med{background:var(--med-soft);color:var(--med);}
+  .b-low{background:var(--low-soft);color:var(--low);}
+  .b-info{background:var(--info-soft);color:var(--info);}
+  .b-ok{background:var(--ok-soft);color:var(--ok);}
+  .finding{border:1px solid var(--line);border-radius:10px;padding:14px 16px;margin:12px 0;background:var(--panel);}
+  .finding .fh{display:flex;justify-content:space-between;gap:10px;align-items:flex-start;flex-wrap:wrap;}
+  .finding h4{margin:0;font-size:16px;}
+  .finding dl{margin:10px 0 0;display:grid;grid-template-columns:120px 1fr;gap:4px 12px;font-size:14px;}
+  .finding dt{color:var(--muted);font-weight:600;}
+  .finding dd{margin:0;}
+  .kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:10px;margin:14px 0;}
+  .kpi{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:12px;text-align:center;}
+  .kpi span{display:block;font-size:11px;text-transform:uppercase;letter-spacing:.04em;color:var(--muted);}
+  .kpi strong{font-size:22px;}
+  .kpi.high strong{color:var(--high);} .kpi.med strong{color:var(--med);}
+  .kpi.low strong{color:var(--low);} .kpi.ok strong{color:var(--ok);}
+  svg{max-width:100%;height:auto;}
+  .chart-legend{display:flex;gap:16px;font-size:13px;color:var(--muted);margin:6px 0;flex-wrap:wrap;}
+  .chart-legend i{display:inline-block;width:12px;height:12px;border-radius:3px;margin-right:5px;vertical-align:-1px;}
+  code{background:var(--info-soft);padding:1px 5px;border-radius:5px;font-size:13px;}
+  footer{margin-top:50px;padding-top:16px;border-top:1px solid var(--line);color:var(--muted);font-size:13px;}
+  .toc{font-size:14px;columns:2;column-gap:24px;}
+  @media(max-width:560px){.toc{columns:1;} .finding dl{grid-template-columns:1fr;}}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header class="top">
+  <p class="eyebrow">QA &amp; Cumplimiento · Reporte técnico</p>
+  <h1>Pruebas de carga y seguridad de la plataforma AITOps</h1>
+  <p class="meta">
+    Autor: <b>David Gaytán (DG)</b> · Fecha: <b>2026-07-08</b> ·
+    Objetivo probado: <b>missioncontrol.qa.aitops.ai</b> (ambiente QA) ·
+    Técnicas: <b>SAST · Pruebas de carga · DAST · Consistencia del chat (IA)</b>
+  </p>
+</header>
+
+<p class="lead">
+  Este documento explica, <strong>desde cero y para cualquier lector</strong>, qué pruebas de
+  calidad y seguridad hicimos sobre la plataforma, <strong>cómo las hicimos</strong> y
+  <strong>qué encontramos</strong>. No se necesita conocimiento técnico previo: cada término se
+  explica con una analogía y cada hallazgo dice qué es, por qué importa y cómo se corrige.
+</p>
+
+<div class="callout">
+  <strong>Resumen en una frase.</strong> Montamos y corrimos cuatro tipos de prueba contra el
+  ambiente QA (análisis de código, pruebas de carga, escaneo de la app en vivo y consistencia del
+  asistente de IA). En seguridad web hallamos <strong>0 fallas críticas</strong> pero varias
+  <strong>debilidades de endurecimiento</strong> (cabeceras de seguridad y CSP faltantes); la
+  disponibilidad bajo carga fue del <strong>100%</strong>; y en el chat detectamos que el asistente
+  <strong>inventa cifras</strong> cuando no puede consultarlas (alucinación), aunque
+  <strong>se abstiene correctamente</strong> ante activos inexistentes.
+</div>
+
+<h2>Contenido</h2>
+<div class="toc panel">
+  <p>1. ¿Qué es todo esto? (para quien no conoce el tema)</p>
+  <p>2. Las tres técnicas, explicadas simple</p>
+  <p>3. Cómo lo hicimos (el proceso, paso a paso)</p>
+  <p>4. Resultados de las pruebas de carga</p>
+  <p>5. Hallazgos de SAST (análisis del código)</p>
+  <p>6. Hallazgos de DAST — edge (sin autenticar)</p>
+  <p>7. Hallazgos de DAST — app real (autenticada)</p>
+  <p>8. Hallazgos del chat (consistencia del asistente de IA)</p>
+  <p>9. Cómo leer las severidades</p>
+  <p>10. Cuidado de credenciales y ética de la prueba</p>
+  <p>Anexo A — Detalle de IP privada (confidencial · interno)</p>
+</div>
+
+<h2>1. ¿Qué es todo esto?</h2>
+<p>
+  Cuando una empresa tiene una aplicación (aquí, un panel web llamado <em>Mission Control</em> de
+  AITOps), no basta con que “funcione”: hay que comprobar que <strong>aguanta muchos usuarios a la
+  vez</strong> y que <strong>no tiene puertas abiertas para un atacante</strong>. A esa comprobación
+  sistemática se le llama <strong>Quality Engineering</strong> (ingeniería de calidad) y, en la parte
+  de seguridad, <strong>security testing</strong>.
+</p>
+<p>
+  El problema que teníamos: estas pruebas casi no existían en el proyecto. No había pruebas de carga,
+  ni escaneo automático del código, ni escaneo de la aplicación en vivo. Este trabajo construyó esas
+  tres capacidades y las dejó corriendo con evidencia guardada.
+</p>
+
+<h2>2. Las cuatro técnicas, explicadas simple</h2>
+<div class="grid3">
+  <div class="tech">
+    <span class="tag">SAST</span>
+    <h3>Análisis estático</h3>
+    <p>Revisa el <strong>código fuente sin ejecutarlo</strong>, buscando patrones peligrosos
+      (contraseñas escritas a mano, funciones inseguras, etc.).</p>
+    <p class="analogy">Como un corrector ortográfico, pero de seguridad: lee el texto del programa
+      y subraya lo sospechoso. Herramienta usada: <strong>Bandit</strong> (para Python).</p>
+  </div>
+  <div class="tech">
+    <span class="tag">Carga</span>
+    <h3>Pruebas de carga</h3>
+    <p>Manda <strong>muchas peticiones a la vez</strong> a la app y mide cuánto tarda en responder
+      y si falla bajo presión.</p>
+    <p class="analogy">Como abrir todas las llaves de agua a la vez para ver si la tubería aguanta.
+      Medimos latencia (qué tan rápido) y disponibilidad (qué tanto no falla).</p>
+  </div>
+  <div class="tech">
+    <span class="tag">DAST</span>
+    <h3>Análisis dinámico</h3>
+    <p>Prueba la <strong>aplicación ya corriendo, desde afuera</strong>, como lo haría un visitante o
+      un atacante, sin ver el código.</p>
+    <p class="analogy">Como un inspector que camina alrededor del edificio probando puertas y
+      ventanas. Herramienta usada: <strong>OWASP ZAP</strong>.</p>
+  </div>
+  <div class="tech">
+    <span class="tag">Chat / IA</span>
+    <h3>Consistencia del asistente</h3>
+    <p>Le hace al asistente de IA la <strong>misma pregunta varias veces</strong> para ver si se
+      contradice y si <strong>inventa datos</strong> cuando no los tiene.</p>
+    <p class="analogy">Como preguntarle lo mismo a alguien tres veces: ¿responde igual? ¿y cuando no
+      sabe, lo admite o inventa? Un segundo modelo actúa de <strong>juez</strong>.</p>
+  </div>
+</div>
+<p style="margin-top:14px">
+  <strong>La diferencia clave:</strong> SAST mira el programa <em>por dentro y apagado</em>; DAST lo
+  ataca <em>por fuera y prendido</em>. Por eso encuentran cosas distintas y se complementan.
+</p>
+
+<h2>3. Cómo lo hicimos (el proceso, paso a paso)</h2>
+<ol class="process">
+  <li><b>Diagnóstico de la deuda.</b> Confirmamos que faltaban pruebas de carga, escaneo de código
+    (SAST) y escaneo de la app en vivo (DAST), y que nada corría de forma continua.</li>
+  <li><b>SAST con Bandit.</b> Instalamos Bandit y creamos un script que analiza todo el código
+    Python del proyecto y guarda los hallazgos en un formato estándar y comparable.</li>
+  <li><b>Pruebas de carga.</b> Usamos un generador de carga que dispara peticiones concurrentes y
+    mide latencia (p50/p95/p99), throughput y tasa de error. Lo corrimos contra dos “superficies”:
+    el <em>borde</em> (la puerta de entrada de Cloudflare Access) y la <em>app real</em> (ya
+    autenticados). Los resultados se grafican en el tablero.</li>
+  <li><b>Distinción SAST vs DAST.</b> Entendimos que Bandit revisa <em>nuestro</em> código, pero para
+    probar la <em>app del objetivo</em> hacía falta DAST. Preparamos OWASP ZAP.</li>
+  <li><b>DAST del borde.</b> Corrimos ZAP contra la puerta de entrada. Encontramos y arreglamos un
+    error real de permisos (el contenedor de ZAP no podía escribir su reporte); tras el fix,
+    obtuvimos la primera evidencia dinámica.</li>
+  <li><b>DAST de la app real.</b> Hicimos que ZAP entrara autenticado usando la sesión guardada, para
+    escanear la aplicación por dentro. Aquí también corregimos un error (el formato de las cookies
+    rompía la configuración de ZAP) y añadimos <em>redacción</em> para que ninguna credencial quedara
+    en los registros.</li>
+  <li><b>Automatización continua.</b> Dejamos flujos de CI (GitHub Actions): los escaneos de código
+    corren en cada cambio, y el DAST corre de forma programada. Así la prueba deja de ser manual.</li>
+</ol>
+
+<h2>4. Resultados de las pruebas de carga</h2>
+<p>
+  Comparamos dos superficies. El <strong>borde (edge)</strong> es la puerta de Cloudflare Access; la
+  <strong>app real</strong> es la aplicación ya autenticada. Ninguna prueba tuvo errores: la
+  disponibilidad fue del <strong>100%</strong> en ambas. La app real es naturalmente más lenta que el
+  borde porque hace trabajo real (consultas, render), pero cumplió su objetivo de latencia.
+</p>
+
+<div class="panel">
+  <div class="chart-legend">
+    <span><i style="background:var(--accent)"></i>Edge (borde)</span>
+    <span><i style="background:var(--med)"></i>App real (autenticada)</span>
+    <span>Barras = milisegundos de latencia (menos es mejor)</span>
+  </div>
+  <!-- Barras p50/p95/p99: edge vs app -->
+  <svg viewBox="0 0 640 210" role="img" aria-label="Latencia edge vs app: p50 43 vs 105, p95 48 vs 144, p99 61 vs 292 milisegundos">
+    <!-- escala max ~320ms -->
+    <g font-size="13" fill="var(--muted)">
+      <text x="0" y="35">p50</text>
+      <text x="0" y="105">p95</text>
+      <text x="0" y="175">p99</text>
+    </g>
+    <g>
+      <!-- p50: edge 43, app 105 -->
+      <rect x="40" y="18" width="86" height="20" rx="3" fill="var(--accent)"/>
+      <text x="132" y="33" font-size="12" fill="var(--ink)">43 ms</text>
+      <rect x="40" y="42" width="210" height="20" rx="3" fill="var(--med)"/>
+      <text x="256" y="57" font-size="12" fill="var(--ink)">105 ms</text>
+      <!-- p95: edge 48, app 144 -->
+      <rect x="40" y="88" width="96" height="20" rx="3" fill="var(--accent)"/>
+      <text x="142" y="103" font-size="12" fill="var(--ink)">48 ms</text>
+      <rect x="40" y="112" width="288" height="20" rx="3" fill="var(--med)"/>
+      <text x="334" y="127" font-size="12" fill="var(--ink)">144 ms</text>
+      <!-- p99: edge 61, app 292 -->
+      <rect x="40" y="158" width="122" height="20" rx="3" fill="var(--accent)"/>
+      <text x="168" y="173" font-size="12" fill="var(--ink)">61 ms</text>
+      <rect x="40" y="182" width="584" height="20" rx="3" fill="var(--med)"/>
+      <text x="590" y="197" font-size="12" fill="#fff">292</text>
+    </g>
+  </svg>
+  <p style="font-size:13px;color:var(--muted);margin-top:4px">
+    p50 = la mitad de las respuestas fueron más rápidas que ese valor; p95/p99 = las respuestas
+    “lentas” (el 5% y 1% peor). Sirven para ver el peor caso, no solo el promedio.
+  </p>
+</div>
+
+<table>
+  <thead><tr><th>Superficie</th><th>Peticiones</th><th>Throughput</th><th>Error</th><th>p50</th><th>p95</th><th>p99</th><th>SLO p95</th><th>Veredicto</th></tr></thead>
+  <tbody>
+    <tr><td>Edge (borde)</td><td class="num">2 227</td><td class="num">222.7 rps</td><td class="num">0%</td><td class="num">43 ms</td><td class="num">48 ms</td><td class="num">61 ms</td><td class="num">1000 ms</td><td><span class="badge b-ok">Cumple</span></td></tr>
+    <tr><td>App real (/tokens)</td><td class="num">1 354</td><td class="num">135.4 rps</td><td class="num">0%</td><td class="num">105 ms</td><td class="num">144 ms</td><td class="num">292 ms</td><td class="num">1500 ms</td><td><span class="badge b-ok">Cumple</span></td></tr>
+  </tbody>
+</table>
+<p style="font-size:14px;color:var(--muted)">
+  <b>rps</b> = peticiones por segundo. <b>SLO</b> = objetivo de servicio (el límite que nos pusimos).
+  Ambas superficies quedaron muy por debajo del límite de latencia.
+</p>
+
+<h2>5. Hallazgos de SAST (análisis del código)</h2>
+<p>
+  Bandit revisó todo el código Python del proyecto (nuestras herramientas de prueba, no la app del
+  objetivo). Resultado: <strong>0 severidad alta</strong>, <strong>4 media</strong> y
+  <strong>28 baja</strong>.
+</p>
+<div class="kpis">
+  <div class="kpi ok"><span>Alta</span><strong>0</strong></div>
+  <div class="kpi med"><span>Media</span><strong>4</strong></div>
+  <div class="kpi low"><span>Baja</span><strong>28</strong></div>
+</div>
+
+<div class="finding">
+  <div class="fh"><h4>Apertura de URL sin restringir el esquema (B310)</h4><span class="badge b-med">Media ×4</span></div>
+  <dl>
+    <dt>Dónde</dt><dd><code>run_agentic_evals.py</code> (L228, L473), <code>run_judge_review.py</code> (L103), <code>tests/rag_eval.py</code> (L111)</dd>
+    <dt>Qué es</dt><dd>El código abre direcciones web con una función que, si no se limita, también aceptaría rutas como <code>file://</code> (leer archivos del propio equipo) u otros esquemas inesperados.</dd>
+    <dt>Riesgo</dt><dd>Si la URL viniera de una fuente no confiable, alguien podría hacer que el programa lea archivos locales. En nuestro caso las URLs son fijas y de confianza, así que el riesgo real es bajo — pero es una mala práctica que conviene cerrar.</dd>
+    <dt>Cómo se arregla</dt><dd>Validar que la URL empiece por <code>http://</code> o <code>https://</code> antes de abrirla.</dd>
+  </dl>
+</div>
+
+<div class="finding">
+  <div class="fh"><h4>Hallazgos de severidad baja (28)</h4><span class="badge b-low">Baja</span></div>
+  <dl>
+    <dt>Qué son</dt><dd>Principalmente: uso del módulo <code>subprocess</code> para llamar a otros programas (B404/B603), textos que Bandit confunde con “contraseñas” pero que son mensajes normales como <code>"PASS"</code> o <code>"0"</code> (B105, falsos positivos), y <code>assert</code> en archivos de prueba (B101).</dd>
+    <dt>Riesgo</dt><dd>Muy bajo. Son advertencias de buenas prácticas, no vulnerabilidades explotables en este contexto.</dd>
+    <dt>Cómo se maneja</dt><dd>Se pueden marcar como “riesgo aceptado” en <code>config/bandit-ignore.json</code> para que dejen de aparecer como ruido, documentando por qué.</dd>
+  </dl>
+</div>
+
+<h2>6. Hallazgos de DAST — edge (sin autenticar)</h2>
+<p>
+  Primero escaneamos la <strong>puerta de entrada</strong> (lo que ve alguien que aún no inició
+  sesión). ZAP hizo 55 comprobaciones exitosas y levantó estas alertas:
+  <strong>0 alta</strong>, <strong>5 media</strong>, <strong>9 baja</strong>, <strong>5 informativas</strong>.
+</p>
+<div class="kpis">
+  <div class="kpi ok"><span>Alta</span><strong>0</strong></div>
+  <div class="kpi med"><span>Media</span><strong>5</strong></div>
+  <div class="kpi low"><span>Baja</span><strong>9</strong></div>
+  <div class="kpi"><span>Info</span><strong>5</strong></div>
+</div>
+
+<h3>Medias (conviene corregir)</h3>
+<table>
+  <thead><tr><th>Alerta</th><th>Qué significa (simple)</th></tr></thead>
+  <tbody>
+    <tr><td>Absence of Anti-CSRF Tokens</td><td>Formularios sin un “token” que confirme que la acción la pidió el usuario real; facilita que otro sitio ejecute acciones en su nombre (CSRF).</td></tr>
+    <tr><td>CSP: Failure to Define Directive with No Fallback</td><td>La política de seguridad de contenido (CSP) está incompleta: deja huecos sobre de dónde se puede cargar contenido.</td></tr>
+    <tr><td>CSP: Wildcard Directive</td><td>La CSP usa comodines (<code>*</code>) demasiado permisivos: casi cualquier origen queda autorizado.</td></tr>
+    <tr><td>CSP: <code>script-src unsafe-inline</code></td><td>Permite ejecutar scripts escritos directamente en la página, lo que abre la puerta a inyección de código (XSS).</td></tr>
+    <tr><td>CSP: <code>style-src unsafe-inline</code></td><td>Igual que el anterior, pero para estilos: reduce la protección de la CSP.</td></tr>
+  </tbody>
+</table>
+<p style="font-size:14px;color:var(--muted)">
+  <b>CSP (Content-Security-Policy)</b> es una regla que le dice al navegador “solo carga scripts y
+  estilos de estos lugares de confianza”. Bien configurada, es una de las mejores defensas contra el
+  robo de sesión y la inyección de código. Aquí está presente pero <em>demasiado permisiva</em>.
+</p>
+
+<h3>Bajas (buenas prácticas faltantes)</h3>
+<p>
+  Cabeceras de seguridad ausentes: <strong>Strict-Transport-Security (HSTS)</strong> ×3,
+  <strong>X-Content-Type-Options</strong>, <strong>Permissions-Policy</strong>,
+  <strong>COOP/COEP/CORP</strong> (aislamiento entre orígenes), <strong>cookies sin SameSite</strong> ×3,
+  y <strong>divulgación de marca de tiempo Unix</strong> ×2. Cada una, por separado, es de bajo riesgo,
+  pero en conjunto reflejan que faltan cabeceras de endurecimiento estándar.
+</p>
+
+<h2>7. Hallazgos de DAST — app real (autenticada)</h2>
+<p>
+  Después hicimos que ZAP <strong>entrara con sesión válida</strong> y escaneara la aplicación por
+  dentro. Esto revela cosas que el escaneo del borde no puede ver. Resultado: <strong>54 comprobaciones
+  exitosas</strong>, <strong>0 alta</strong>, <strong>4 media</strong>, <strong>8 baja</strong>,
+  <strong>5 informativas</strong>.
+</p>
+<div class="kpis">
+  <div class="kpi ok"><span>Alta</span><strong>0</strong></div>
+  <div class="kpi med"><span>Media</span><strong>4</strong></div>
+  <div class="kpi low"><span>Baja</span><strong>8</strong></div>
+  <div class="kpi"><span>Info</span><strong>5</strong></div>
+</div>
+
+<h3>Medias (conviene corregir)</h3>
+<table>
+  <thead><tr><th>Alerta</th><th>Qué significa (simple)</th></tr></thead>
+  <tbody>
+    <tr><td>Content Security Policy (CSP) Header Not Set ×2</td><td>En páginas internas la CSP directamente no existe: el navegador no tiene reglas sobre qué contenido cargar. Facilita ataques de inyección (XSS).</td></tr>
+    <tr><td>CSP: Failure to Define Directive with No Fallback</td><td>Donde sí hay CSP, está incompleta (mismo problema que en el borde).</td></tr>
+    <tr><td>Missing Anti-clickjacking Header ×3</td><td>Falta <code>X-Frame-Options</code>: la página puede incrustarse en un sitio malicioso dentro de un marco invisible y engañar al usuario para que haga clic donde no quería (<em>clickjacking</em>).</td></tr>
+    <tr><td>Sub Resource Integrity Attribute Missing ×3</td><td>Los scripts que se cargan desde terceros no verifican su “huella digital”. Si ese proveedor externo fuera comprometido, la app cargaría código alterado sin darse cuenta.</td></tr>
+  </tbody>
+</table>
+
+<h3>Bajas (buenas prácticas faltantes)</h3>
+<p>
+  Similares al borde, más profundas por haber recorrido más páginas: <strong>HSTS</strong> ×5,
+  <strong>X-Content-Type-Options</strong> ×5, <strong>Permissions-Policy</strong> ×4,
+  <strong>COOP/COEP/CORP</strong>, y una <strong>Divulgación de IP privada</strong> ×1 (aparecen
+  direcciones de la red interna dentro del código de la app — dan pistas de la infraestructura). El
+  contexto exacto y las direcciones se detallan en el <strong>Anexo A</strong>, marcado como
+  confidencial de uso interno.
+</p>
+
+<div class="callout">
+  <strong>Por qué valió la pena escanear ambas superficies.</strong> El borde mostró CSP permisiva y
+  falta de anti-CSRF. La app autenticada reveló lo que <em>solo se ve por dentro</em>: clickjacking sin
+  <code>X-Frame-Options</code>, scripts sin verificación de integridad (SRI) y una IP interna
+  filtrada. Un solo escaneo (o solo SAST) no habría encontrado todo esto.
+</div>
+
+<h2>8. Hallazgos del chat (consistencia del asistente de IA)</h2>
+<p>
+  La plataforma incluye un <strong>asistente de IA</strong> (un chatbot que consulta el inventario de
+  equipos). Aquí no probamos “seguridad web” sino <strong>calidad de sus respuestas</strong>: ¿contesta
+  lo mismo ante preguntas equivalentes? Y sobre todo, cuando <strong>no tiene el dato</strong>, ¿lo
+  admite o <strong>se lo inventa</strong>? Inventar datos se llama <em>alucinación</em> y es el riesgo
+  más grave de un asistente de este tipo.
+</p>
+<p>
+  <strong>Cómo lo probamos:</strong> le hicimos 5 preguntas, cada una <strong>repetida 2 veces</strong>
+  (10 peticiones al endpoint <code>/api/chat/v3/stream</code>). Un primer filtro <em>mecánico</em>
+  compara las respuestas palabra por palabra; como casi siempre varían en la redacción, marca todo como
+  “distinto”. Por eso un <strong>segundo modelo de IA actúa de juez</strong> (Qwen3.5-27B) y decide si
+  la diferencia es solo de forma (aceptable) o de fondo (falla real). El juez <strong>no puede rescatar</strong>
+  una alucinación: esa regla es dura.
+</p>
+
+<div class="kpis">
+  <div class="kpi"><span>Preguntas</span><strong>5 ×2</strong></div>
+  <div class="kpi ok"><span>Correctas (tras juez)</span><strong>3</strong></div>
+  <div class="kpi med"><span>Fallas reales</span><strong>2</strong></div>
+  <div class="kpi low"><span>Reclasificadas por juez</span><strong>3</strong></div>
+</div>
+
+<table>
+  <thead><tr><th>Caso</th><th>Qué se preguntó</th><th>Veredicto</th><th>Por qué</th></tr></thead>
+  <tbody>
+    <tr>
+      <td class="num">OWN-001</td><td>Dueño de un activo que no existe</td>
+      <td><span class="badge b-ok">Correcto</span></td>
+      <td>Ambas respuestas admiten que el activo no está en el inventario y <strong>no inventan</strong> un dueño.</td>
+    </tr>
+    <tr>
+      <td class="num">RAM-001</td><td>RAM de un servidor que no existe</td>
+      <td><span class="badge b-ok">Correcto</span></td>
+      <td>Consistente: declara que el servidor no está en el inventario, sin inventar especificaciones.</td>
+    </tr>
+    <tr>
+      <td class="num">COUNT-001</td><td>Cuántas laptops hay</td>
+      <td><span class="badge b-med">Falla</span></td>
+      <td><strong>Contradicción:</strong> una respuesta intenta buscar el dato (sin declarar que no lo hay) y la otra <strong>inventa una restricción</strong> (“límite de reportes”) que no existe.</td>
+    </tr>
+    <tr>
+      <td class="num">COUNT-002</td><td>Cuántas laptops hay</td>
+      <td><span class="badge b-med">Falla (dura)</span></td>
+      <td><strong>Alucinación:</strong> dio un número concreto de laptops cuando ese dato <strong>no es consultable</strong> con las herramientas actuales. El juez no puede perdonarla.</td>
+    </tr>
+    <tr>
+      <td class="num">COUNT-004</td><td>Cuántas laptops hay</td>
+      <td><span class="badge b-ok">Correcto</span></td>
+      <td>Aquí sí <strong>se abstuvo</strong>: tras intentar buscar, no inventó un número, coherente con que el dato no existe.</td>
+    </tr>
+  </tbody>
+</table>
+
+<div class="callout warn">
+  <strong>El hallazgo importante.</strong> El asistente <strong>se comporta bien con activos que no
+  existen</strong> (admite “no encontrado” sin inventar), pero <strong>alucina cifras agregadas</strong>
+  que no puede consultar: preguntado por el número de laptops, unas veces inventa un número
+  (683, 72…), otras inventa un “límite del sistema”, y otras se abstiene bien. Es decir, es
+  <strong>inconsistente y a veces inventa</strong> justo en las preguntas de conteo. La corrección no
+  es de código de seguridad, sino de <strong>gobernanza del asistente</strong>: cuando un dato no sea
+  consultable, debe <strong>siempre</strong> declarar “no disponible” y nunca comprometer un número.
+</div>
+<p style="font-size:14px;color:var(--muted)">
+  Contexto: en corridas anteriores más amplias el asistente había respondido la misma pregunta de
+  conteo con valores distintos (no-data, 72 y 683). Estas pruebas convierten ese defecto anecdótico en
+  una regla objetiva y repetible que lo caza automáticamente.
+</p>
+
+<h2>9. Cómo leer las severidades</h2>
+<div class="panel">
+  <p><span class="badge b-high">Alta</span> &nbsp; Explotable con impacto serio. Se arregla de inmediato. <em>(En nuestras pruebas: 0.)</em></p>
+  <p><span class="badge b-med">Media</span> &nbsp; Debilidad real que facilita un ataque o lo hace más probable. Se planifica y corrige pronto.</p>
+  <p><span class="badge b-low">Baja</span> &nbsp; Buena práctica faltante. Bajo riesgo por sí sola; se corrige como endurecimiento.</p>
+  <p><span class="badge b-info">Info</span> &nbsp; Observación del escáner, no es una falla. Solo contexto.</p>
+</div>
+<p>
+  <strong>Balance general:</strong> no hay nada crítico ni alto. Todo lo encontrado es de tipo
+  <em>endurecimiento</em>: agregar cabeceras de seguridad (CSP estricta, <code>X-Frame-Options</code>,
+  HSTS, <code>X-Content-Type-Options</code>, Permissions-Policy), añadir tokens anti-CSRF y SRI, y
+  ocultar detalles internos (IP privada, marcas de tiempo). Son correcciones de configuración, en
+  general sencillas, con alto retorno de seguridad.
+</p>
+
+<h2>10. Cuidado de credenciales y ética de la prueba</h2>
+<p>
+  Todas las pruebas se hicieron contra el <strong>ambiente de QA autorizado</strong>, no producción.
+  El escaneo DAST fue de tipo <em>baseline</em>: <strong>pasivo y no intrusivo</strong> (observa y
+  recorre el sitio, no lanza ataques destructivos). Para entrar autenticados reutilizamos la sesión
+  ya guardada del proyecto.
+</p>
+<p>
+  Sobre las credenciales: el comando que lanza ZAP se registra <strong>censurado</strong>
+  (<code>-z &lt;redacted&gt;</code>), nunca se escribieron cookies en disco fuera del almacén de
+  sesión, y verificamos que <strong>ni el informe ni la evidencia generada contienen valores de
+  cookies o tokens</strong>. (Nota aparte: detectamos que archivos <em>antiguos</em> de otras corridas
+  sí contienen tokens de sesión; se recomienda revisarlos y depurarlos por separado.)
+</p>
+
+<div class="confidential">
+  <div class="conf-banner">🔒 Anexo A — Confidencial · Uso interno</div>
+  <p style="font-size:13px;color:var(--muted);margin-top:0">
+    Este anexo contiene direcciones internas reales. El hallazgo consiste precisamente en que estas
+    direcciones no deberían ser visibles; <strong>no distribuir este anexo fuera del equipo</strong>.
+    Si el informe se comparte externamente, elimínese esta sección.
+  </p>
+
+  <h3>Detalle del hallazgo: Divulgación de IP privada</h3>
+  <p><strong>Dónde apareció.</strong> No fue en una respuesta de API ni en el HTML, sino
+    <strong>dentro de un archivo JavaScript del frontend</strong> (el <em>bundle</em> compilado que el
+    navegador descarga):</p>
+  <p class="iplist">GET https://missioncontrol.qa.aitops.ai/assets/index-CsXWGXtA.js</p>
+
+  <p><strong>Cómo se encontró.</strong> Durante el recorrido autenticado, OWASP ZAP descargó ese
+    <code>.js</code> con una petición <code>GET</code> normal y su <strong>escáner pasivo revisó el
+    cuerpo de la respuesta con una expresión regular</strong> que detecta rangos de IP privadas
+    (RFC 1918: <code>10.x</code>, <code>172.16–31.x</code>, <code>192.168.x</code>). Coincidieron varias
+    direcciones incrustadas en el código enviado al navegador. Severidad ZAP: <span class="badge b-low">Low</span>
+    (confianza media).</p>
+
+  <p><strong>Direcciones detectadas.</strong></p>
+  <p class="iplist">10.0.0.1        10.0.0.2        192.168.1.0
+10.200.20.50    10.200.20.115:8095   10.200.20.115:443
+172.16.1.0      172.16.1.10     172.16.1.11     172.16.1.12
+172.16.1.211    172.16.40.207</p>
+
+  <p><strong>Lectura.</strong> Algunas (<code>10.0.0.1</code>, <code>10.0.0.2</code>,
+    <code>192.168.1.0</code>) parecen valores de ejemplo/placeholder de alguna librería (ruido). Pero
+    otras delatan infraestructura real: <code>10.200.20.115</code> con puertos <code>:8095</code> y
+    <code>:443</code> parece un <strong>servicio interno concreto</strong>, y el bloque
+    <code>172.16.1.10/11/12</code> más <code>172.16.40.207</code> sugiere <strong>numeración de hosts
+    de la red interna</strong>. Esto le regala a un atacante el mapa de rangos y un endpoint interno,
+    ahorrándole trabajo de reconocimiento.</p>
+
+  <p><strong>Cómo se corrige.</strong> Sacar esas direcciones del código que se sirve al navegador:
+    referenciar los servicios internos vía variables de entorno o un proxy/gateway, no hardcodear IPs
+    en el bundle del frontend. Riesgo bajo por sí solo, pero conviene limpiarlo.</p>
+</div>
+
+<footer>
+  <p>Evidencia cruda y comparable en <code>resultados/</code> (formato estándar JSON validado contra
+  <code>config/result.schema.json</code>): pruebas de carga (<code>load-*</code>), SAST
+  (<code>sast-bandit-*</code>), DAST (<code>dast-zap-*</code>) y consistencia del chat
+  (<code>chat-consistency-*</code>, corrida más reciente <code>20260708T234334Z</code>, revisada por
+  juez). Herramientas: Bandit (SAST), generador de carga en Node, OWASP ZAP baseline (DAST), juez LLM
+  Qwen3.5-27B (revisión de chat). Automatización: GitHub Actions
+  (<code>static-scans.yml</code>, <code>dast-zap.yml</code>).</p>
+  <p>Informe generado el 2026-07-08 · QA &amp; Cumplimiento · AITOps.</p>
+</footer>
+
+</div>
+</body>
+</html>

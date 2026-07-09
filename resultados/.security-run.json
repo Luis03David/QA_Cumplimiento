@@ -1,0 +1,15 @@
+{
+  "id": "security-suite-20260709T053049Z",
+  "status": "failed",
+  "pid": 323162,
+  "started_at": "2026-07-09T05:30:49Z",
+  "finished_at": "2026-07-09T05:33:27Z",
+  "scans": [
+    "dast"
+  ],
+  "dast_auth": true,
+  "log_path": "resultados/security-suite-20260709T053049Z.log",
+  "exit_codes": {
+    "dast": 1
+  }
+}

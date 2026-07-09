@@ -1,0 +1,238 @@
+{
+  "schema_version": "1.0",
+  "run_id": "dast-zap-20260709T043347Z",
+  "tool": "zap-baseline",
+  "category": "dast",
+  "surface": "app",
+  "status": "fail",
+  "started_at": "2026-07-09T04:33:47Z",
+  "finished_at": "2026-07-09T04:36:07Z",
+  "summary": "DAST (OWASP ZAP) contra https://missioncontrol.qa.aitops.ai/ encontro alertas bloqueantes o no pudo completar.",
+  "checks": [
+    {
+      "name": "zap:high",
+      "status": "pass",
+      "message": "Sin alertas High.",
+      "details": {
+        "count": 0,
+        "findings": [],
+        "blocking": true
+      }
+    },
+    {
+      "name": "zap:medium",
+      "status": "fail",
+      "message": "4 alerta(s) Medium: CSP: Failure to Define Directive with No Fallback [Medium] x1 (CWE-693); Content Security Policy (CSP) Header Not Set [Medium] x2 (CWE-693); Missing Anti-clickjacking Header [Medium] x3 (CWE-1021); Sub Resource Integrity Attribute Missing [Medium] x3 (CWE-345)",
+      "details": {
+        "count": 4,
+        "findings": [
+          {
+            "site": "https://missioncontrol.qa.aitops.ai",
+            "risk": "Medium",
+            "riskcode": "2",
+            "confidence": "3",
+            "name": "CSP: Failure to Define Directive with No Fallback",
+            "cwe": "693",
+            "instances": 1,
+            "solution": "<p>Ensure that your web server, application server, load balancer, etc. is properly configured to set the Content-Security-Policy header.</p>"
+          },
+          {
+            "site": "https://missioncontrol.qa.aitops.ai",
+            "risk": "Medium",
+            "riskcode": "2",
+            "confidence": "3",
+            "name": "Content Security Policy (CSP) Header Not Set",
+            "cwe": "693",
+            "instances": 2,
+            "solution": "<p>Ensure that your web server, application server, load balancer, etc. is configured to set the Content-Security-Policy header.</p>"
+          },
+          {
+            "site": "https://missioncontrol.qa.aitops.ai",
+            "risk": "Medium",
+            "riskcode": "2",
+            "confidence": "2",
+            "name": "Missing Anti-clickjacking Header",
+            "cwe": "1021",
+            "instances": 3,
+            "solution": "<p>Modern Web browsers support the Content-Security-Policy and X-Frame-Options HTTP headers. Ensure one of them is set on all web pages returned by your site/app.</p><p>If you expect the page to be framed only by pages on your server (e.g. it's part of a FRAMESET) then you'll want to use SAMEORIGIN,"
+          },
+          {
+            "site": "https://missioncontrol.qa.aitops.ai",
+            "risk": "Medium",
+            "riskcode": "2",
+            "confidence": "3",
+            "name": "Sub Resource Integrity Attribute Missing",
+            "cwe": "345",
+            "instances": 3,
+            "solution": "<p>Provide a valid integrity attribute to the tag.</p>"
+          }
+        ],
+        "blocking": true
+      }
+    },
+    {
+      "name": "zap:low",
+      "status": "pass",
+      "message": "8 alerta(s) Low (no bloqueantes): Cross-Origin-Embedder-Policy Header Missing or Invalid [Low] x3 (CWE-693); Cross-Origin-Opener-Policy Header Missing or Invalid [Low] x3 (CWE-693); Cross-Origin-Resource-Policy Header Missing or Invalid [Low] x5 (CWE-693); Permissions Policy Header Not Set [Low] x4 (CWE-693); Private IP Disclosure [Low] x1 (CWE-497); Strict-Transport-Security Header Not Set [Low] x5 (CWE-319); Timestamp Disclosure - Unix [Low] x2 (CWE-497); X-Content-Type-Options Header Missing [Low] x5 (CWE-693)",
+      "details": {
+        "count": 8,
+        "findings": [
+          {
+            "site": "https://missioncontrol.qa.aitops.ai",
+            "risk": "Low",
+            "riskcode": "1",
+            "confidence": "2",
+            "name": "Cross-Origin-Embedder-Policy Header Missing or Invalid",
+            "cwe": "693",
+            "instances": 3,
+            "solution": "<p>Ensure that the application/web server sets the Cross-Origin-Embedder-Policy header appropriately, and that it sets the Cross-Origin-Embedder-Policy header to 'require-corp' for documents.</p><p>If possible, ensure that the end user uses a standards-compliant and modern web browser that supports "
+          },
+          {
+            "site": "https://missioncontrol.qa.aitops.ai",
+            "risk": "Low",
+            "riskcode": "1",
+            "confidence": "2",
+            "name": "Cross-Origin-Opener-Policy Header Missing or Invalid",
+            "cwe": "693",
+            "instances": 3,
+            "solution": "<p>Ensure that the application/web server sets the Cross-Origin-Opener-Policy header appropriately, and that it sets the Cross-Origin-Opener-Policy header to 'same-origin' for documents.</p><p>'same-origin-allow-popups' is considered as less secured and should be avoided.</p><p>If possible, ensure t"
+          },
+          {
+            "site": "https://missioncontrol.qa.aitops.ai",
+            "risk": "Low",
+            "riskcode": "1",
+            "confidence": "2",
+            "name": "Cross-Origin-Resource-Policy Header Missing or Invalid",
+            "cwe": "693",
+            "instances": 5,
+            "solution": "<p>Ensure that the application/web server sets the Cross-Origin-Resource-Policy header appropriately, and that it sets the Cross-Origin-Resource-Policy header to 'same-origin' for all web pages.</p><p>'same-site' is considered as less secured and should be avoided.</p><p>If resources must be shared,"
+          },
+          {
+            "site": "https://missioncontrol.qa.aitops.ai",
+            "risk": "Low",
+            "riskcode": "1",
+            "confidence": "2",
+            "name": "Permissions Policy Header Not Set",
+            "cwe": "693",
+            "instances": 4,
+            "solution": "<p>Ensure that your web server, application server, load balancer, etc. is configured to set the Permissions-Policy header.</p>"
+          },
+          {
+            "site": "https://missioncontrol.qa.aitops.ai",
+            "risk": "Low",
+            "riskcode": "1",
+            "confidence": "2",
+            "name": "Private IP Disclosure",
+            "cwe": "497",
+            "instances": 1,
+            "solution": "<p>Remove the private IP address from the HTTP response body. For comments, use JSP/ASP/PHP comment instead of HTML/JavaScript comment which can be seen by client browsers.</p>"
+          },
+          {
+            "site": "https://missioncontrol.qa.aitops.ai",
+            "risk": "Low",
+            "riskcode": "1",
+            "confidence": "3",
+            "name": "Strict-Transport-Security Header Not Set",
+            "cwe": "319",
+            "instances": 5,
+            "solution": "<p>Ensure that your web server, application server, load balancer, etc. is configured to enforce Strict-Transport-Security.</p>"
+          },
+          {
+            "site": "https://missioncontrol.qa.aitops.ai",
+            "risk": "Low",
+            "riskcode": "1",
+            "confidence": "1",
+            "name": "Timestamp Disclosure - Unix",
+            "cwe": "497",
+            "instances": 2,
+            "solution": "<p>Manually confirm that the timestamp data is not sensitive, and that the data cannot be aggregated to disclose exploitable patterns.</p>"
+          },
+          {
+            "site": "https://missioncontrol.qa.aitops.ai",
+            "risk": "Low",
+            "riskcode": "1",
+            "confidence": "2",
+            "name": "X-Content-Type-Options Header Missing",
+            "cwe": "693",
+            "instances": 5,
+            "solution": "<p>Ensure that the application/web server sets the Content-Type header appropriately, and that it sets the X-Content-Type-Options header to 'nosniff' for all web pages.</p><p>If possible, ensure that the end user uses a standards-compliant and modern web browser that does not perform MIME-sniffing a"
+          }
+        ],
+        "blocking": false
+      }
+    },
+    {
+      "name": "zap:informational",
+      "status": "pass",
+      "message": "5 alerta(s) Informational (no bloqueantes): CSP: Header & Meta [Informational] x1 (CWE-693); Non-Storable Content [Informational] x2 (CWE-524); Re-examine Cache-control Directives [Informational] x2 (CWE-525); Retrieved from Cache [Informational] x2 (CWE-525); Storable and Cacheable Content [Informational] x5 (CWE-524)",
+      "details": {
+        "count": 5,
+        "findings": [
+          {
+            "site": "https://missioncontrol.qa.aitops.ai",
+            "risk": "Informational",
+            "riskcode": "0",
+            "confidence": "3",
+            "name": "CSP: Header & Meta",
+            "cwe": "693",
+            "instances": 1,
+            "solution": "<p>Ensure that your web server, application server, load balancer, etc. is properly configured to set the Content-Security-Policy header.</p>"
+          },
+          {
+            "site": "https://missioncontrol.qa.aitops.ai",
+            "risk": "Informational",
+            "riskcode": "0",
+            "confidence": "2",
+            "name": "Non-Storable Content",
+            "cwe": "524",
+            "instances": 2,
+            "solution": "<p>The content may be marked as storable by ensuring that the following conditions are satisfied:</p><p>The request method must be understood by the cache and defined as being cacheable (\"GET\", \"HEAD\", and \"POST\" are currently defined as cacheable)</p><p>The response status code must be understood b"
+          },
+          {
+            "site": "https://missioncontrol.qa.aitops.ai",
+            "risk": "Informational",
+            "riskcode": "0",
+            "confidence": "1",
+            "name": "Re-examine Cache-control Directives",
+            "cwe": "525",
+            "instances": 2,
+            "solution": "<p>For secure content, ensure the cache-control HTTP header is set with \"no-cache, no-store, must-revalidate\". If an asset should be cached consider setting the directives \"public, max-age, immutable\".</p>"
+          },
+          {
+            "site": "https://missioncontrol.qa.aitops.ai",
+            "risk": "Informational",
+            "riskcode": "0",
+            "confidence": "2",
+            "name": "Retrieved from Cache",
+            "cwe": "525",
+            "instances": 2,
+            "solution": "<p>Validate that the response does not contain sensitive, personal or user-specific information. If it does, consider the use of the following HTTP response headers, to limit, or prevent the content being stored and retrieved from the cache by another user:</p><p>Cache-Control: no-cache, no-store, m"
+          },
+          {
+            "site": "https://missioncontrol.qa.aitops.ai",
+            "risk": "Informational",
+            "riskcode": "0",
+            "confidence": "2",
+            "name": "Storable and Cacheable Content",
+            "cwe": "524",
+            "instances": 5,
+            "solution": "<p>Validate that the response does not contain sensitive, personal or user-specific information. If it does, consider the use of the following HTTP response headers, to limit, or prevent the content being stored and retrieved from the cache by another user:</p><p>Cache-Control: no-cache, no-store, m"
+          }
+        ],
+        "blocking": false
+      }
+    },
+    {
+      "name": "zap:access",
+      "status": "pass",
+      "message": "Escaneo autenticado ante Cloudflare Access (modo session-cookie): ZAP alcanza la app real.",
+      "details": {
+        "used_access": true,
+        "auth_mode": "session-cookie"
+      }
+    }
+  ],
+  "artifacts": [
+    "resultados/dast-zap-20260709T043347Z.zap.json"
+  ]
+}

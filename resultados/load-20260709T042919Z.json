@@ -1,0 +1,69 @@
+{
+  "schema_version": "1.0",
+  "run_id": "load-20260709T042919Z",
+  "tool": "load-node",
+  "category": "load",
+  "surface": "app",
+  "status": "pass",
+  "started_at": "2026-07-09T04:29:19Z",
+  "finished_at": "2026-07-09T04:29:22Z",
+  "summary": "Carga OK contra https://missioncontrol.qa.aitops.ai/tokens: 50 peticiones, 0% error, p95 115ms.",
+  "checks": [
+    {
+      "name": "requests-completadas",
+      "status": "pass",
+      "message": "50 peticiones completadas (16.67 req/s).",
+      "details": {
+        "requests_total": 50,
+        "throughput_rps": 16.67
+      }
+    },
+    {
+      "name": "tasa-de-error",
+      "status": "pass",
+      "message": "Tasa de error 0% (umbral 5%).",
+      "details": {
+        "error_rate": 0,
+        "max_error_rate": 0.05,
+        "requests_error": 0
+      }
+    },
+    {
+      "name": "latencia-p95",
+      "status": "pass",
+      "message": "p95 115ms (sin SLO configurado).",
+      "details": {
+        "surface": "app",
+        "target": "https://missioncontrol.qa.aitops.ai/tokens",
+        "path": "/tokens",
+        "used_auth": true,
+        "p95_slo_ms": null,
+        "error_rate": 0,
+        "throughput_rps": 16.67,
+        "requests_total": 50,
+        "latency_ms": {
+          "min": 103,
+          "p50": 107,
+          "p95": 115,
+          "p99": 508,
+          "max": 508,
+          "avg": 120.16
+        }
+      }
+    }
+  ],
+  "metrics_summary": {
+    "load": {
+      "metric": "requests",
+      "total": 50,
+      "pass": 50,
+      "fail": 0,
+      "skipped": 0,
+      "pass_rate": 1,
+      "avg_latency_ms": 120.16
+    }
+  },
+  "artifacts": [
+    "resultados/load-20260709T042919Z.raw.json"
+  ]
+}

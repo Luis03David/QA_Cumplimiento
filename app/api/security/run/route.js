@@ -97,6 +97,14 @@ export async function POST(request) {
     return NextResponse.json({ error: 'Selecciona al menos un escaneo valido (secret, dependency, sast, dast).' }, { status: 400 });
   }
 
+  // Opciones especificas de DAST (se pasan como env SOLO al script de ZAP).
+  const dastOpts = body.dast || {};
+  const dastEnv = {};
+  if (dastOpts.use_auth === true || String(dastOpts.use_auth) === 'true') dastEnv.DAST_USE_AUTH = 'true';
+  if (dastOpts.pull === true || String(dastOpts.pull) === 'true') dastEnv.DAST_PULL = '1';
+  const minutes = Number(dastOpts.minutes);
+  if (Number.isFinite(minutes) && minutes >= 1) dastEnv.DAST_MINUTES = String(Math.min(5, Math.trunc(minutes)));
+
   for (const key of scans) {
     if (!fs.existsSync(path.join(ROOT, SCANNERS[key].script))) {
       return NextResponse.json({ error: `No existe ${SCANNERS[key].script}.` }, { status: 500 });
@@ -115,20 +123,21 @@ export async function POST(request) {
     started_at: utcNow(),
     finished_at: null,
     scans,
+    dast_auth: Boolean(dastEnv.DAST_USE_AUTH),
     log_path: logPath,
     exit_codes: {},
   });
 
   logStream.write(`[${state.started_at}] launching security suite ${runId}\n`);
-  logStream.write(`scans=${scans.join(',')}\n`);
+  logStream.write(`scans=${scans.join(',')}${scans.includes('dast') ? ` dast_auth=${Boolean(dastEnv.DAST_USE_AUTH)}` : ''}\n`);
 
   // Ejecuta los escaneos en secuencia; cada uno deja su propio resultado.
-  runSequential(scans, 0, logStream, runId);
+  runSequential(scans, 0, logStream, runId, dastEnv);
 
   return stateResponse(state, { store, buildProgress, status: 202 });
 }
 
-function runSequential(scans, index, logStream, runId) {
+function runSequential(scans, index, logStream, runId, dastEnv = {}) {
   if (index >= scans.length) {
     const finishedAt = utcNow();
     const latest = store.readState();
@@ -148,9 +157,11 @@ function runSequential(scans, index, logStream, runId) {
   const scanner = SCANNERS[key];
   logStream.write(`step-start ${key}\n`);
 
+  // Las opciones DAST_* se inyectan solo al escaneo dinamico (ZAP).
+  const extraEnv = key === 'dast' ? dastEnv : {};
   const child = spawn(pythonBin(), [scanner.script], {
     cwd: ROOT,
-    env: { ...process.env },
+    env: { ...process.env, ...extraEnv },
     stdio: ['ignore', 'pipe', 'pipe'],
   });
 
@@ -162,13 +173,13 @@ function runSequential(scans, index, logStream, runId) {
     logStream.write(`[${utcNow()}] ERROR ${String(error.message || error)}\n`);
     const latest = store.readState();
     store.writeState({ ...latest, exit_codes: { ...(latest?.exit_codes || {}), [key]: -1 } });
-    runSequential(scans, index + 1, logStream, runId);
+    runSequential(scans, index + 1, logStream, runId, dastEnv);
   });
 
   child.on('close', (code) => {
     logStream.write(`step-done ${key} code=${code}\n`);
     const latest = store.readState();
     store.writeState({ ...latest, exit_codes: { ...(latest?.exit_codes || {}), [key]: code } });
-    runSequential(scans, index + 1, logStream, runId);
+    runSequential(scans, index + 1, logStream, runId, dastEnv);
   });
 }

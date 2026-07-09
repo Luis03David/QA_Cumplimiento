@@ -2281,3 +2281,15 @@ th {
 .load-trend-dot.pass { fill: var(--pass); }
 .load-trend-dot.fail { fill: var(--fail); }
 .load-trend-dot { fill: var(--accent); }
+
+/* Sub-panel de opciones DAST dentro del launcher de seguridad */
+.launcher-dast-opts {
+  margin-top: 10px;
+  padding: 12px;
+  border: 1px dashed var(--line);
+  border-radius: 10px;
+  background: var(--accent-soft);
+  display: grid;
+  gap: 8px;
+}
+.launcher-dast-opts .launcher-selector-head { margin-bottom: 2px; }

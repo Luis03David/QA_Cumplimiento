@@ -1,0 +1,23 @@
+{
+  "schema_version": "1.0",
+  "run_id": "dast-zap-20260709T043143Z",
+  "tool": "zap-baseline",
+  "category": "dast",
+  "surface": "edge",
+  "status": "fail",
+  "started_at": "2026-07-09T04:31:43Z",
+  "finished_at": "2026-07-09T04:32:35Z",
+  "summary": "DAST (OWASP ZAP) contra https://missioncontrol.qa.aitops.ai/ encontro alertas bloqueantes o no pudo completar.",
+  "checks": [
+    {
+      "name": "zap-baseline",
+      "status": "fail",
+      "message": "ZAP no genero reporte JSON. Ultima linea: 2026-07-09 04:32:33,807 Failed to access summary file /home/zap/zap_out.json",
+      "details": {
+        "target": "https://missioncontrol.qa.aitops.ai/",
+        "exit_code": 3
+      }
+    }
+  ],
+  "artifacts": []
+}
