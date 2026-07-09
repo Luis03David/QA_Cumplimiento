@@ -1,0 +1,23 @@
+{
+  "schema_version": "1.0",
+  "run_id": "dast-zap-20260709T041734Z",
+  "tool": "zap-baseline",
+  "category": "dast",
+  "surface": "edge",
+  "status": "fail",
+  "started_at": "2026-07-09T04:17:34Z",
+  "finished_at": "2026-07-09T04:22:24Z",
+  "summary": "DAST (OWASP ZAP) contra https://missioncontrol.qa.aitops.ai/ encontro alertas bloqueantes o no pudo completar.",
+  "checks": [
+    {
+      "name": "zap-baseline",
+      "status": "fail",
+      "message": "ZAP no genero reporte JSON. Ultima linea: 2026-07-09 04:21:18,585 Unable to copy yaml file to /zap/wrk/zap.yaml [Errno 13] Permission denied: '/zap/wrk/zap.yaml'",
+      "details": {
+        "target": "https://missioncontrol.qa.aitops.ai/",
+        "exit_code": 0
+      }
+    }
+  ],
+  "artifacts": []
+}

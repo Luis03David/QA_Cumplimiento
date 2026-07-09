@@ -90,6 +90,22 @@ function round(value, digits = 2) {
   return Math.round(value * factor) / factor;
 }
 
+// Clasifica la superficie medida a partir de los codigos HTTP observados:
+//  - "app": predominan 2xx => las peticiones llegaron a la aplicacion real.
+//  - "edge": predominan 3xx (redireccion a Cloudflare Access) o no hubo exito
+//    de transporte => solo se midio el borde/login, no la app autenticada.
+function classifySurface(statusCounts) {
+  let twoxx = 0;
+  let threexx = 0;
+  for (const [code, count] of Object.entries(statusCounts || {})) {
+    const bucket = Math.floor(Number(code) / 100);
+    if (bucket === 2) twoxx += count;
+    else if (bucket === 3) threexx += count;
+  }
+  if (twoxx === 0 && threexx === 0) return 'edge';
+  return twoxx >= threexx ? 'app' : 'edge';
+}
+
 async function main() {
   fs.mkdirSync(RESULTS, { recursive: true });
 
@@ -101,6 +117,8 @@ async function main() {
   const timeoutMs = Math.max(1000, Math.min(120000, envInt('LOAD_TIMEOUT_MS', 15000)));
   const maxErrorRate = Math.max(0, Math.min(1, envFloat('LOAD_MAX_ERROR_RATE', 0.05)));
   const p95SloMs = Math.max(0, envInt('LOAD_P95_SLO_MS', 0));
+  const relPath = String(process.env.LOAD_PATH || '/').trim() || '/';
+  const usedAuth = String(process.env.LOAD_USE_AUTH || '').toLowerCase() === 'true';
 
   const startedAt = utcNow();
   const resultPath = path.join(RESULTS, `${runId}.json`);
@@ -113,7 +131,7 @@ async function main() {
   if (!targetUrl) {
     const skipped = buildResult({
       runId, startedAt, targetUrl, method, concurrency, durationMs, timeoutMs,
-      maxErrorRate, p95SloMs, latencies: [], statusCounts: {}, errors: [], forcedStatus: 'skipped',
+      maxErrorRate, p95SloMs, relPath, usedAuth, latencies: [], statusCounts: {}, errors: [], forcedStatus: 'skipped',
       skipReason: 'No hay target: define LOAD_TARGET_URL o AITOPS_BASE_URL en .env.',
     });
     fs.writeFileSync(resultPath, `${JSON.stringify(skipped, null, 2)}\n`, 'utf8');
@@ -180,7 +198,7 @@ async function main() {
 
   const result = buildResult({
     runId, startedAt, targetUrl, method, concurrency, durationMs, timeoutMs,
-    maxErrorRate, p95SloMs, latencies, statusCounts, errors,
+    maxErrorRate, p95SloMs, relPath, usedAuth, latencies, statusCounts, errors,
   });
 
   fs.writeFileSync(rawPath, `${JSON.stringify({ latencies, statusCounts, errors: errors.slice(0, 200) }, null, 2)}\n`, 'utf8');
@@ -191,8 +209,9 @@ async function main() {
 
 function buildResult({
   runId, startedAt, targetUrl, method, concurrency, durationMs, timeoutMs,
-  maxErrorRate, p95SloMs, latencies, statusCounts, errors, forcedStatus, skipReason,
+  maxErrorRate, p95SloMs, relPath, usedAuth, latencies, statusCounts, errors, forcedStatus, skipReason,
 }) {
+  const surface = forcedStatus === 'skipped' ? null : classifySurface(statusCounts);
   const total = latencies.length;
   const sorted = [...latencies].sort((a, b) => a - b);
   const errorCount = Object.entries(statusCounts).reduce((acc, [code, count]) => {
@@ -210,6 +229,9 @@ function buildResult({
 
   const details = {
     target: targetUrl,
+    path: relPath || '/',
+    surface,
+    used_auth: Boolean(usedAuth),
     method,
     concurrency,
     duration_ms: durationMs,
@@ -256,7 +278,26 @@ function buildResult({
       message: p95SloMs > 0
         ? `p95 ${round(p95)}ms contra SLO ${p95SloMs}ms.`
         : `p95 ${round(p95)}ms (sin SLO configurado).`,
-      details: { p95_ms: round(p95), p95_slo_ms: p95SloMs || null },
+      // details rico: unica fuente para que el dashboard grafique la distribucion
+      // completa de latencia y disponibilidad por superficie (edge vs app).
+      details: {
+        surface,
+        target: targetUrl,
+        path: relPath || '/',
+        used_auth: Boolean(usedAuth),
+        p95_slo_ms: p95SloMs || null,
+        error_rate: round(errorRate, 4),
+        throughput_rps: round(throughput),
+        requests_total: total,
+        latency_ms: {
+          min: sorted[0] ?? null,
+          p50: round(p50),
+          p95: round(p95),
+          p99: round(p99),
+          max: sorted[sorted.length - 1] ?? null,
+          avg: round(avgLatency),
+        },
+      },
     });
   }
 
@@ -270,6 +311,7 @@ function buildResult({
     run_id: runId,
     tool: 'load-node',
     category: 'load',
+    surface,
     status,
     started_at: startedAt,
     finished_at: utcNow(),

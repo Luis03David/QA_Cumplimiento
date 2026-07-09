@@ -1,0 +1,77 @@
+name: Static security scans
+
+# Escaneos ESTATICOS continuos sobre NUESTRO repo (no tocan el target):
+#   - SAST (Bandit): patrones inseguros en el codigo Python.
+#   - Dependency audit (pip-audit + npm audit): vulnerabilidades conocidas.
+#   - Secret scan: credenciales/tokens filtrados en el repo.
+# Corren en cada push y PR a main, y cada dia. Cierran la deuda de "sin escaneo
+# continuo": antes solo se lanzaban a mano desde el dashboard.
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  schedule:
+    - cron: "0 5 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  scans:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Instalar dependencias de escaneo
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Instalar dependencias npm (para npm audit)
+        run: npm ci || npm install
+
+      - name: SAST (Bandit)
+        id: sast
+        continue-on-error: true
+        run: python3 scripts/run_bandit_sast.py
+
+      - name: Dependency audit
+        id: deps
+        continue-on-error: true
+        run: python3 scripts/run_dependency_audit.py
+
+      - name: Secret scan
+        id: secrets
+        continue-on-error: true
+        run: python3 scripts/run_secret_scan.py
+
+      - name: Publicar evidencia
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: static-scan-evidence
+          path: resultados/*.json
+          if-no-files-found: warn
+
+      - name: Gate (falla el job si algun escaneo encontro hallazgos bloqueantes)
+        if: always()
+        run: |
+          fail=0
+          [ "${{ steps.sast.outcome }}" = "failure" ] && { echo "SAST encontro hallazgos bloqueantes"; fail=1; }
+          [ "${{ steps.deps.outcome }}" = "failure" ] && { echo "Dependency audit encontro vulnerabilidades"; fail=1; }
+          [ "${{ steps.secrets.outcome }}" = "failure" ] && { echo "Secret scan encontro secretos"; fail=1; }
+          exit $fail

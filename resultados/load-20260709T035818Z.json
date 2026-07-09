@@ -1,0 +1,55 @@
+{
+  "schema_version": "1.0",
+  "run_id": "load-20260709T035818Z",
+  "tool": "load-node",
+  "category": "load",
+  "surface": "app",
+  "status": "pass",
+  "started_at": "2026-07-09T03:58:18Z",
+  "finished_at": "2026-07-09T03:58:33Z",
+  "summary": "Carga OK contra https://missioncontrol.qa.aitops.ai/tokens: 1954 peticiones, 0% error, p95 158ms.",
+  "checks": [
+    {
+      "name": "requests-completadas",
+      "status": "pass",
+      "message": "1954 peticiones completadas (130.27 req/s).",
+      "details": {
+        "requests_total": 1954,
+        "throughput_rps": 130.27
+      }
+    },
+    {
+      "name": "tasa-de-error",
+      "status": "pass",
+      "message": "Tasa de error 0% (umbral 5%).",
+      "details": {
+        "error_rate": 0,
+        "max_error_rate": 0.05,
+        "requests_error": 0
+      }
+    },
+    {
+      "name": "latencia-p95",
+      "status": "pass",
+      "message": "p95 158ms contra SLO 1500ms.",
+      "details": {
+        "p95_ms": 158,
+        "p95_slo_ms": 1500
+      }
+    }
+  ],
+  "metrics_summary": {
+    "load": {
+      "metric": "requests",
+      "total": 1954,
+      "pass": 1954,
+      "fail": 0,
+      "skipped": 0,
+      "pass_rate": 1,
+      "avg_latency_ms": 114.48
+    }
+  },
+  "artifacts": [
+    "resultados/load-20260709T035818Z.raw.json"
+  ]
+}

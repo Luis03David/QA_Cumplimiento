@@ -1,0 +1,367 @@
+{
+  "schema_version": "1.0",
+  "run_id": "sast-bandit-20260709T032736Z",
+  "tool": "bandit-sast",
+  "category": "sast",
+  "status": "fail",
+  "started_at": "2026-07-09T03:27:36Z",
+  "finished_at": "2026-07-09T03:27:41Z",
+  "summary": "SAST (Bandit) encontro hallazgos bloqueantes o no pudo completar.",
+  "checks": [
+    {
+      "name": "bandit:high",
+      "status": "pass",
+      "message": "Sin hallazgos de severidad HIGH.",
+      "details": {
+        "count": 0,
+        "findings": [],
+        "blocking": true
+      }
+    },
+    {
+      "name": "bandit:medium",
+      "status": "fail",
+      "message": "4 hallazgo(s) MEDIUM: ./scripts/run_agentic_evals.py:228 [B310 MEDIUM] Audit url open for permitted schemes. Allowing use of file:/ or custom schemes is often unexpected.; ./scripts/run_agentic_evals.py:473 [B310 MEDIUM] Audit url open for permitted schemes. Allowing use of file:/ or custom schemes is often unexpected.; ./scripts/run_judge_review.py:103 [B310 MEDIUM] Audit url open for permitted schemes. Allowing use of file:/ or custom schemes is often unexpected.; ./tests/rag_eval.py:111 [B310 MEDIUM] Audit url open for permitted schemes. Allowing use of file:/ or custom schemes is often unexpected.",
+      "details": {
+        "count": 4,
+        "findings": [
+          {
+            "file": "./scripts/run_agentic_evals.py",
+            "line": 228,
+            "test_id": "B310",
+            "test_name": "blacklist",
+            "severity": "MEDIUM",
+            "confidence": "HIGH",
+            "issue": "Audit url open for permitted schemes. Allowing use of file:/ or custom schemes is often unexpected.",
+            "more_info": "https://bandit.readthedocs.io/en/1.9.4/blacklists/blacklist_calls.html#b310-urllib-urlopen"
+          },
+          {
+            "file": "./scripts/run_agentic_evals.py",
+            "line": 473,
+            "test_id": "B310",
+            "test_name": "blacklist",
+            "severity": "MEDIUM",
+            "confidence": "HIGH",
+            "issue": "Audit url open for permitted schemes. Allowing use of file:/ or custom schemes is often unexpected.",
+            "more_info": "https://bandit.readthedocs.io/en/1.9.4/blacklists/blacklist_calls.html#b310-urllib-urlopen"
+          },
+          {
+            "file": "./scripts/run_judge_review.py",
+            "line": 103,
+            "test_id": "B310",
+            "test_name": "blacklist",
+            "severity": "MEDIUM",
+            "confidence": "HIGH",
+            "issue": "Audit url open for permitted schemes. Allowing use of file:/ or custom schemes is often unexpected.",
+            "more_info": "https://bandit.readthedocs.io/en/1.9.4/blacklists/blacklist_calls.html#b310-urllib-urlopen"
+          },
+          {
+            "file": "./tests/rag_eval.py",
+            "line": 111,
+            "test_id": "B310",
+            "test_name": "blacklist",
+            "severity": "MEDIUM",
+            "confidence": "HIGH",
+            "issue": "Audit url open for permitted schemes. Allowing use of file:/ or custom schemes is often unexpected.",
+            "more_info": "https://bandit.readthedocs.io/en/1.9.4/blacklists/blacklist_calls.html#b310-urllib-urlopen"
+          }
+        ],
+        "blocking": true
+      }
+    },
+    {
+      "name": "bandit:low",
+      "status": "pass",
+      "message": "28 hallazgo(s) LOW (no bloqueantes): ./scripts/qa_quality_microagent.py:12 [B404 LOW] Consider possible security implications associated with the subprocess module.; ./scripts/qa_quality_microagent.py:53 [B603 LOW] subprocess call - check for execution of untrusted input.; ./scripts/qa_quality_microagent.py:145 [B105 LOW] Possible hardcoded password: '0'; ./scripts/run_agent_workflow_evals.py:89 [B105 LOW] Possible hardcoded password: '0'; ./scripts/run_agentic_evals.py:609 [B105 LOW] Possible hardcoded password: '0'; ./scripts/run_bandit_sast.py:13 [B404 LOW] Consider possible security implications associated with the subprocess module.; ./scripts/run_bandit_sast.py:57 [B603 LOW] subprocess call - check for execution of untrusted input.; ./scripts/run_bandit_sast.py:225 [B105 LOW] Possible hardcoded password: 'SAST (Bandit) completado sin hallazgos bloqueantes (HIGH/MEDIUM).'; ./scripts/run_dependency_audit.py:4 [B404 LOW] Consider possible security implications associated with the subprocess module.; ./scripts/run_dependency_audit.py:59 [B603 LOW] subprocess call - check for execution of untrusted input.; ./scripts/run_dependency_audit.py:193 [B105 LOW] Possible hardcoded password: 'Escaneo de dependencias completado sin hallazgos bloqueantes.'; ./scripts/run_judge_review.py:287 [B101 LOW] Use of assert detected. The enclosed code will be removed when compiling to optimised byte code.; ./scripts/run_judge_review.py:298 [B112 LOW] Try, Except, Continue detected.; ./scripts/run_judge_review.py:365 [B105 LOW] Possible hardcoded password: 'PASS'; ./scripts/run_promptfoo_eval.py:9 [B404 LOW] Consider possible security implications associated with the subprocess module.; ./scripts/run_promptfoo_eval.py:109 [B105 LOW] Possible hardcoded password: '0'; ./scripts/run_promptfoo_eval.py:164 [B603 LOW] subprocess call - check for execution of untrusted input.; ./scripts/run_ragas_evals.py:103 [B105 LOW] Possible hardcoded password: '0'; ./scripts/run_secret_scan.py:5 [B404 LOW] Consider possible security implications associated with the subprocess module.; ./scripts/run_secret_scan.py:31 [B603 LOW] subprocess call - check for execution of untrusted input.; ./tests/test_rag_golden_eval.py:50 [B101 LOW] Use of assert detected. The enclosed code will be removed when compiling to optimised byte code.; ./tests/test_rag_golden_eval.py:56 [B101 LOW] Use of assert detected. The enclosed code will be removed when compiling to optimised byte code.; ./tests/test_rag_golden_eval.py:62 [B101 LOW] Use of assert detected. The enclosed code will be removed when compiling to optimised byte code.; ./tests/test_rag_golden_eval.py:68 [B101 LOW] Use of assert detected. The enclosed code will be removed when compiling to optimised byte code.; ./tests/test_rag_golden_eval.py:75 [B101 LOW] Use of assert detected. The enclosed code will be removed when compiling to optimised byte code.; ./tests/test_rag_golden_eval.py:81 [B101 LOW] Use of assert detected. The enclosed code will be removed when compiling to optimised byte code.; ./tests/test_rag_golden_eval.py:82 [B101 LOW] Use of assert detected. The enclosed code will be removed when compiling to optimised byte code.; ./tests/test_rag_golden_eval.py:88 [B101 LOW] Use of assert detected. The enclosed code will be removed when compiling to optimised byte code.",
+      "details": {
+        "count": 28,
+        "findings": [
+          {
+            "file": "./scripts/qa_quality_microagent.py",
+            "line": 12,
+            "test_id": "B404",
+            "test_name": "blacklist",
+            "severity": "LOW",
+            "confidence": "HIGH",
+            "issue": "Consider possible security implications associated with the subprocess module.",
+            "more_info": "https://bandit.readthedocs.io/en/1.9.4/blacklists/blacklist_imports.html#b404-import-subprocess"
+          },
+          {
+            "file": "./scripts/qa_quality_microagent.py",
+            "line": 53,
+            "test_id": "B603",
+            "test_name": "subprocess_without_shell_equals_true",
+            "severity": "LOW",
+            "confidence": "HIGH",
+            "issue": "subprocess call - check for execution of untrusted input.",
+            "more_info": "https://bandit.readthedocs.io/en/1.9.4/plugins/b603_subprocess_without_shell_equals_true.html"
+          },
+          {
+            "file": "./scripts/qa_quality_microagent.py",
+            "line": 145,
+            "test_id": "B105",
+            "test_name": "hardcoded_password_string",
+            "severity": "LOW",
+            "confidence": "MEDIUM",
+            "issue": "Possible hardcoded password: '0'",
+            "more_info": "https://bandit.readthedocs.io/en/1.9.4/plugins/b105_hardcoded_password_string.html"
+          },
+          {
+            "file": "./scripts/run_agent_workflow_evals.py",
+            "line": 89,
+            "test_id": "B105",
+            "test_name": "hardcoded_password_string",
+            "severity": "LOW",
+            "confidence": "MEDIUM",
+            "issue": "Possible hardcoded password: '0'",
+            "more_info": "https://bandit.readthedocs.io/en/1.9.4/plugins/b105_hardcoded_password_string.html"
+          },
+          {
+            "file": "./scripts/run_agentic_evals.py",
+            "line": 609,
+            "test_id": "B105",
+            "test_name": "hardcoded_password_string",
+            "severity": "LOW",
+            "confidence": "MEDIUM",
+            "issue": "Possible hardcoded password: '0'",
+            "more_info": "https://bandit.readthedocs.io/en/1.9.4/plugins/b105_hardcoded_password_string.html"
+          },
+          {
+            "file": "./scripts/run_bandit_sast.py",
+            "line": 13,
+            "test_id": "B404",
+            "test_name": "blacklist",
+            "severity": "LOW",
+            "confidence": "HIGH",
+            "issue": "Consider possible security implications associated with the subprocess module.",
+            "more_info": "https://bandit.readthedocs.io/en/1.9.4/blacklists/blacklist_imports.html#b404-import-subprocess"
+          },
+          {
+            "file": "./scripts/run_bandit_sast.py",
+            "line": 57,
+            "test_id": "B603",
+            "test_name": "subprocess_without_shell_equals_true",
+            "severity": "LOW",
+            "confidence": "HIGH",
+            "issue": "subprocess call - check for execution of untrusted input.",
+            "more_info": "https://bandit.readthedocs.io/en/1.9.4/plugins/b603_subprocess_without_shell_equals_true.html"
+          },
+          {
+            "file": "./scripts/run_bandit_sast.py",
+            "line": 225,
+            "test_id": "B105",
+            "test_name": "hardcoded_password_string",
+            "severity": "LOW",
+            "confidence": "MEDIUM",
+            "issue": "Possible hardcoded password: 'SAST (Bandit) completado sin hallazgos bloqueantes (HIGH/MEDIUM).'",
+            "more_info": "https://bandit.readthedocs.io/en/1.9.4/plugins/b105_hardcoded_password_string.html"
+          },
+          {
+            "file": "./scripts/run_dependency_audit.py",
+            "line": 4,
+            "test_id": "B404",
+            "test_name": "blacklist",
+            "severity": "LOW",
+            "confidence": "HIGH",
+            "issue": "Consider possible security implications associated with the subprocess module.",
+            "more_info": "https://bandit.readthedocs.io/en/1.9.4/blacklists/blacklist_imports.html#b404-import-subprocess"
+          },
+          {
+            "file": "./scripts/run_dependency_audit.py",
+            "line": 59,
+            "test_id": "B603",
+            "test_name": "subprocess_without_shell_equals_true",
+            "severity": "LOW",
+            "confidence": "HIGH",
+            "issue": "subprocess call - check for execution of untrusted input.",
+            "more_info": "https://bandit.readthedocs.io/en/1.9.4/plugins/b603_subprocess_without_shell_equals_true.html"
+          },
+          {
+            "file": "./scripts/run_dependency_audit.py",
+            "line": 193,
+            "test_id": "B105",
+            "test_name": "hardcoded_password_string",
+            "severity": "LOW",
+            "confidence": "MEDIUM",
+            "issue": "Possible hardcoded password: 'Escaneo de dependencias completado sin hallazgos bloqueantes.'",
+            "more_info": "https://bandit.readthedocs.io/en/1.9.4/plugins/b105_hardcoded_password_string.html"
+          },
+          {
+            "file": "./scripts/run_judge_review.py",
+            "line": 287,
+            "test_id": "B101",
+            "test_name": "assert_used",
+            "severity": "LOW",
+            "confidence": "HIGH",
+            "issue": "Use of assert detected. The enclosed code will be removed when compiling to optimised byte code.",
+            "more_info": "https://bandit.readthedocs.io/en/1.9.4/plugins/b101_assert_used.html"
+          },
+          {
+            "file": "./scripts/run_judge_review.py",
+            "line": 298,
+            "test_id": "B112",
+            "test_name": "try_except_continue",
+            "severity": "LOW",
+            "confidence": "HIGH",
+            "issue": "Try, Except, Continue detected.",
+            "more_info": "https://bandit.readthedocs.io/en/1.9.4/plugins/b112_try_except_continue.html"
+          },
+          {
+            "file": "./scripts/run_judge_review.py",
+            "line": 365,
+            "test_id": "B105",
+            "test_name": "hardcoded_password_string",
+            "severity": "LOW",
+            "confidence": "MEDIUM",
+            "issue": "Possible hardcoded password: 'PASS'",
+            "more_info": "https://bandit.readthedocs.io/en/1.9.4/plugins/b105_hardcoded_password_string.html"
+          },
+          {
+            "file": "./scripts/run_promptfoo_eval.py",
+            "line": 9,
+            "test_id": "B404",
+            "test_name": "blacklist",
+            "severity": "LOW",
+            "confidence": "HIGH",
+            "issue": "Consider possible security implications associated with the subprocess module.",
+            "more_info": "https://bandit.readthedocs.io/en/1.9.4/blacklists/blacklist_imports.html#b404-import-subprocess"
+          },
+          {
+            "file": "./scripts/run_promptfoo_eval.py",
+            "line": 109,
+            "test_id": "B105",
+            "test_name": "hardcoded_password_string",
+            "severity": "LOW",
+            "confidence": "MEDIUM",
+            "issue": "Possible hardcoded password: '0'",
+            "more_info": "https://bandit.readthedocs.io/en/1.9.4/plugins/b105_hardcoded_password_string.html"
+          },
+          {
+            "file": "./scripts/run_promptfoo_eval.py",
+            "line": 164,
+            "test_id": "B603",
+            "test_name": "subprocess_without_shell_equals_true",
+            "severity": "LOW",
+            "confidence": "HIGH",
+            "issue": "subprocess call - check for execution of untrusted input.",
+            "more_info": "https://bandit.readthedocs.io/en/1.9.4/plugins/b603_subprocess_without_shell_equals_true.html"
+          },
+          {
+            "file": "./scripts/run_ragas_evals.py",
+            "line": 103,
+            "test_id": "B105",
+            "test_name": "hardcoded_password_string",
+            "severity": "LOW",
+            "confidence": "MEDIUM",
+            "issue": "Possible hardcoded password: '0'",
+            "more_info": "https://bandit.readthedocs.io/en/1.9.4/plugins/b105_hardcoded_password_string.html"
+          },
+          {
+            "file": "./scripts/run_secret_scan.py",
+            "line": 5,
+            "test_id": "B404",
+            "test_name": "blacklist",
+            "severity": "LOW",
+            "confidence": "HIGH",
+            "issue": "Consider possible security implications associated with the subprocess module.",
+            "more_info": "https://bandit.readthedocs.io/en/1.9.4/blacklists/blacklist_imports.html#b404-import-subprocess"
+          },
+          {
+            "file": "./scripts/run_secret_scan.py",
+            "line": 31,
+            "test_id": "B603",
+            "test_name": "subprocess_without_shell_equals_true",
+            "severity": "LOW",
+            "confidence": "HIGH",
+            "issue": "subprocess call - check for execution of untrusted input.",
+            "more_info": "https://bandit.readthedocs.io/en/1.9.4/plugins/b603_subprocess_without_shell_equals_true.html"
+          },
+          {
+            "file": "./tests/test_rag_golden_eval.py",
+            "line": 50,
+            "test_id": "B101",
+            "test_name": "assert_used",
+            "severity": "LOW",
+            "confidence": "HIGH",
+            "issue": "Use of assert detected. The enclosed code will be removed when compiling to optimised byte code.",
+            "more_info": "https://bandit.readthedocs.io/en/1.9.4/plugins/b101_assert_used.html"
+          },
+          {
+            "file": "./tests/test_rag_golden_eval.py",
+            "line": 56,
+            "test_id": "B101",
+            "test_name": "assert_used",
+            "severity": "LOW",
+            "confidence": "HIGH",
+            "issue": "Use of assert detected. The enclosed code will be removed when compiling to optimised byte code.",
+            "more_info": "https://bandit.readthedocs.io/en/1.9.4/plugins/b101_assert_used.html"
+          },
+          {
+            "file": "./tests/test_rag_golden_eval.py",
+            "line": 62,
+            "test_id": "B101",
+            "test_name": "assert_used",
+            "severity": "LOW",
+            "confidence": "HIGH",
+            "issue": "Use of assert detected. The enclosed code will be removed when compiling to optimised byte code.",
+            "more_info": "https://bandit.readthedocs.io/en/1.9.4/plugins/b101_assert_used.html"
+          },
+          {
+            "file": "./tests/test_rag_golden_eval.py",
+            "line": 68,
+            "test_id": "B101",
+            "test_name": "assert_used",
+            "severity": "LOW",
+            "confidence": "HIGH",
+            "issue": "Use of assert detected. The enclosed code will be removed when compiling to optimised byte code.",
+            "more_info": "https://bandit.readthedocs.io/en/1.9.4/plugins/b101_assert_used.html"
+          },
+          {
+            "file": "./tests/test_rag_golden_eval.py",
+            "line": 75,
+            "test_id": "B101",
+            "test_name": "assert_used",
+            "severity": "LOW",
+            "confidence": "HIGH",
+            "issue": "Use of assert detected. The enclosed code will be removed when compiling to optimised byte code.",
+            "more_info": "https://bandit.readthedocs.io/en/1.9.4/plugins/b101_assert_used.html"
+          },
+          {
+            "file": "./tests/test_rag_golden_eval.py",
+            "line": 81,
+            "test_id": "B101",
+            "test_name": "assert_used",
+            "severity": "LOW",
+            "confidence": "HIGH",
+            "issue": "Use of assert detected. The enclosed code will be removed when compiling to optimised byte code.",
+            "more_info": "https://bandit.readthedocs.io/en/1.9.4/plugins/b101_assert_used.html"
+          },
+          {
+            "file": "./tests/test_rag_golden_eval.py",
+            "line": 82,
+            "test_id": "B101",
+            "test_name": "assert_used",
+            "severity": "LOW",
+            "confidence": "HIGH",
+            "issue": "Use of assert detected. The enclosed code will be removed when compiling to optimised byte code.",
+            "more_info": "https://bandit.readthedocs.io/en/1.9.4/plugins/b101_assert_used.html"
+          },
+          {
+            "file": "./tests/test_rag_golden_eval.py",
+            "line": 88,
+            "test_id": "B101",
+            "test_name": "assert_used",
+            "severity": "LOW",
+            "confidence": "HIGH",
+            "issue": "Use of assert detected. The enclosed code will be removed when compiling to optimised byte code.",
+            "more_info": "https://bandit.readthedocs.io/en/1.9.4/plugins/b101_assert_used.html"
+          }
+        ],
+        "blocking": false
+      }
+    }
+  ],
+  "artifacts": [
+    "resultados/sast-bandit-20260709T032736Z.raw.json"
+  ]
+}

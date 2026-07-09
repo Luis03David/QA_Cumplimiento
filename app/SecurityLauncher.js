@@ -6,6 +6,8 @@ import { useRouter } from 'next/navigation';
 const SCANS = [
   { key: 'secret', label: 'Secret scan', detail: 'Credenciales, tokens y valores sensibles expuestos en el repo.' },
   { key: 'dependency', label: 'Dependency audit', detail: 'Vulnerabilidades conocidas en dependencias (pip/npm).' },
+  { key: 'sast', label: 'SAST (Bandit)', detail: 'Analisis estatico del codigo Python: patrones inseguros sin ejecutar la app.' },
+  { key: 'dast', label: 'DAST (OWASP ZAP)', detail: 'Escaneo dinamico del target QA desde afuera (spider + pasivo, via Docker). Prueba la app corriendo, no el codigo.' },
 ];
 
 const STATUS_LABELS = { running: 'Corriendo', finished: 'Terminada', failed: 'Fallo' };
@@ -13,7 +15,7 @@ const STEP_LABELS = { pending: 'en espera', running: 'corriendo', done: 'ok', er
 
 export default function SecurityLauncher() {
   const router = useRouter();
-  const [selected, setSelected] = useState(['secret', 'dependency']);
+  const [selected, setSelected] = useState(['secret', 'dependency', 'sast']);
   const [job, setJob] = useState(null);
   const [progress, setProgress] = useState(null);
   const [logTail, setLogTail] = useState('');

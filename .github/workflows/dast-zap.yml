@@ -1,0 +1,85 @@
+name: DAST OWASP ZAP
+
+# Prueba dinamica de seguridad (DAST) contra el target QA DESDE AFUERA, con
+# OWASP ZAP en modo baseline (spider + escaneo pasivo, no intrusivo). No lee el
+# codigo: ataca/observa la app desplegada como lo haria un visitante externo.
+#
+# Se ejecuta bajo demanda y de forma programada (semanal). NO corre en cada push
+# para no golpear el ambiente en cada commit.
+#
+# Nota de acceso: por defecto ZAP vera el borde/login de Cloudflare Access
+# (superficie "edge"). Para escanear la app autenticada, define los secrets
+# AITOPS_ACCESS_CLIENT_ID / AITOPS_ACCESS_CLIENT_SECRET (service token de Access):
+# el paso inyecta las cabeceras CF-Access-* via el 'replacer' de ZAP.
+
+on:
+  workflow_dispatch:
+    inputs:
+      target_url:
+        description: "URL a escanear (deja vacio para usar la variable AITOPS_BASE_URL)"
+        required: false
+        default: ""
+  schedule:
+    # Lunes 06:00 UTC
+    - cron: "0 6 * * 1"
+
+permissions:
+  contents: read
+
+jobs:
+  zap-baseline:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Resolver target
+        id: target
+        shell: bash
+        run: |
+          target="${{ github.event.inputs.target_url }}"
+          if [ -z "$target" ]; then
+            target="${{ vars.AITOPS_BASE_URL }}"
+          fi
+          if [ -z "$target" ]; then
+            target="https://missioncontrol.qa.aitops.ai/"
+          fi
+          echo "url=$target" >> "$GITHUB_OUTPUT"
+          echo "Target DAST: $target"
+
+      - name: Construir opciones de acceso (Cloudflare service token, opcional)
+        id: access
+        shell: bash
+        env:
+          CF_ID: ${{ secrets.AITOPS_ACCESS_CLIENT_ID }}
+          CF_SECRET: ${{ secrets.AITOPS_ACCESS_CLIENT_SECRET }}
+        run: |
+          if [ -n "$CF_ID" ] && [ -n "$CF_SECRET" ]; then
+            opts="-z \"-config replacer.full_list(0).description=cfid -config replacer.full_list(0).enabled=true -config replacer.full_list(0).matchtype=REQ_HEADER -config replacer.full_list(0).matchstr=CF-Access-Client-Id -config replacer.full_list(0).regex=false -config replacer.full_list(0).replacement=$CF_ID -config replacer.full_list(1).description=cfsecret -config replacer.full_list(1).enabled=true -config replacer.full_list(1).matchtype=REQ_HEADER -config replacer.full_list(1).matchstr=CF-Access-Client-Secret -config replacer.full_list(1).regex=false -config replacer.full_list(1).replacement=$CF_SECRET\""
+            echo "authenticated=true" >> "$GITHUB_OUTPUT"
+          else
+            opts=""
+            echo "authenticated=false" >> "$GITHUB_OUTPUT"
+          fi
+          echo "cmd_options=$opts" >> "$GITHUB_OUTPUT"
+
+      - name: OWASP ZAP Baseline Scan
+        uses: zaproxy/action-baseline@v0.14.0
+        with:
+          target: ${{ steps.target.outputs.url }}
+          # -I: no falla el job por warnings; -m 2: hasta 2 min de spider; -J: reporte JSON.
+          cmd_options: "-I -m 2 -J report_json.json ${{ steps.access.outputs.cmd_options }}"
+          # No abrir issues automaticamente en el repo; conservamos la evidencia como artefacto.
+          allow_issue_writing: false
+          fail_action: false
+
+      - name: Publicar evidencia ZAP
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: dast-zap-report
+          path: |
+            report_json.json
+            report_html.html
+            report_md.md
+          if-no-files-found: warn

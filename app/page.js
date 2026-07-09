@@ -311,6 +311,8 @@ export default async function Dashboard({ searchParams }) {
             </div>
             <p className="editor-note">Lanza una prueba de carga en Node contra un endpoint del target: mide latencia p50/p95/p99, throughput y tasa de error, y guarda la evidencia comparable en resultados/.</p>
             <LoadLauncher />
+            <div className="panel-subsection"><h3>Disponibilidad y latencia</h3></div>
+            <LoadCharts results={loadResultsList} />
             <div className="panel-subsection"><h3>Corridas de carga</h3></div>
             <RunSummaryList results={loadResultsList} emptyTitle="No hay corridas de carga todavia" emptyDetail="Lanza una prueba de carga arriba para generar la primera evidencia." />
           </div>
@@ -1223,6 +1225,178 @@ function SurfaceCard({ title, value, detail, tone = 'neutral' }) {
       <strong>{value}</strong>
       <small>{detail}</small>
     </article>
+  );
+}
+
+// --- Carga: extraccion de metricas y graficas SVG (sin dependencias) ---
+
+// Lee las metricas de una corrida de carga desde el check enriquecido
+// "latencia-p95". Devuelve null si la corrida es de un formato viejo sin la
+// distribucion completa (esas siguen visibles en el historial, pero no grafican).
+function extractLoadMetrics(result) {
+  const check = (result.checks || []).find((item) => item.name === 'latencia-p95');
+  const details = check?.details || {};
+  const latency = details.latency_ms || {};
+  if (latency.p95 === undefined || latency.p95 === null) return null;
+  return {
+    runId: result.run_id,
+    finishedAt: result.finished_at,
+    status: result.status,
+    surface: result.surface || details.surface || 'edge',
+    path: details.path || null,
+    usedAuth: details.used_auth ?? null,
+    p50: numOrNull(latency.p50),
+    p95: numOrNull(latency.p95),
+    p99: numOrNull(latency.p99),
+    avg: numOrNull(latency.avg),
+    max: numOrNull(latency.max),
+    throughput: numOrNull(details.throughput_rps),
+    errorRate: numOrNull(details.error_rate),
+    requests: numOrNull(details.requests_total),
+    sloP95: numOrNull(details.p95_slo_ms),
+  };
+}
+
+function numOrNull(value) {
+  return value === null || value === undefined || Number.isNaN(Number(value)) ? null : Number(value);
+}
+
+const SURFACE_META = {
+  edge: { label: 'Edge (Cloudflare Access)', hint: 'Borde/login: mide disponibilidad del perimetro, no la app.' },
+  app: { label: 'Aplicacion real (autenticada)', hint: 'Peticiones que llegaron a la aplicacion con sesion valida.' },
+};
+
+function LoadCharts({ results }) {
+  const metrics = (results || []).map(extractLoadMetrics).filter(Boolean);
+  if (metrics.length === 0) {
+    return <EmptyState title="Sin datos graficables todavia" detail="Lanza una prueba de carga para ver disponibilidad y latencia por superficie (edge vs app real)." />;
+  }
+  // results ya viene ordenado por finished_at desc; agrupamos por superficie.
+  const bySurface = { edge: [], app: [] };
+  for (const metric of metrics) {
+    (bySurface[metric.surface] || (bySurface[metric.surface] = [])).push(metric);
+  }
+  const order = ['edge', 'app'].filter((key) => (bySurface[key] || []).length);
+  return (
+    <div className="load-charts">
+      {order.map((surface) => (
+        <SurfaceLoadCard key={surface} surface={surface} runs={bySurface[surface]} />
+      ))}
+    </div>
+  );
+}
+
+function SurfaceLoadCard({ surface, runs }) {
+  const meta = SURFACE_META[surface] || { label: surface, hint: '' };
+  const latest = runs[0];
+  const history = [...runs].reverse(); // cronologico para la tendencia
+  const availability = latest.errorRate === null ? null : Math.max(0, 1 - latest.errorRate);
+  return (
+    <article className={`load-surface-card ${latest.status}`}>
+      <div className="load-surface-head">
+        <div>
+          <strong>{meta.label}</strong>
+          <span>{meta.hint}</span>
+        </div>
+        <StatusBadge status={latest.status} />
+      </div>
+
+      <div className="load-stat-row">
+        <StatTile label="Disponibilidad" value={availability === null ? '—' : percent(availability)} tone={availability !== null && availability >= 0.99 ? 'pass' : 'fail'} />
+        <StatTile label="p95" value={latest.p95 === null ? '—' : `${latest.p95} ms`} tone={latest.sloP95 && latest.p95 !== null ? (latest.p95 <= latest.sloP95 ? 'pass' : 'fail') : 'neutral'} />
+        <StatTile label="Throughput" value={latest.throughput === null ? '—' : `${latest.throughput} rps`} tone="neutral" />
+        <StatTile label="Peticiones" value={latest.requests ?? '—'} tone="neutral" />
+      </div>
+
+      <div className="load-chart-block">
+        <div className="load-chart-caption">
+          <span>Latencia (ultima corrida)</span>
+          <small>{latest.path ? `ruta ${latest.path}` : ''}{latest.sloP95 ? ` · SLO p95 ${latest.sloP95}ms` : ''}</small>
+        </div>
+        <LatencyBars metric={latest} />
+      </div>
+
+      {history.length > 1 && (
+        <div className="load-chart-block">
+          <div className="load-chart-caption">
+            <span>Tendencia p95</span>
+            <small>{history.length} corridas</small>
+          </div>
+          <TrendSparkline series={history} sloP95={latest.sloP95} />
+        </div>
+      )}
+    </article>
+  );
+}
+
+function StatTile({ label, value, tone = 'neutral' }) {
+  return (
+    <div className={`load-stat-tile ${tone}`}>
+      <span>{label}</span>
+      <strong>{value}</strong>
+    </div>
+  );
+}
+
+// Barras horizontales de percentiles p50/p95/p99 con linea de SLO opcional.
+function LatencyBars({ metric }) {
+  const rows = [
+    { key: 'p50', label: 'p50', value: metric.p50 },
+    { key: 'p95', label: 'p95', value: metric.p95 },
+    { key: 'p99', label: 'p99', value: metric.p99 },
+  ].filter((row) => row.value !== null);
+  if (!rows.length) return <p className="editor-note">Sin distribucion de latencia.</p>;
+  const slo = metric.sloP95 || 0;
+  const maxValue = Math.max(...rows.map((row) => row.value), slo) * 1.15 || 1;
+  const width = 320;
+  const height = rows.length * 30 + 12;
+  const barX = 40;
+  const barW = width - barX - 44;
+  return (
+    <svg className="load-svg" viewBox={`0 0 ${width} ${height}`} role="img" aria-label={`Latencia p50 ${metric.p50}ms, p95 ${metric.p95}ms, p99 ${metric.p99}ms`}>
+      {slo > 0 && (
+        <g>
+          <line x1={barX + (slo / maxValue) * barW} y1="4" x2={barX + (slo / maxValue) * barW} y2={height - 8} className="load-slo-line" />
+        </g>
+      )}
+      {rows.map((row, index) => {
+        const y = index * 30 + 6;
+        const w = Math.max(2, (row.value / maxValue) * barW);
+        const overSlo = slo > 0 && row.key !== 'p50' && row.value > slo;
+        return (
+          <g key={row.key}>
+            <text x="0" y={y + 14} className="load-svg-label">{row.label}</text>
+            <rect x={barX} y={y} width={w} height="18" rx="3" className={`load-bar ${overSlo ? 'over' : 'ok'}`} />
+            <text x={barX + w + 6} y={y + 14} className="load-svg-value">{row.value}ms</text>
+          </g>
+        );
+      })}
+    </svg>
+  );
+}
+
+// Sparkline de la evolucion de p95 entre corridas, con banda de SLO.
+function TrendSparkline({ series, sloP95 }) {
+  const values = series.map((item) => item.p95).filter((value) => value !== null);
+  if (values.length < 2) return null;
+  const width = 320;
+  const height = 70;
+  const pad = 6;
+  const slo = sloP95 || 0;
+  const maxValue = Math.max(...values, slo) * 1.1 || 1;
+  const stepX = (width - pad * 2) / (series.length - 1);
+  const toY = (value) => height - pad - (value / maxValue) * (height - pad * 2);
+  const points = series.map((item, index) => `${pad + index * stepX},${toY(item.p95 ?? 0)}`).join(' ');
+  return (
+    <svg className="load-svg" viewBox={`0 0 ${width} ${height}`} role="img" aria-label={`Tendencia de p95 en ${series.length} corridas`}>
+      {slo > 0 && slo <= maxValue && (
+        <line x1={pad} y1={toY(slo)} x2={width - pad} y2={toY(slo)} className="load-slo-line" />
+      )}
+      <polyline points={points} className="load-trend-line" fill="none" />
+      {series.map((item, index) => (
+        <circle key={item.runId} cx={pad + index * stepX} cy={toY(item.p95 ?? 0)} r="3" className={`load-trend-dot ${item.status}`} />
+      ))}
+    </svg>
   );
 }
 

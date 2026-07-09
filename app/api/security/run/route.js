@@ -29,6 +29,16 @@ const SCANNERS = {
     script: path.join('scripts', 'run_dependency_audit.py'),
     category: 'dependency',
   },
+  sast: {
+    label: 'SAST (Bandit)',
+    script: path.join('scripts', 'run_bandit_sast.py'),
+    category: 'sast',
+  },
+  dast: {
+    label: 'DAST (OWASP ZAP)',
+    script: path.join('scripts', 'run_dast_zap.py'),
+    category: 'dast',
+  },
 };
 
 function pythonBin() {
@@ -84,7 +94,7 @@ export async function POST(request) {
   const requested = Array.isArray(body.scans) ? body.scans : ['secret', 'dependency'];
   const scans = requested.filter((key) => Object.prototype.hasOwnProperty.call(SCANNERS, key));
   if (scans.length === 0) {
-    return NextResponse.json({ error: 'Selecciona al menos un escaneo valido (secret, dependency).' }, { status: 400 });
+    return NextResponse.json({ error: 'Selecciona al menos un escaneo valido (secret, dependency, sast, dast).' }, { status: 400 });
   }
 
   for (const key of scans) {

@@ -1,0 +1,23 @@
+{
+  "schema_version": "1.0",
+  "run_id": "dast-zap-20260709T040424Z",
+  "tool": "zap-baseline",
+  "category": "dast",
+  "surface": null,
+  "status": "skipped",
+  "started_at": "2026-07-09T04:04:24Z",
+  "finished_at": "2026-07-09T04:04:24Z",
+  "summary": "DAST (OWASP ZAP) omitido: falta target, imagen o Docker.",
+  "checks": [
+    {
+      "name": "zap-image",
+      "status": "skipped",
+      "message": "Imagen ghcr.io/zaproxy/zaproxy:stable no presente. Descarga con: docker pull ghcr.io/zaproxy/zaproxy:stable (o corre con DAST_PULL=1).",
+      "details": {
+        "image": "ghcr.io/zaproxy/zaproxy:stable",
+        "hint": "docker pull ghcr.io/zaproxy/zaproxy:stable"
+      }
+    }
+  ],
+  "artifacts": []
+}

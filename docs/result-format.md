@@ -7,7 +7,8 @@ Campos obligatorios:
 - `schema_version`: version del contrato. Valor actual: `1.0`.
 - `run_id`: identificador unico de ejecucion.
 - `tool`: herramienta o script que genero el resultado.
-- `category`: tipo de prueba (`e2e`, `load`, `dependency`, `secret`, `sast`, `compliance`, `manual`).
+- `category`: tipo de prueba (`e2e`, `load`, `dependency`, `secret`, `sast`, `dast`, `compliance`, `manual`).
+- `surface` (opcional): superficie medida cuando aplica (`edge` = borde/login de Cloudflare Access; `app` = aplicacion real autenticada). Lo usan carga y DAST para separar mediciones del perimetro vs de la app.
 - `status`: resultado global (`pass`, `fail`, `skipped`).
 - `started_at` y `finished_at`: timestamps UTC ISO 8601.
 - `summary`: resumen humano breve.

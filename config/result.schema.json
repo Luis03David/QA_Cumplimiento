@@ -29,7 +29,11 @@
     },
     "category": {
       "type": "string",
-      "enum": ["e2e", "load", "dependency", "secret", "sast", "compliance", "manual"]
+      "enum": ["e2e", "load", "dependency", "secret", "sast", "dast", "compliance", "manual"]
+    },
+    "surface": {
+      "type": ["string", "null"],
+      "enum": ["edge", "app", null]
     },
     "status": {
       "type": "string",

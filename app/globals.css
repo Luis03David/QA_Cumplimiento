@@ -2214,3 +2214,70 @@ th {
   display: grid;
   gap: 6px;
 }
+
+/* --- Graficas de carga: disponibilidad y latencia (edge vs app) --- */
+.load-charts {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 14px;
+  margin: 8px 0 4px;
+}
+
+.load-surface-card {
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  padding: 14px;
+  background: var(--panel);
+  display: grid;
+  gap: 12px;
+  border-top: 4px solid var(--accent);
+}
+.load-surface-card.fail { border-top-color: var(--fail); }
+.load-surface-card.pass { border-top-color: var(--pass); }
+
+.load-surface-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 10px;
+}
+.load-surface-head strong { display: block; font-size: 14px; color: var(--ink); }
+.load-surface-head span { font-size: 11px; color: var(--muted); }
+
+.load-stat-row {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 8px;
+}
+.load-stat-tile {
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 8px;
+  text-align: center;
+  background: var(--bg);
+}
+.load-stat-tile span { display: block; font-size: 10px; text-transform: uppercase; letter-spacing: .04em; color: var(--muted); }
+.load-stat-tile strong { font-size: 15px; color: var(--ink); }
+.load-stat-tile.pass strong { color: var(--pass); }
+.load-stat-tile.fail strong { color: var(--fail); }
+
+.load-chart-block { display: grid; gap: 4px; }
+.load-chart-caption {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  font-size: 12px;
+}
+.load-chart-caption span { font-weight: 600; color: var(--ink); }
+.load-chart-caption small { color: var(--muted); font-size: 10px; }
+
+.load-svg { width: 100%; height: auto; overflow: visible; }
+.load-svg-label { font-size: 11px; fill: var(--muted); }
+.load-svg-value { font-size: 11px; fill: var(--ink); font-weight: 600; }
+.load-bar.ok { fill: var(--accent); }
+.load-bar.over { fill: var(--fail); }
+.load-slo-line { stroke: var(--skip); stroke-width: 1.5; stroke-dasharray: 4 3; }
+.load-trend-line { stroke: var(--accent); stroke-width: 2; }
+.load-trend-dot.pass { fill: var(--pass); }
+.load-trend-dot.fail { fill: var(--fail); }
+.load-trend-dot { fill: var(--accent); }
