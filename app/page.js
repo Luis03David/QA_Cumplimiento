@@ -4,6 +4,7 @@ import ChatConsistencyLauncher from './ChatConsistencyLauncher';
 import CloudflareAccessPanel from './CloudflareAccessPanel';
 import JudgeReviewButton from './JudgeReviewButton';
 import LoadLauncher from './LoadLauncher';
+import ReportLauncher from './ReportLauncher';
 import SecurityLauncher from './SecurityLauncher';
 import ToolPolicyEditor from './ToolPolicyEditor';
 import {
@@ -13,6 +14,7 @@ import {
   CircleDashed,
   ClipboardCheck,
   FileJson,
+  FileText,
   Filter,
   Gauge,
   History,
@@ -35,6 +37,7 @@ const NAV_ITEMS = [
   { id: 'seguridad', label: 'Seguridad', group: 'Superficie', icon: LockKeyhole, description: 'Secret scan, dependencias, accesos y adversarial no-chat.' },
   { id: 'catalogos', label: 'Catalogos', group: 'Trabajo', icon: FileJson, description: 'Banco editable de casos, prompts y criterios de aceptacion.' },
   { id: 'corridas', label: 'Corridas', group: 'Trabajo', icon: History, description: 'Historial completo de ejecuciones, filtros y artefactos.' },
+  { id: 'reportes', label: 'Reportes', group: 'Trabajo', icon: FileText, description: 'Genera informes de carga y seguridad a partir de la evidencia.' },
   { id: 'hallazgos', label: 'Hallazgos', group: 'Trabajo', icon: AlertTriangle, description: 'Fallas, faltantes, severidad, evidencia y estado de revision.' },
   { id: 'compliance', label: 'Compliance', group: 'Gobierno', icon: ClipboardCheck, description: 'Trazabilidad CP, controles, marcos regulatorios y evidencia.' },
   { id: 'configuracion', label: 'Configuracion', group: 'Operacion', icon: Filter, description: 'Acceso, editor avanzado y parametros locales de prueba.' },
@@ -97,6 +100,7 @@ export default async function Dashboard({ searchParams }) {
   const securityResults = results.filter((result) => matchesResult(result, ['secret', 'dependency', 'security', 'audit']));
   const loadResultsList = results.filter((result) => matchesResult(result, ['load', 'performance', 'perf', 'k6']));
   const chatResults = results.filter((result) => matchesResult(result, ['chat', 'consistency', 'jailbreak', 'adversarial']));
+  const reportResults = results.filter((result) => result.tool === 'report-builder' || result.run_id?.startsWith('report-'));
   const agenticResults = results.filter((result) => result.tool === 'agentic-evals' || result.run_id?.startsWith('agentic-evals-'));
   const latestAgentic = agenticResults[0] || null;
   const evalStackResults = {
@@ -359,6 +363,39 @@ export default async function Dashboard({ searchParams }) {
                 ['Dependency audit', 'Vulnerabilidades en dependencias y runtimes.'],
                 ['Access control', 'Roles, tenants, rutas restringidas y acciones.'],
                 ['Adversarial no-chat', 'IDOR, confused deputy, parametros y approval abuse.'],
+              ].map(([term, meaning]) => (
+                <article className="glossary-row" key={term}><strong>{term}</strong><span>{meaning}</span></article>
+              ))}
+            </div>
+          </div>
+        </section>}
+
+        {selectedTab === 'reportes' && <section className="content-grid">
+          <div className="panel wide">
+            <div className="panel-heading">
+              <div>
+                <p className="eyebrow">Trabajo: reportes</p>
+                <h2>Informe de carga y seguridad, generado desde la evidencia</h2>
+              </div>
+              <FileText size={18} aria-hidden="true" />
+            </div>
+            <p className="editor-note">Toma la corrida mas reciente de cada superficie (carga borde/app, SAST, DAST borde/app y consistencia del chat), calcula veredictos contra tus umbrales y arma un informe HTML. Los numeros salen de resultados/; la interpretacion se redacta a temperatura 0 sobre esos mismos numeros y, si el modelo no responde, cae a un respaldo determinista para que el informe nunca quede incompleto.</p>
+            <ReportLauncher />
+            <div className="panel-subsection"><h3>Informes generados</h3></div>
+            <RunSummaryList results={reportResults} emptyTitle="No hay informes generados todavia" emptyDetail="Genera el primero arriba; quedara aqui y en la carpeta reportes/." />
+          </div>
+          <div className="panel">
+            <div className="panel-heading">
+              <h2>Que incluye</h2>
+              <span>report-builder</span>
+            </div>
+            <div className="glossary-list">
+              {[
+                ['Carga', 'p50/p95/p99, throughput y error por superficie vs SLO.'],
+                ['SAST', 'Hallazgos Bandit por severidad y veredicto de bloqueo.'],
+                ['DAST', 'Alertas ZAP borde y app autenticada por severidad.'],
+                ['Chat / IA', 'Consistencia del asistente y alucinaciones (falla dura).'],
+                ['Higiene', 'Redaccion de cookies/tokens que se cuelen en el HTML.'],
               ].map(([term, meaning]) => (
                 <article className="glossary-row" key={term}><strong>{term}</strong><span>{meaning}</span></article>
               ))}
@@ -1581,6 +1618,7 @@ function normalizeTab(value) {
     'seguridad',
     'catalogos',
     'corridas',
+    'reportes',
     'hallazgos',
     'compliance',
     'configuracion',
