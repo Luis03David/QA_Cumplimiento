@@ -18,6 +18,7 @@ import {
   Filter,
   Gauge,
   History,
+  Radar,
   LockKeyhole,
   ShieldCheck,
 } from 'lucide-react';
@@ -28,6 +29,7 @@ const TRACEABILITY_FILE = path.join(ROOT, 'docs', 'traceability.md');
 const PROMPT_BANK_FILE = path.join(ROOT, 'tests', 'chat_consistency_semantic_bank.json');
 const JAILBREAK_REPORT_FILE = path.join(ROOT, 'informe-pruebas-jailbreak-aitops-DG-2026-06-23.html');
 const ADVERSARIAL_BANK_FILE = path.join(ROOT, 'banco-pruebas-adversarial-aitops-DG-2026-06-26.html');
+const BLACKBOX_CATALOG_FILE = path.join(ROOT, 'config', 'blackbox-coverage.json');
 
 const NAV_ITEMS = [
   { id: 'inicio', label: 'Resumen', group: 'General', icon: ShieldCheck, description: 'Estado ejecutivo de calidad, riesgo y cumplimiento.' },
@@ -38,6 +40,7 @@ const NAV_ITEMS = [
   { id: 'catalogos', label: 'Catalogos', group: 'Trabajo', icon: FileJson, description: 'Banco editable de casos, prompts y criterios de aceptacion.' },
   { id: 'corridas', label: 'Corridas', group: 'Trabajo', icon: History, description: 'Historial completo de ejecuciones, filtros y artefactos.' },
   { id: 'reportes', label: 'Reportes', group: 'Trabajo', icon: FileText, description: 'Genera informes de carga y seguridad a partir de la evidencia.' },
+  { id: 'caja-negra', label: 'Caja negra', group: 'Superficie', icon: Radar, description: 'Cobertura de QA de caja negra: pilares vivos y deuda por profundidad, amplitud y continuidad.' },
   { id: 'hallazgos', label: 'Hallazgos', group: 'Trabajo', icon: AlertTriangle, description: 'Fallas, faltantes, severidad, evidencia y estado de revision.' },
   { id: 'compliance', label: 'Compliance', group: 'Gobierno', icon: ClipboardCheck, description: 'Trazabilidad CP, controles, marcos regulatorios y evidencia.' },
   { id: 'configuracion', label: 'Configuracion', group: 'Operacion', icon: Filter, description: 'Acceso, editor avanzado y parametros locales de prueba.' },
@@ -101,6 +104,8 @@ export default async function Dashboard({ searchParams }) {
   const loadResultsList = results.filter((result) => matchesResult(result, ['load', 'performance', 'perf', 'k6']));
   const chatResults = results.filter((result) => matchesResult(result, ['chat', 'consistency', 'jailbreak', 'adversarial']));
   const reportResults = results.filter((result) => result.tool === 'report-builder' || result.run_id?.startsWith('report-'));
+  const blackboxCatalog = loadBlackboxCatalog();
+  const blackboxResults = results.filter((result) => result.tool === 'blackbox-coverage' || result.run_id?.startsWith('blackbox-coverage-'));
   const agenticResults = results.filter((result) => result.tool === 'agentic-evals' || result.run_id?.startsWith('agentic-evals-'));
   const latestAgentic = agenticResults[0] || null;
   const evalStackResults = {
@@ -402,6 +407,94 @@ export default async function Dashboard({ searchParams }) {
             </div>
           </div>
         </section>}
+
+        {selectedTab === 'caja-negra' && (() => {
+          if (!blackboxCatalog) {
+            return <section className="content-grid"><div className="panel wide"><p className="editor-note">No se encontro config/blackbox-coverage.json. Corre <code>npm run blackbox:coverage</code>.</p></div></section>;
+          }
+          const areas = blackboxCatalog.areas || [];
+          const probes = areas.flatMap((a) => a.probes || []);
+          const countBy = (s) => probes.filter((p) => p.status === s).length;
+          const live = countBy('live');
+          const partial = countBy('partial');
+          const planned = countBy('planned');
+          const flagshipMissing = areas.filter((a) => a.flagship && a.status === 'planned');
+          const PILL = {
+            live: { label: 'Vivo', bg: 'rgba(63,185,80,.15)', fg: '#3fb950' },
+            partial: { label: 'Parcial', bg: 'rgba(240,180,41,.15)', fg: '#f0b429' },
+            planned: { label: 'Deuda', bg: 'rgba(139,148,158,.18)', fg: '#8b949e' },
+          };
+          const PRIO = { critica: '#f85149', alta: '#f0b429', media: '#4b9fd6' };
+          const pill = (status) => {
+            const p = PILL[status] || PILL.planned;
+            return <span style={{ background: p.bg, color: p.fg, fontSize: 11, fontWeight: 700, padding: '2px 8px', borderRadius: 999, whiteSpace: 'nowrap' }}>{p.label}</span>;
+          };
+          return <section className="content-grid">
+            <div className="panel wide">
+              <div className="panel-heading">
+                <div>
+                  <p className="eyebrow">Superficie: caja negra</p>
+                  <h2>Cobertura de QA de caja negra: pilares vivos y deuda</h2>
+                </div>
+                <Radar size={18} aria-hidden="true" />
+              </div>
+              <p className="editor-note">Prueba de la plataforma objetivo desde afuera. {blackboxCatalog.note} Lo que no se puede ejecutar hoy contra la infra se registra como deuda con su bloqueo, no se simula. Fuente: <code>config/blackbox-coverage.json</code> · genera evidencia con <code>npm run blackbox:coverage</code>.</p>
+
+              <div className="panel-subsection"><h3>Pilares vivos</h3></div>
+              <div className="glossary-list">
+                {(blackboxCatalog.pillars || []).map((pl) => (
+                  <article className="glossary-row" key={pl.id} style={{ alignItems: 'center' }}>
+                    <strong style={{ display: 'flex', gap: 8, alignItems: 'center' }}>{pill(pl.status)} {pl.name}</strong>
+                    <span>{pl.note}</span>
+                  </article>
+                ))}
+              </div>
+
+              <div className="panel-subsection"><h3>Frentes y sondas (deuda por apalancamiento)</h3></div>
+              {areas.map((area) => (
+                <div key={area.id} className="panel" style={{ marginTop: 12 }}>
+                  <div style={{ display: 'flex', gap: 10, alignItems: 'baseline', flexWrap: 'wrap' }}>
+                    <strong style={{ fontSize: 15 }}>{area.flagship ? '★ ' : ''}{area.title}</strong>
+                    <span style={{ fontSize: 11, fontWeight: 700, color: PRIO[area.priority] || '#8b949e', textTransform: 'uppercase', letterSpacing: '.04em' }}>{area.priority}</span>
+                    {pill(area.status)}
+                  </div>
+                  <p className="editor-note" style={{ marginTop: 6 }}>{area.why}</p>
+                  <ul style={{ margin: '8px 0 0', paddingLeft: 0, listStyle: 'none', display: 'flex', flexDirection: 'column', gap: 6 }}>
+                    {(area.probes || []).map((pr) => (
+                      <li key={pr.id} style={{ display: 'flex', gap: 8, alignItems: 'baseline' }}>
+                        <span style={{ flexShrink: 0 }}>{pill(pr.status)}</span>
+                        <span style={{ fontSize: 13 }}><strong>{pr.name}</strong>{pr.status === 'planned' && pr.blocker ? <span style={{ color: 'var(--muted, #8b949e)' }}> — bloqueo: {pr.blocker}</span> : null}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              ))}
+
+              <div className="panel-subsection"><h3>Corridas de cobertura</h3></div>
+              <RunSummaryList results={blackboxResults} emptyTitle="No hay snapshots de cobertura todavia" emptyDetail="Corre npm run blackbox:coverage para generar la primera evidencia." />
+            </div>
+            <div className="panel">
+              <div className="panel-heading">
+                <h2>Cobertura</h2>
+                <span>{probes.length} sondas</span>
+              </div>
+              <div className="glossary-list">
+                <article className="glossary-row"><strong>{pill('live')} Vivas</strong><span>{live}</span></article>
+                <article className="glossary-row"><strong>{pill('partial')} Parciales</strong><span>{partial}</span></article>
+                <article className="glossary-row"><strong>{pill('planned')} En deuda</strong><span>{planned}</span></article>
+              </div>
+              <div className="panel-subsection"><h3>Sondas estrella</h3></div>
+              <p className="editor-note">Las dos de mayor valor que hoy no existen:</p>
+              <div className="glossary-list">
+                {flagshipMissing.length === 0
+                  ? <article className="glossary-row"><strong>Cubiertas</strong><span>Ambas sondas estrella tienen cobertura.</span></article>
+                  : flagshipMissing.map((a) => (
+                    <article className="glossary-row" key={a.id}><strong>★ {a.title}</strong><span>{pill('planned')} sin cobertura</span></article>
+                  ))}
+              </div>
+            </div>
+          </section>;
+        })()}
 
         {(selectedTab === 'glosario' || selectedTab === 'referencia') && <section className="content-grid">
           <div className="panel wide">
@@ -1619,6 +1712,7 @@ function normalizeTab(value) {
     'catalogos',
     'corridas',
     'reportes',
+    'caja-negra',
     'hallazgos',
     'compliance',
     'configuracion',
@@ -1790,6 +1884,15 @@ function loadResults() {
     })
     .filter(Boolean)
     .sort((a, b) => String(b.finished_at).localeCompare(String(a.finished_at)));
+}
+
+function loadBlackboxCatalog() {
+  if (!fs.existsSync(BLACKBOX_CATALOG_FILE)) return null;
+  try {
+    return JSON.parse(fs.readFileSync(BLACKBOX_CATALOG_FILE, 'utf8'));
+  } catch {
+    return null;
+  }
 }
 
 function loadTraceability() {

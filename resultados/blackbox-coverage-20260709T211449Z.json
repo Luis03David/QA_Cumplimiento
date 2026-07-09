@@ -1,0 +1,361 @@
+{
+  "schema_version": "1.0",
+  "run_id": "blackbox-coverage-20260709T211449Z",
+  "tool": "blackbox-coverage",
+  "category": "manual",
+  "surface": null,
+  "status": "pass",
+  "started_at": "2026-07-09T21:14:49Z",
+  "finished_at": "2026-07-09T21:14:49Z",
+  "summary": "Cobertura caja negra: 1 sonda(s) viva(s), 1 parcial(es), 22 en deuda de 24. Sondas estrella sin cobertura: Chaos sintetico -> detecta + notifica, Verificacion del canal humano.",
+  "checks": [
+    {
+      "name": "pilar:dast-baseline",
+      "status": "pass",
+      "message": "DAST baseline (OWASP ZAP) — partial · 6 corrida(s) de evidencia.",
+      "details": {
+        "kind": "pillar",
+        "status": "partial",
+        "evidence_runs": 6,
+        "note": "Escaneo pasivo/baseline. Falta scan activo, crawl autenticado profundo, fuzzing de API y pruebas de authz."
+      }
+    },
+    {
+      "name": "pilar:load-baseline",
+      "status": "pass",
+      "message": "Carga baseline — partial · 5 corrida(s) de evidencia.",
+      "details": {
+        "kind": "pillar",
+        "status": "partial",
+        "evidence_runs": 5,
+        "note": "Edge + /tokens, 100% disponibilidad. Falta estres-a-la-falla, soak, flujos reales y regresion de latencia."
+      }
+    },
+    {
+      "name": "pilar:chat-consistency",
+      "status": "pass",
+      "message": "Chat-consistency + juez — partial · 31 corrida(s) de evidencia.",
+      "details": {
+        "kind": "pillar",
+        "status": "partial",
+        "evidence_runs": 31,
+        "note": "Caza cifras inventadas pero es angosta (5 preguntas x2, un solo juez). Falta amplitud y rigor del oraculo."
+      }
+    },
+    {
+      "name": "chaos:chaos-kill-cp_api",
+      "status": "skipped",
+      "message": "Matar cp_api y verificar deteccion + alerta dentro del SLO — bloqueo: Acceso para tumbar el componente desde afuera y endpoint/canal de alertas a observar.",
+      "details": {
+        "kind": "probe",
+        "area": "chaos",
+        "status": "planned",
+        "priority": "critica",
+        "flagship": true,
+        "blocker": "Acceso para tumbar el componente desde afuera y endpoint/canal de alertas a observar."
+      }
+    },
+    {
+      "name": "chaos:chaos-kill-scrape-target",
+      "status": "skipped",
+      "message": "Matar un target de scrape y verificar deteccion + alerta — bloqueo: Target de scrape controlado en el ambiente QA.",
+      "details": {
+        "kind": "probe",
+        "area": "chaos",
+        "status": "planned",
+        "priority": "critica",
+        "flagship": true,
+        "blocker": "Target de scrape controlado en el ambiente QA."
+      }
+    },
+    {
+      "name": "chaos:chaos-kill-probe",
+      "status": "skipped",
+      "message": "Matar el probe y verificar deteccion + alerta — bloqueo: Control del probe y visibilidad de su health.",
+      "details": {
+        "kind": "probe",
+        "area": "chaos",
+        "status": "planned",
+        "priority": "critica",
+        "flagship": true,
+        "blocker": "Control del probe y visibilidad de su health."
+      }
+    },
+    {
+      "name": "chaos:chaos-replay-2026-06-19",
+      "status": "skipped",
+      "message": "Replay del incidente 2026-06-19 (cp_api caido 5h sin aviso) — bloqueo: Escenario reproducible + medicion del SLO de deteccion/notificacion.",
+      "details": {
+        "kind": "probe",
+        "area": "chaos",
+        "status": "planned",
+        "priority": "critica",
+        "flagship": true,
+        "blocker": "Escenario reproducible + medicion del SLO de deteccion/notificacion."
+      }
+    },
+    {
+      "name": "chat-blackbox:count-consistency",
+      "status": "pass",
+      "message": "Consistencia de conteo / cifras inventadas — live",
+      "details": {
+        "kind": "probe",
+        "area": "chat-blackbox",
+        "status": "live",
+        "priority": "alta",
+        "flagship": false,
+        "blocker": ""
+      }
+    },
+    {
+      "name": "chat-blackbox:jailbreak-live",
+      "status": "skipped",
+      "message": "Jailbreak / prompt-injection contra el chat vivo (sonda continua) — bloqueo: El corpus existe como regresion, no como sonda negra en continuo contra el chat vivo.",
+      "details": {
+        "kind": "probe",
+        "area": "chat-blackbox",
+        "status": "planned",
+        "priority": "alta",
+        "flagship": false,
+        "blocker": "El corpus existe como regresion, no como sonda negra en continuo contra el chat vivo."
+      }
+    },
+    {
+      "name": "chat-blackbox:ethics-dangerous",
+      "status": "skipped",
+      "message": "Ethics / comandos peligrosos -> BLOCKED / HITL (Portero) — bloqueo: Acceso al chat vivo y observabilidad de la decision del Portero (BLOCKED/HITL).",
+      "details": {
+        "kind": "probe",
+        "area": "chat-blackbox",
+        "status": "planned",
+        "priority": "alta",
+        "flagship": false,
+        "blocker": "Acceso al chat vivo y observabilidad de la decision del Portero (BLOCKED/HITL)."
+      }
+    },
+    {
+      "name": "chat-blackbox:rag-sources",
+      "status": "skipped",
+      "message": "RAG: cita fuentes reales y sanitiza la salida (sin secretos/PII/otro tenant) — bloqueo: Golden set de fuentes esperadas y verificacion de sanitizacion en salida.",
+      "details": {
+        "kind": "probe",
+        "area": "chat-blackbox",
+        "status": "planned",
+        "priority": "alta",
+        "flagship": false,
+        "blocker": "Golden set de fuentes esperadas y verificacion de sanitizacion en salida."
+      }
+    },
+    {
+      "name": "chat-blackbox:reports-e2e-pdf",
+      "status": "skipped",
+      "message": "Reportes E2E: pedir reporte -> verificar PDF con branding en Documents — bloqueo: Flujo de generacion de reporte y acceso a Documents.",
+      "details": {
+        "kind": "probe",
+        "area": "chat-blackbox",
+        "status": "planned",
+        "priority": "alta",
+        "flagship": false,
+        "blocker": "Flujo de generacion de reporte y acceso a Documents."
+      }
+    },
+    {
+      "name": "chat-blackbox:tenant-isolation-api",
+      "status": "skipped",
+      "message": "Aislamiento por tenant via API: parametros como otro tenant/rol -> 0 fugas — bloqueo: Credenciales multi-tenant/rol y endpoints de API para manipular.",
+      "details": {
+        "kind": "probe",
+        "area": "chat-blackbox",
+        "status": "planned",
+        "priority": "alta",
+        "flagship": false,
+        "blocker": "Credenciales multi-tenant/rol y endpoints de API para manipular."
+      }
+    },
+    {
+      "name": "dast-active:active-scan",
+      "status": "skipped",
+      "message": "Scan activo (SQLi / XSS / inyeccion) — bloqueo: Autorizacion para scan activo (intrusivo) en el ambiente QA.",
+      "details": {
+        "kind": "probe",
+        "area": "dast-active",
+        "status": "planned",
+        "priority": "alta",
+        "flagship": false,
+        "blocker": "Autorizacion para scan activo (intrusivo) en el ambiente QA."
+      }
+    },
+    {
+      "name": "dast-active:auth-crawl-deep",
+      "status": "skipped",
+      "message": "Crawl autenticado profundo de todas las rutas — bloqueo: Sesion autenticada + inventario de rutas.",
+      "details": {
+        "kind": "probe",
+        "area": "dast-active",
+        "status": "planned",
+        "priority": "alta",
+        "flagship": false,
+        "blocker": "Sesion autenticada + inventario de rutas."
+      }
+    },
+    {
+      "name": "dast-active:api-fuzzing",
+      "status": "skipped",
+      "message": "Fuzzing de API (payloads malformados / oversized) — bloqueo: Contrato de API y ambiente que tolere fuzzing.",
+      "details": {
+        "kind": "probe",
+        "area": "dast-active",
+        "status": "planned",
+        "priority": "alta",
+        "flagship": false,
+        "blocker": "Contrato de API y ambiente que tolere fuzzing."
+      }
+    },
+    {
+      "name": "dast-active:authz-idor-tenant-switch",
+      "status": "skipped",
+      "message": "Auth/sesion: IDOR, escalacion, tenant-switch — bloqueo: Multiples usuarios/tenants/roles controlados.",
+      "details": {
+        "kind": "probe",
+        "area": "dast-active",
+        "status": "planned",
+        "priority": "alta",
+        "flagship": false,
+        "blocker": "Multiples usuarios/tenants/roles controlados."
+      }
+    },
+    {
+      "name": "dast-active:sse-stream-chat",
+      "status": "skipped",
+      "message": "Stream SSE del chat (/chat/v3/stream) — bloqueo: Herramienta que ejercite y valide el stream SSE.",
+      "details": {
+        "kind": "probe",
+        "area": "dast-active",
+        "status": "planned",
+        "priority": "alta",
+        "flagship": false,
+        "blocker": "Herramienta que ejercite y valide el stream SSE."
+      }
+    },
+    {
+      "name": "load-depth:stress-breaking-point",
+      "status": "skipped",
+      "message": "Estres-a-la-falla (breaking point) — bloqueo: Ventana autorizada para llevar el ambiente hasta la degradacion.",
+      "details": {
+        "kind": "probe",
+        "area": "load-depth",
+        "status": "planned",
+        "priority": "media",
+        "flagship": false,
+        "blocker": "Ventana autorizada para llevar el ambiente hasta la degradacion."
+      }
+    },
+    {
+      "name": "load-depth:soak-endurance",
+      "status": "skipped",
+      "message": "Soak / endurance (fugas de memoria/conexiones) — bloqueo: Corrida larga (horas) y metricas de recursos del target.",
+      "details": {
+        "kind": "probe",
+        "area": "load-depth",
+        "status": "planned",
+        "priority": "media",
+        "flagship": false,
+        "blocker": "Corrida larga (horas) y metricas de recursos del target."
+      }
+    },
+    {
+      "name": "load-depth:real-flows",
+      "status": "skipped",
+      "message": "Carga sobre flujos reales (no un solo endpoint) — bloqueo: Definicion de flujos de usuario end-to-end parametrizables.",
+      "details": {
+        "kind": "probe",
+        "area": "load-depth",
+        "status": "planned",
+        "priority": "media",
+        "flagship": false,
+        "blocker": "Definicion de flujos de usuario end-to-end parametrizables."
+      }
+    },
+    {
+      "name": "load-depth:latency-regression-baseline",
+      "status": "skipped",
+      "message": "Linea base de regresion de latencia en el tiempo — bloqueo: Almacen de baselines por endpoint y comparador por corrida.",
+      "details": {
+        "kind": "probe",
+        "area": "load-depth",
+        "status": "planned",
+        "priority": "media",
+        "flagship": false,
+        "blocker": "Almacen de baselines por endpoint y comparador por corrida."
+      }
+    },
+    {
+      "name": "continuity:scheduling-synthetic",
+      "status": "skipped",
+      "message": "Scheduling + transacciones sinteticas continuas — bloqueo: Scheduler self-hosted (Fase 3) para disparar las sondas negras en continuo.",
+      "details": {
+        "kind": "probe",
+        "area": "continuity",
+        "status": "planned",
+        "priority": "alta",
+        "flagship": false,
+        "blocker": "Scheduler self-hosted (Fase 3) para disparar las sondas negras en continuo."
+      }
+    },
+    {
+      "name": "continuity:oracle-n5",
+      "status": "pass",
+      "message": "Oraculos deterministas primero + N>=5 repeticiones — partial",
+      "details": {
+        "kind": "probe",
+        "area": "continuity",
+        "status": "partial",
+        "priority": "alta",
+        "flagship": false,
+        "blocker": "El informe uso x2; subir a N>=5 en las sondas criticas."
+      }
+    },
+    {
+      "name": "continuity:dual-judge",
+      "status": "skipped",
+      "message": "Juez con mitigacion de sesgo (dual-judge, posicion aleatoria) — bloqueo: Segundo juez independiente y aleatorizacion de posicion; hoy es un solo juez.",
+      "details": {
+        "kind": "probe",
+        "area": "continuity",
+        "status": "planned",
+        "priority": "alta",
+        "flagship": false,
+        "blocker": "Segundo juez independiente y aleatorizacion de posicion; hoy es un solo juez."
+      }
+    },
+    {
+      "name": "human-channel:alert-delivery",
+      "status": "skipped",
+      "message": "Alerta critica por SMS / WhatsApp / email realmente llega — bloqueo: Buzones/numeros de prueba y acceso a los canales de notificacion.",
+      "details": {
+        "kind": "probe",
+        "area": "human-channel",
+        "status": "planned",
+        "priority": "critica",
+        "flagship": true,
+        "blocker": "Buzones/numeros de prueba y acceso a los canales de notificacion."
+      }
+    },
+    {
+      "name": "human-channel:hitl-approval",
+      "status": "skipped",
+      "message": "La aprobacion HITL llega y se procesa end-to-end — bloqueo: Flujo HITL con canal de aprobacion observable en el ambiente QA.",
+      "details": {
+        "kind": "probe",
+        "area": "human-channel",
+        "status": "planned",
+        "priority": "critica",
+        "flagship": true,
+        "blocker": "Flujo HITL con canal de aprobacion observable en el ambiente QA."
+      }
+    }
+  ],
+  "artifacts": [
+    "config/blackbox-coverage.json"
+  ]
+}

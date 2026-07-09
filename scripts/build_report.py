@@ -197,6 +197,37 @@ def extract_scan(d: dict | None, *, blocking_severity: str) -> dict | None:
     }
 
 
+def extract_blackbox() -> dict | None:
+    p = ROOT / "config" / "blackbox-coverage.json"
+    if not p.exists():
+        return None
+    try:
+        cat = json.loads(p.read_text(encoding="utf-8"))
+    except Exception:
+        return None
+    areas = cat.get("areas", [])
+    probes = [pr for a in areas for pr in a.get("probes", [])]
+
+    def by(items, s):
+        return sum(1 for pr in items if pr.get("status") == s)
+
+    return {
+        "total": len(probes),
+        "live": by(probes, "live"),
+        "partial": by(probes, "partial"),
+        "planned": by(probes, "planned"),
+        "flagship_missing": [a["title"] for a in areas
+                             if a.get("flagship") and a.get("status") == "planned"],
+        "areas": [{
+            "title": a["title"], "priority": a.get("priority"), "status": a.get("status"),
+            "flagship": a.get("flagship", False),
+            "live": by(a.get("probes", []), "live"),
+            "partial": by(a.get("probes", []), "partial"),
+            "planned": by(a.get("probes", []), "planned"),
+        } for a in areas],
+    }
+
+
 def extract_chat(d: dict | None) -> dict | None:
     if not d:
         return None
@@ -542,6 +573,38 @@ def chat_table(chat: dict | None) -> str:
     return kpis + table
 
 
+STATUS_BADGE = {"live": ("b-ok", "Vivo"), "partial": ("b-med", "Parcial"),
+                "planned": ("b-info", "Deuda")}
+
+
+def blackbox_block(bb: dict | None) -> str:
+    if not bb:
+        return "<p>no disponible: sin catalogo de caja negra.</p>"
+    kpis = (f'<div class="kpis">'
+            f'<div class="kpi ok"><span>Vivas</span><strong>{bb["live"]}</strong></div>'
+            f'<div class="kpi med"><span>Parciales</span><strong>{bb["partial"]}</strong></div>'
+            f'<div class="kpi"><span>En deuda</span><strong>{bb["planned"]}</strong></div>'
+            f'<div class="kpi"><span>Total sondas</span><strong>{bb["total"]}</strong></div>'
+            f'</div>')
+    rows = ""
+    for a in bb["areas"]:
+        cls, label = STATUS_BADGE.get(a["status"], STATUS_BADGE["planned"])
+        star = "★ " if a["flagship"] else ""
+        rows += (f'<tr><td>{esc(star + a["title"])}</td>'
+                 f'<td>{esc(a["priority"])}</td>'
+                 f'<td><span class="badge {cls}">{label}</span></td>'
+                 f'<td class="num">{a["live"]} / {a["partial"]} / {a["planned"]}</td></tr>')
+    table = ('<table><thead><tr><th>Frente</th><th>Prioridad</th><th>Estado</th>'
+             '<th>Vivas / Parciales / Deuda</th></tr></thead>'
+             f'<tbody>{rows}</tbody></table>')
+    flag = ""
+    if bb["flagship_missing"]:
+        items = "".join(f"<li>{esc(t)}</li>" for t in bb["flagship_missing"])
+        flag = ('<div class="callout warn"><strong>Sondas de mayor valor que hoy no existen.</strong>'
+                f'<ul>{items}</ul></div>')
+    return kpis + table + flag
+
+
 def render_html(facts: dict, narrative: dict, meta: dict) -> str:
     loads = [x for x in (facts.get("load_edge"), facts.get("load_app")) if x]
     recos = "".join(f"<li>{esc(r)}</li>" for r in narrative.get("recomendaciones", []))
@@ -667,10 +730,17 @@ mismos numeros, sin inventar datos.</p>
 <p>{esc(narrative.get('lectura_chat'))}</p>
 {chat_table(facts.get('chat'))}
 
-<h2>5. Recomendaciones</h2>
+<h2>5. Cobertura de caja negra (deuda)</h2>
+<p>Prueba de la plataforma desde afuera. El SAST se excluye a proposito: es caja
+blanca sobre el propio codigo de QA. Lo que no se puede ejecutar hoy contra la
+infra objetivo se registra como deuda con su bloqueo, no se simula. Fuente:
+<code>config/blackbox-coverage.json</code>.</p>
+{blackbox_block(facts.get('blackbox'))}
+
+<h2>6. Recomendaciones</h2>
 <ul class="recos">{recos}</ul>
 
-<h2>6. Como leer las severidades</h2>
+<h2>7. Como leer las severidades</h2>
 <div class="panel">
   <p><span class="badge b-high">Alta</span> &nbsp; Explotable con impacto serio. Se arregla de inmediato.</p>
   <p><span class="badge b-med">Media</span> &nbsp; Debilidad real que facilita un ataque. Se corrige pronto.</p>
@@ -772,6 +842,7 @@ def main() -> int:
         "dast_app": extract_scan(latest(results, category="dast", surface="app"),
                                  blocking_severity=args.blocking_severity),
         "chat": extract_chat(latest_chat_reviewed(results)),
+        "blackbox": extract_blackbox(),
     }
     # DAST sin surface: si no hubo split edge/app, usa la ultima como 'app'.
     if not facts["dast_edge"] and not facts["dast_app"]:

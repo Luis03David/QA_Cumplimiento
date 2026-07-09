@@ -1278,3 +1278,75 @@ Obtenido con los casos de descubrimiento (estable en 6/6 respuestas):
 - Fuga cross-tenant = 0.
 - Consistencia semantica >= umbral acordado.
 - p95 bajo carga < objetivo por endpoint.
+
+## Fase 7 - QA de caja negra: profundidad, amplitud, continuidad (2026-07-09)
+
+Contexto: el QA de caja negra ya tiene tres pilares vivos contra la plataforma
+objetivo desde afuera -DAST (ZAP), carga baseline y chat-consistency + juez-.
+El SAST no cuenta aqui: es caja blanca sobre el propio codigo de QA. Lo que
+falta es profundidad, amplitud, continuidad y las dos sondas de mayor valor que
+hoy no existen. El catalogo vivo de esta fase esta en
+`config/blackbox-coverage.json` y se materializa como evidencia con
+`scripts/run_blackbox_coverage.py` (aparece en el dashboard, pestana "Caja
+negra", y en los informes generados).
+
+Regla operativa: lo que no se puede ejecutar hoy contra la infra objetivo se
+registra como deuda con su bloqueo explicito -mismo criterio que CP-01/CP-03
+(skipped/faltante)-, no se simula.
+
+### 1. Chaos sintetico -> detecta + notifica (sonda estrella, maximo valor)
+
+No existe. Matar un componente (cp_api, un target de scrape, el probe) desde
+afuera y verificar que la plataforma lo detecta y que la alerta llega al canal
+dentro del SLO. Es el unico test que caza la deuda de Observabilidad -el replay
+del incidente 2026-06-19 (cp_api caido 5h sin aviso)- sin tocar codigo.
+Bloqueo: acceso para tumbar el componente y canal/endpoint de alertas observable.
+
+### 2. Chat de caja negra: amplitud (hoy angosto, 5 preguntas x2)
+
+El chat-probe ya caza cifras inventadas (conteo), pero falta correrlo como sonda
+negra continua sobre: jailbreak/prompt-injection contra el chat vivo (el corpus
+existe como regresion, no como sonda); ethics/comandos peligrosos -> BLOCKED/HITL
+(Portero); RAG cita fuentes reales y sanitiza la salida (sin secretos/PII/otro
+tenant); reportes E2E (pedir reporte -> verificar PDF con branding en Documents);
+y aislamiento por tenant via API (manipular parametros como otro tenant/rol ->
+0 fugas).
+
+### 3. DAST activo (hoy solo pasivo/baseline)
+
+ZAP corrio baseline (pasivo). Falta: scan activo (SQLi/XSS/inyeccion), crawl
+autenticado profundo de todas las rutas, fuzzing de API (payloads
+malformados/oversized), pruebas de auth/sesion (IDOR, escalacion, tenant-switch)
+y el stream SSE del chat.
+
+### 4. Carga en profundidad (hoy solo baseline)
+
+Hoy edge + /tokens, 100% disponibilidad. Falta estres-a-la-falla (breaking
+point), soak/endurance (fugas de memoria/conexiones), carga sobre flujos reales
+(no un endpoint) y una linea base de regresion de latencia en el tiempo.
+
+### 5. Continuidad y rigor del oraculo
+
+Programado, no manual: hoy los pilares negros corren a mano; solo los scans de
+seguridad estan en CI (ver Fase 3, scheduler self-hosted). Falta scheduling +
+transacciones sinteticas continuas. Oraculos deterministas primero + N>=5
+repeticiones (el informe uso x2) + juez con mitigacion de sesgo (dual-judge,
+posicion aleatoria): hoy depende demasiado de un solo juez LLM.
+
+### 6. Verificacion del canal humano (sonda estrella)
+
+Confirmar end-to-end que el SMS/WhatsApp/email de una alerta critica y la
+aprobacion HITL realmente llegan. Caja negra puede probar la entrega; hoy no se
+prueba. Bloqueo: buzones/numeros de prueba y canales de notificacion/HITL
+observables en el ambiente QA.
+
+### Criterio de listo Fase 7
+
+- El catalogo `config/blackbox-coverage.json` refleja el estado real de cada
+  sonda (live/partial/planned) con su bloqueo.
+- `run_blackbox_coverage.py` emite evidencia schema-valida en `resultados/` y
+  alerta drift (pilar declarado vivo sin corridas).
+- Las dos sondas estrella (chaos-sintetico-a-la-alerta y canal humano) existen
+  como sondas vivas, no como deuda.
+- N>=5 en las sondas criticas y dual-judge para veredictos de alto impacto.
+- Las sondas negras corren programadas, no a mano.

@@ -1,0 +1,108 @@
+{
+  "version": "1.0",
+  "updated": "2026-07-09",
+  "title": "Cobertura de QA de caja negra",
+  "note": "SAST se excluye a proposito: es caja blanca sobre el propio codigo de QA, no prueba la plataforma objetivo desde afuera.",
+  "status_legend": {
+    "live": "Sonda viva con evidencia reciente.",
+    "partial": "Existe pero es angosta o incompleta; falta profundidad/amplitud.",
+    "planned": "No existe todavia; registrada como deuda con su bloqueo."
+  },
+  "pillars": [
+    { "id": "dast-baseline", "name": "DAST baseline (OWASP ZAP)", "status": "partial", "evidence_glob": "dast-zap-*.json", "note": "Escaneo pasivo/baseline. Falta scan activo, crawl autenticado profundo, fuzzing de API y pruebas de authz." },
+    { "id": "load-baseline", "name": "Carga baseline", "status": "partial", "evidence_glob": "load-*.json", "note": "Edge + /tokens, 100% disponibilidad. Falta estres-a-la-falla, soak, flujos reales y regresion de latencia." },
+    { "id": "chat-consistency", "name": "Chat-consistency + juez", "status": "partial", "evidence_glob": "chat-consistency-*.json", "note": "Caza cifras inventadas pero es angosta (5 preguntas x2, un solo juez). Falta amplitud y rigor del oraculo." }
+  ],
+  "areas": [
+    {
+      "id": "chaos",
+      "title": "Chaos sintetico -> detecta + notifica",
+      "priority": "critica",
+      "leverage": "maximo",
+      "flagship": true,
+      "status": "planned",
+      "why": "Unico test que caza la deuda de Observabilidad (replay del incidente 2026-06-19: cp_api caido 5h sin aviso) sin tocar codigo. Maximo valor, cero cobertura hoy.",
+      "probes": [
+        { "id": "chaos-kill-cp_api", "name": "Matar cp_api y verificar deteccion + alerta dentro del SLO", "status": "planned", "blocker": "Acceso para tumbar el componente desde afuera y endpoint/canal de alertas a observar." },
+        { "id": "chaos-kill-scrape-target", "name": "Matar un target de scrape y verificar deteccion + alerta", "status": "planned", "blocker": "Target de scrape controlado en el ambiente QA." },
+        { "id": "chaos-kill-probe", "name": "Matar el probe y verificar deteccion + alerta", "status": "planned", "blocker": "Control del probe y visibilidad de su health." },
+        { "id": "chaos-replay-2026-06-19", "name": "Replay del incidente 2026-06-19 (cp_api caido 5h sin aviso)", "status": "planned", "blocker": "Escenario reproducible + medicion del SLO de deteccion/notificacion." }
+      ]
+    },
+    {
+      "id": "chat-blackbox",
+      "title": "Chat de caja negra (amplitud)",
+      "priority": "alta",
+      "leverage": "alto",
+      "flagship": false,
+      "status": "partial",
+      "why": "El chat-probe ya cazo las cifras inventadas, pero solo prueba conteo. Le falta correr como sonda negra continua sobre las demas clases de riesgo.",
+      "probes": [
+        { "id": "count-consistency", "name": "Consistencia de conteo / cifras inventadas", "status": "live", "blocker": "" },
+        { "id": "jailbreak-live", "name": "Jailbreak / prompt-injection contra el chat vivo (sonda continua)", "status": "planned", "blocker": "El corpus existe como regresion, no como sonda negra en continuo contra el chat vivo." },
+        { "id": "ethics-dangerous", "name": "Ethics / comandos peligrosos -> BLOCKED / HITL (Portero)", "status": "planned", "blocker": "Acceso al chat vivo y observabilidad de la decision del Portero (BLOCKED/HITL)." },
+        { "id": "rag-sources", "name": "RAG: cita fuentes reales y sanitiza la salida (sin secretos/PII/otro tenant)", "status": "planned", "blocker": "Golden set de fuentes esperadas y verificacion de sanitizacion en salida." },
+        { "id": "reports-e2e-pdf", "name": "Reportes E2E: pedir reporte -> verificar PDF con branding en Documents", "status": "planned", "blocker": "Flujo de generacion de reporte y acceso a Documents." },
+        { "id": "tenant-isolation-api", "name": "Aislamiento por tenant via API: parametros como otro tenant/rol -> 0 fugas", "status": "planned", "blocker": "Credenciales multi-tenant/rol y endpoints de API para manipular." }
+      ]
+    },
+    {
+      "id": "dast-active",
+      "title": "DAST activo (hoy solo pasivo/baseline)",
+      "priority": "alta",
+      "leverage": "alto",
+      "flagship": false,
+      "status": "planned",
+      "why": "ZAP corrio baseline (pasivo). Falta la parte activa e intrusiva controlada.",
+      "probes": [
+        { "id": "active-scan", "name": "Scan activo (SQLi / XSS / inyeccion)", "status": "planned", "blocker": "Autorizacion para scan activo (intrusivo) en el ambiente QA." },
+        { "id": "auth-crawl-deep", "name": "Crawl autenticado profundo de todas las rutas", "status": "planned", "blocker": "Sesion autenticada + inventario de rutas." },
+        { "id": "api-fuzzing", "name": "Fuzzing de API (payloads malformados / oversized)", "status": "planned", "blocker": "Contrato de API y ambiente que tolere fuzzing." },
+        { "id": "authz-idor-tenant-switch", "name": "Auth/sesion: IDOR, escalacion, tenant-switch", "status": "planned", "blocker": "Multiples usuarios/tenants/roles controlados." },
+        { "id": "sse-stream-chat", "name": "Stream SSE del chat (/chat/v3/stream)", "status": "planned", "blocker": "Herramienta que ejercite y valide el stream SSE." }
+      ]
+    },
+    {
+      "id": "load-depth",
+      "title": "Carga en profundidad (hoy solo baseline)",
+      "priority": "media",
+      "leverage": "medio",
+      "flagship": false,
+      "status": "planned",
+      "why": "Hoy edge + /tokens, 100% disponibilidad. Falta empujar hasta la falla y sostener en el tiempo.",
+      "probes": [
+        { "id": "stress-breaking-point", "name": "Estres-a-la-falla (breaking point)", "status": "planned", "blocker": "Ventana autorizada para llevar el ambiente hasta la degradacion." },
+        { "id": "soak-endurance", "name": "Soak / endurance (fugas de memoria/conexiones)", "status": "planned", "blocker": "Corrida larga (horas) y metricas de recursos del target." },
+        { "id": "real-flows", "name": "Carga sobre flujos reales (no un solo endpoint)", "status": "planned", "blocker": "Definicion de flujos de usuario end-to-end parametrizables." },
+        { "id": "latency-regression-baseline", "name": "Linea base de regresion de latencia en el tiempo", "status": "planned", "blocker": "Almacen de baselines por endpoint y comparador por corrida." }
+      ]
+    },
+    {
+      "id": "continuity",
+      "title": "Continuidad y rigor del oraculo",
+      "priority": "alta",
+      "leverage": "alto",
+      "flagship": false,
+      "status": "partial",
+      "why": "Hoy los pilares negros corren a mano; solo los scans de seguridad estan en CI. El oraculo depende demasiado de un solo juez LLM.",
+      "probes": [
+        { "id": "scheduling-synthetic", "name": "Scheduling + transacciones sinteticas continuas", "status": "planned", "blocker": "Scheduler self-hosted (Fase 3) para disparar las sondas negras en continuo." },
+        { "id": "oracle-n5", "name": "Oraculos deterministas primero + N>=5 repeticiones", "status": "partial", "blocker": "El informe uso x2; subir a N>=5 en las sondas criticas." },
+        { "id": "dual-judge", "name": "Juez con mitigacion de sesgo (dual-judge, posicion aleatoria)", "status": "planned", "blocker": "Segundo juez independiente y aleatorizacion de posicion; hoy es un solo juez." }
+      ]
+    },
+    {
+      "id": "human-channel",
+      "title": "Verificacion del canal humano",
+      "priority": "critica",
+      "leverage": "maximo",
+      "flagship": true,
+      "status": "planned",
+      "why": "Caja negra puede confirmar la entrega end-to-end de una alerta critica y de la aprobacion HITL; hoy no se prueba.",
+      "probes": [
+        { "id": "alert-delivery", "name": "Alerta critica por SMS / WhatsApp / email realmente llega", "status": "planned", "blocker": "Buzones/numeros de prueba y acceso a los canales de notificacion." },
+        { "id": "hitl-approval", "name": "La aprobacion HITL llega y se procesa end-to-end", "status": "planned", "blocker": "Flujo HITL con canal de aprobacion observable en el ambiente QA." }
+      ]
+    }
+  ]
+}
